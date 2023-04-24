@@ -9,7 +9,7 @@ import javax.inject.Inject
 val Context.datastore:DataStore<Preferences> by preferencesDataStore("_datastore_")
 
 class DatastoreSource @Inject constructor(
-    context: Context
+    private val context: Context
 ){
     val datastore = context.datastore
 }

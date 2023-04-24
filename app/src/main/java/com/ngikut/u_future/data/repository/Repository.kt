@@ -5,7 +5,7 @@ import com.ngikut.u_future.data.remote.RemoteSource
 import javax.inject.Inject
 
 class Repository @Inject constructor(
-    remoteSource: RemoteSource,
-    datastoreSource: DatastoreSource
+    private val remoteSource: RemoteSource,
+    private val datastoreSource: DatastoreSource
 ) {
 }

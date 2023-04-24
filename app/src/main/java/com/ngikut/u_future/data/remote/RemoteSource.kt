@@ -4,6 +4,6 @@ import io.ktor.client.*
 import javax.inject.Inject
 
 class RemoteSource @Inject constructor(
-    client:HttpClient
+    private val client:HttpClient
 ) {
 }
