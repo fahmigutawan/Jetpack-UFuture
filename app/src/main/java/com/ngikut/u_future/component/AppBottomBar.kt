@@ -1,5 +1,7 @@
 package com.ngikut.u_future.component
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.BottomAppBar
@@ -16,6 +18,7 @@ import com.ngikut.u_future.R
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.util.NavRoute
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun AppBottomBar(
     currentRoute:String,
@@ -31,31 +34,47 @@ fun AppBottomBar(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             IconButton(onClick = { onClick(AppBottomBarItem.values()[0].route) }) {
-                Icon(
-                    painter = rememberAsyncImagePainter(
-                        model = when(AppBottomBarItem.values()[0].route){
-                            currentRoute -> AppBottomBarItem.values()[0].selectedIconId
-                            else -> AppBottomBarItem.values()[0].unselectedIconId
-                        }
-                    ),
-                    contentDescription = "",
-                    tint = Color.Unspecified
-                )
+                AnimatedContent(targetState = AppBottomBarItem.values()[0].route) {
+                    when(it){
+                        currentRoute -> Icon(
+                            painter = rememberAsyncImagePainter(
+                                model = AppBottomBarItem.values()[0].selectedIconId
+                            ),
+                            contentDescription = "",
+                            tint = Color.Unspecified
+                        )
+                        else -> Icon(
+                            painter = rememberAsyncImagePainter(
+                                model = AppBottomBarItem.values()[0].unselectedIconId
+                            ),
+                            contentDescription = "",
+                            tint = Color.Unspecified
+                        )
+                    }
+                }
             }
 
             Box(modifier = Modifier)
 
             IconButton(onClick = { onClick(AppBottomBarItem.values()[1].route) }) {
-                Icon(
-                    painter = rememberAsyncImagePainter(
-                        model = when(AppBottomBarItem.values()[1].route){
-                            currentRoute -> AppBottomBarItem.values()[1].selectedIconId
-                            else -> AppBottomBarItem.values()[1].unselectedIconId
-                        }
-                    ),
-                    contentDescription = "",
-                    tint = Color.Unspecified
-                )
+                AnimatedContent(targetState = AppBottomBarItem.values()[1].route) {
+                    when(it){
+                        currentRoute -> Icon(
+                            painter = rememberAsyncImagePainter(
+                                model = AppBottomBarItem.values()[1].selectedIconId
+                            ),
+                            contentDescription = "",
+                            tint = Color.Unspecified
+                        )
+                        else -> Icon(
+                            painter = rememberAsyncImagePainter(
+                                model = AppBottomBarItem.values()[1].unselectedIconId
+                            ),
+                            contentDescription = "",
+                            tint = Color.Unspecified
+                        )
+                    }
+                }
             }
         }
     }
