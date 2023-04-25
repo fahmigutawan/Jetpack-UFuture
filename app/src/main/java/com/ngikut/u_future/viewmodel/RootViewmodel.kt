@@ -10,4 +10,5 @@ class RootViewmodel @Inject constructor(
 
 ): ViewModel() {
     val currentRoute = mutableStateOf("")
+    val showBottombar = mutableStateOf(false)
 }

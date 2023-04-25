@@ -6,10 +6,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FabPosition
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -18,6 +22,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.ngikut.u_future.component.AppBottomBar
+import com.ngikut.u_future.screen.onboarding.OnboardingScreen
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.util.NavRoute
 import com.ngikut.u_future.viewmodel.RootViewmodel
@@ -35,46 +40,69 @@ class UFutureActivity : ComponentActivity() {
 
             navController.addOnDestinationChangedListener { _, destination, _ ->
                 rootViewmodel.currentRoute.value = destination.route ?: ""
+
+                rootViewmodel.showBottombar.value = when (destination.route ?: "") {
+                    NavRoute.Home.name -> true
+                    NavRoute.UBot.name -> true
+                    NavRoute.Profile.name -> true
+                    else -> false
+                }
             }
 
             Scaffold(
                 bottomBar = {
-                    AppBottomBar(
-                        currentRoute = rootViewmodel.currentRoute.value,
-                        onClick = {
-                            navController.navigate(it)
-                        }
-                    )
+                    if (rootViewmodel.showBottombar.value) {
+                        AppBottomBar(
+                            currentRoute = rootViewmodel.currentRoute.value,
+                            onClick = {
+                                navController.navigate(it)
+                            }
+                        )
+                    }
                 },
                 floatingActionButton = {
-                    FloatingActionButton(
-                        backgroundColor = AppColor.primary400,
-                        onClick = { navController.navigate(route = NavRoute.UBot.name) }
-                    ) {
-                        Icon(
-                            painter = rememberAsyncImagePainter(model = R.drawable.bottombar_ubot),
-                            contentDescription = "",
-                            tint = Color.Unspecified
-                        )
+                    if (rootViewmodel.showBottombar.value) {
+                        FloatingActionButton(
+                            backgroundColor = AppColor.primary400,
+                            onClick = { navController.navigate(route = NavRoute.UBot.name) }
+                        ) {
+                            Icon(
+                                painter = rememberAsyncImagePainter(model = R.drawable.bottombar_ubot),
+                                contentDescription = "",
+                                tint = Color.Unspecified
+                            )
+                        }
                     }
                 },
                 isFloatingActionButtonDocked = true,
                 floatingActionButtonPosition = FabPosition.Center
             ) {
-                NavHost(
-                    navController = navController,
-                    startDestination = NavRoute.Home.name
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
                 ) {
-                    composable(NavRoute.Home.name) {
+                    NavHost(
+                        navController = navController,
+                        startDestination = NavRoute.Onboard.name
+                    ) {
+                        composable(NavRoute.Home.name) {
 
-                    }
+                        }
 
-                    composable(NavRoute.UBot.name) {
+                        composable(NavRoute.UBot.name) {
 
-                    }
+                        }
 
-                    composable(NavRoute.Profile.name) {
+                        composable(NavRoute.Profile.name) {
 
+                        }
+
+                        composable(NavRoute.Onboard.name) {
+                            OnboardingScreen(
+                                onLoginClicked = {},
+                                onRegisterClicked = {}
+                            )
+                        }
                     }
                 }
             }
