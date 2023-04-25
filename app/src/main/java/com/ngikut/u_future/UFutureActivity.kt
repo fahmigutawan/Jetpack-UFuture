@@ -23,6 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.ngikut.u_future.component.AppBottomBar
 import com.ngikut.u_future.screen.onboarding.OnboardingScreen
+import com.ngikut.u_future.screen.splash.SplashScreen
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.util.NavRoute
 import com.ngikut.u_future.viewmodel.RootViewmodel
@@ -83,8 +84,12 @@ class UFutureActivity : ComponentActivity() {
                 ) {
                     NavHost(
                         navController = navController,
-                        startDestination = NavRoute.Onboard.name
+                        startDestination = NavRoute.Splash.name
                     ) {
+                        composable(NavRoute.Splash.name){
+                            SplashScreen(navController = navController)
+                        }
+                        
                         composable(NavRoute.Home.name) {
 
                         }
@@ -99,9 +104,16 @@ class UFutureActivity : ComponentActivity() {
 
                         composable(NavRoute.Onboard.name) {
                             OnboardingScreen(
-                                onLoginClicked = {},
-                                onRegisterClicked = {}
+                                navController = navController
                             )
+                        }
+
+                        composable(NavRoute.Login.name){
+
+                        }
+
+                        composable(NavRoute.Register.name){
+
                         }
                     }
                 }

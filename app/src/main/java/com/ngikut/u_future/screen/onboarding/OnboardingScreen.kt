@@ -2,19 +2,23 @@ package com.ngikut.u_future.screen.onboarding
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.ngikut.u_future.util.NavRoute
+import com.ngikut.u_future.viewmodel.onboarding.OnboardingViewmodel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun OnboardingScreen(
-    onLoginClicked: () -> Unit,
-    onRegisterClicked: () -> Unit
+    navController: NavController
 ) {
     val state = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
+    val viewModel = hiltViewModel<OnboardingViewmodel>()
 
     HorizontalPager(
         count = OnboardingItem.values().size,
@@ -38,10 +42,18 @@ fun OnboardingScreen(
                 }
             },
             onLoginClicked = {
-
+                viewModel.setFirstTimeState(
+                    false,
+                    onFinished = {
+                        navController.navigate(route = NavRoute.Login.name){
+                            popUpTo(NavRoute.Onboard.name){
+                                inclusive = true
+                            }
+                        }
+                    })
             },
             onRegisterClicked = {
-
+                /*TODO Later*/
             },
             onSkipClicked = {
                 coroutineScope.launch {

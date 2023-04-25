@@ -8,4 +8,11 @@ class Repository @Inject constructor(
     private val remoteSource: RemoteSource,
     private val datastoreSource: DatastoreSource
 ) {
+    suspend fun setFirstTimeState(firstTime:Boolean) = datastoreSource.setFirstTimeState(firstTime)
+
+    fun getFirstTimeState() = datastoreSource.getFirstTimeState()
+
+    suspend fun setToken(token:String) = datastoreSource.setToken(token)
+
+    fun getToken() = datastoreSource.getToken()
 }

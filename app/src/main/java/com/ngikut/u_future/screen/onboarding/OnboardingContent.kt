@@ -84,13 +84,13 @@ fun OnboardingContent(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(max = bottomSectionHeight.dp)
                         .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
                         .background(AppColor.grey50)
                 ) {
                     Column(
                         modifier = Modifier
-                            .fillMaxSize()
+                            .fillMaxWidth()
+                            .heightIn(min = bottomSectionHeight.dp)
                             .padding(32.dp),
                         verticalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -102,6 +102,24 @@ fun OnboardingContent(
                                     style = AppType.subheading1,
                                     color = AppColor.grey600
                                 )
+                            } else {
+                                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                                    AppButton(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        onClick = onLoginClicked,
+                                        text = "Masuk dengan akun siswa"
+                                    )
+                                    AppButton(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        onClick = onRegisterClicked,
+                                        text = "Daftar akun personal",
+                                        textColor = AppColor.primary400,
+                                        backgroundColor = AppColor.grey50,
+                                        borderWidth = 1.dp,
+                                        borderColor = AppColor.primary400,
+                                        rippleColor = AppColor.grey800
+                                    )
+                                }
                             }
                         }
 
@@ -120,7 +138,7 @@ fun OnboardingContent(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
-                                if(!isFirst){
+                                if (!isFirst) {
                                     AppTextButton(onClick = onBackClicked) {
                                         AppText(text = "Back", style = AppType.h4)
                                     }

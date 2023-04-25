@@ -32,7 +32,7 @@ fun AppButton(
     onClick: () -> Unit,
     backgroundColor: Color = AppColor.primary400,
     disabledBackgroundColor: Color = AppColor.grey400,
-    rippleColor: Color = Color.White,
+    rippleColor: Color = AppColor.grey800,
     enabled: Boolean = true,
     borderWidth: Dp = 0.dp,
     borderColor: Color = Color.Unspecified,
@@ -85,7 +85,7 @@ fun AppButton(
     onClick: () -> Unit,
     backgroundColor: Color = AppColor.primary400,
     disabledBackgroundColor: Color = AppColor.grey400,
-    rippleColor: Color = Color.White,
+    rippleColor: Color = AppColor.grey800,
     enabled: Boolean = true,
     borderWidth: Dp = 0.dp,
     borderColor: Color = Color.Unspecified,
@@ -137,7 +137,7 @@ fun AppButton(
 fun AppTextButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    rippleColor: Color = AppColor.grey900,
+    rippleColor: Color = AppColor.grey800,
     content: @Composable () -> Unit
 ) {
     Box(

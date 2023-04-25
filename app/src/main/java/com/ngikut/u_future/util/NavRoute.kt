@@ -4,5 +4,8 @@ enum class NavRoute {
     Home,
     UBot,
     Profile,
-    Onboard
+    Onboard,
+    Splash,
+    Login,
+    Register
 }
