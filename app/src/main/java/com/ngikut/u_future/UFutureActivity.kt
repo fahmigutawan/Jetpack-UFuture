@@ -22,6 +22,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.ngikut.u_future.component.AppBottomBar
+import com.ngikut.u_future.screen.login.LoginScreen
 import com.ngikut.u_future.screen.onboarding.OnboardingScreen
 import com.ngikut.u_future.screen.splash.SplashScreen
 import com.ngikut.u_future.ui.theme.AppColor
@@ -103,13 +104,11 @@ class UFutureActivity : ComponentActivity() {
                         }
 
                         composable(NavRoute.Onboard.name) {
-                            OnboardingScreen(
-                                navController = navController
-                            )
+                            OnboardingScreen(navController = navController)
                         }
 
                         composable(NavRoute.Login.name){
-
+                            LoginScreen(navController = navController)
                         }
 
                         composable(NavRoute.Register.name){
