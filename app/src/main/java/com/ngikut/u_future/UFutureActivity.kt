@@ -9,10 +9,8 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.FabPosition
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
+import androidx.compose.material.*
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
@@ -22,6 +20,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.ngikut.u_future.component.AppBottomBar
+import com.ngikut.u_future.component.AppSnackbar
 import com.ngikut.u_future.screen.login.LoginScreen
 import com.ngikut.u_future.screen.onboarding.OnboardingScreen
 import com.ngikut.u_future.screen.splash.SplashScreen
@@ -39,6 +38,56 @@ class UFutureActivity : ComponentActivity() {
         setContent {
             val rootViewmodel by viewModels<RootViewmodel>()
             val navController = rememberNavController()
+            val scaffoldState = rememberScaffoldState()
+            val showSnackbar: (message: String) -> Unit = { message ->
+                rootViewmodel.snackbarMessage.value = message
+                rootViewmodel.snackbarActive.value = true
+            }
+            val showSnackbarWithAction: (
+                message: String,
+                actionLabel: String,
+                action: (SnackbarData?) -> Unit,
+            ) -> Unit = { message, actionLabel, action ->
+                rootViewmodel.snackbarActionLabel.value = actionLabel
+                rootViewmodel.snackbarAction.value = action
+                rootViewmodel.snackbarMessage.value = message
+                rootViewmodel.snackbarActive.value = true
+            }
+            if (rootViewmodel.snackbarActive.value) {
+                LaunchedEffect(key1 = true) {
+                    val resetSnackbarState = {
+                        rootViewmodel.snackbarAction.value = {}
+                        rootViewmodel.snackbarActionLabel.value = "Tutup"
+                        rootViewmodel.snackbarMessage.value = ""
+                        rootViewmodel.snackbarActive.value = false
+                    }
+                    val snackbarData = scaffoldState.snackbarHostState.showSnackbar(
+                        message = rootViewmodel.snackbarMessage.value,
+                        actionLabel = rootViewmodel.snackbarActionLabel.value,
+                        duration = SnackbarDuration.Short
+                    )
+
+                    when (snackbarData) {
+                        SnackbarResult.Dismissed -> {
+                            resetSnackbarState()
+                        }
+
+                        SnackbarResult.ActionPerformed -> {
+                            when (rootViewmodel.snackbarActionLabel.value) {
+                                "Tutup" -> {
+                                    scaffoldState.snackbarHostState.currentSnackbarData?.performAction()
+                                    resetSnackbarState()
+                                }
+
+                                else -> {
+                                    rootViewmodel.snackbarAction.value(scaffoldState.snackbarHostState.currentSnackbarData)
+                                    resetSnackbarState()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
             navController.addOnDestinationChangedListener { _, destination, _ ->
                 rootViewmodel.currentRoute.value = destination.route ?: ""
@@ -52,6 +101,10 @@ class UFutureActivity : ComponentActivity() {
             }
 
             Scaffold(
+                scaffoldState = scaffoldState,
+                snackbarHost = {
+                    AppSnackbar(hostState = it)
+                },
                 bottomBar = {
                     if (rootViewmodel.showBottombar.value) {
                         AppBottomBar(
@@ -87,10 +140,10 @@ class UFutureActivity : ComponentActivity() {
                         navController = navController,
                         startDestination = NavRoute.Splash.name
                     ) {
-                        composable(NavRoute.Splash.name){
+                        composable(NavRoute.Splash.name) {
                             SplashScreen(navController = navController)
                         }
-                        
+
                         composable(NavRoute.Home.name) {
 
                         }
@@ -107,11 +160,11 @@ class UFutureActivity : ComponentActivity() {
                             OnboardingScreen(navController = navController)
                         }
 
-                        composable(NavRoute.Login.name){
-                            LoginScreen(navController = navController)
+                        composable(NavRoute.Login.name) {
+                            LoginScreen(navController = navController, showSnackbar = showSnackbar)
                         }
 
-                        composable(NavRoute.Register.name){
+                        composable(NavRoute.Register.name) {
 
                         }
                     }

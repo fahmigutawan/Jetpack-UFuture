@@ -122,8 +122,3 @@ fun AppTextInputNormal(
         }
     }
 }
-
-enum class TextInputLabelType{
-    INSIDE,
-    OUTSIDE
-}

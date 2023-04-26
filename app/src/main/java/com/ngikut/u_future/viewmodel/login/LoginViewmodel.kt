@@ -12,4 +12,5 @@ class LoginViewmodel @Inject constructor(
 ):ViewModel() {
     val emailState = mutableStateOf("")
     val passwordState = mutableStateOf("")
+    val showPassword = mutableStateOf(false)
 }
