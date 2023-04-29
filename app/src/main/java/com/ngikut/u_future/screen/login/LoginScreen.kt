@@ -106,7 +106,7 @@ fun LoginScreen(
                           if(viewModel.passwordState.value.isEmpty() || viewModel.emailState.value.isEmpty()){
                               showSnackbar("Isi semua data dengan benar")
                           }else{
-
+                              /*TODO Connect to API later*/
                           }
                 },
                 text = "Login"
