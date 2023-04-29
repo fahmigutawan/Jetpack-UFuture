@@ -23,6 +23,7 @@ import com.ngikut.u_future.component.AppBottomBar
 import com.ngikut.u_future.component.AppSnackbar
 import com.ngikut.u_future.screen.login.LoginScreen
 import com.ngikut.u_future.screen.onboarding.OnboardingScreen
+import com.ngikut.u_future.screen.penjurusan.PenjurusanLandingScreen
 import com.ngikut.u_future.screen.splash.SplashScreen
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.util.NavRoute
@@ -166,6 +167,12 @@ class UFutureActivity : ComponentActivity() {
 
                         composable(NavRoute.Register.name) {
 
+                        }
+
+                        composable(NavRoute.PenjurusanLanding.name){
+                            PenjurusanLandingScreen(
+                                navController = navController
+                            )
                         }
                     }
                 }

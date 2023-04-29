@@ -7,5 +7,7 @@ enum class NavRoute {
     Onboard,
     Splash,
     Login,
-    Register
+    Register,
+    PenjurusanLanding,
+    Penjurusan
 }

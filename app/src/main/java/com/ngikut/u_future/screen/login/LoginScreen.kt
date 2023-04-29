@@ -27,6 +27,7 @@ import com.ngikut.u_future.component.AppTextButton
 import com.ngikut.u_future.component.AppTextInputNormal
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.ui.theme.AppType
+import com.ngikut.u_future.util.NavRoute
 import com.ngikut.u_future.viewmodel.login.LoginViewmodel
 
 @Composable
@@ -107,6 +108,7 @@ fun LoginScreen(
                               showSnackbar("Isi semua data dengan benar")
                           }else{
                               /*TODO Connect to API later*/
+                              navController.navigate(route = NavRoute.PenjurusanLanding.name)
                           }
                 },
                 text = "Login"
