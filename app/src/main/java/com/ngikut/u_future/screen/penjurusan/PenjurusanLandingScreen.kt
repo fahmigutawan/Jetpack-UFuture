@@ -24,6 +24,7 @@ import com.ngikut.u_future.component.AppText
 import com.ngikut.u_future.component.AppTextButton
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.ui.theme.AppType
+import com.ngikut.u_future.util.NavRoute
 import com.ngikut.u_future.viewmodel.penjurusan.PenjurusanLandingViewmodel
 import kotlinx.coroutines.launch
 
@@ -170,7 +171,10 @@ fun PenjurusanLandingScreen(
                     },
                     text = "Ambil tes sekarang"
                 )
-                AppTextButton(onClick = { /*TODO*/ }) {
+                AppTextButton(onClick = {
+                    navController.navigate(NavRoute.Home.name)
+                    /*TODO handle this later*/
+                }) {
                     AppText(text = "Lewati", style = AppType.body2, color = AppColor.grey500)
                 }
             }

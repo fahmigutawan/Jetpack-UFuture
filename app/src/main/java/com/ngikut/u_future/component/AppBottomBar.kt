@@ -1,5 +1,6 @@
 package com.ngikut.u_future.component
 
+import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Row
@@ -21,8 +22,8 @@ import com.ngikut.u_future.util.NavRoute
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun AppBottomBar(
-    currentRoute:String,
-    onClick:(route:String) -> Unit
+    currentRoute: String,
+    onClick: (route: String) -> Unit
 ) {
     BottomAppBar(
         backgroundColor = AppColor.grey50,
@@ -33,46 +34,30 @@ fun AppBottomBar(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            IconButton(onClick = { onClick(AppBottomBarItem.values()[0].route) }) {
-                AnimatedContent(targetState = AppBottomBarItem.values()[0].route) {
-                    when(it){
-                        currentRoute -> Icon(
-                            painter = rememberAsyncImagePainter(
-                                model = AppBottomBarItem.values()[0].selectedIconId
-                            ),
-                            contentDescription = "",
-                            tint = Color.Unspecified
-                        )
-                        else -> Icon(
-                            painter = rememberAsyncImagePainter(
-                                model = AppBottomBarItem.values()[0].unselectedIconId
-                            ),
-                            contentDescription = "",
-                            tint = Color.Unspecified
-                        )
-                    }
+            repeat(AppBottomBarItem.values().size) { index ->
+                if (index == (AppBottomBarItem.values().size / 2)) {
+                    Box(modifier = Modifier)
                 }
-            }
 
-            Box(modifier = Modifier)
+                IconButton(onClick = { onClick(AppBottomBarItem.values()[index].route) }) {
+                    AnimatedContent(targetState = AppBottomBarItem.values()[index].route) {
+                        when (it) {
+                            currentRoute -> Icon(
+                                painter = rememberAsyncImagePainter(
+                                    model = AppBottomBarItem.values()[index].selectedIconId
+                                ),
+                                contentDescription = "",
+                                tint = Color.Unspecified
+                            )
 
-            IconButton(onClick = { onClick(AppBottomBarItem.values()[1].route) }) {
-                AnimatedContent(targetState = AppBottomBarItem.values()[1].route) {
-                    when(it){
-                        currentRoute -> Icon(
-                            painter = rememberAsyncImagePainter(
-                                model = AppBottomBarItem.values()[1].selectedIconId
-                            ),
-                            contentDescription = "",
-                            tint = Color.Unspecified
-                        )
-                        else -> Icon(
-                            painter = rememberAsyncImagePainter(
-                                model = AppBottomBarItem.values()[1].unselectedIconId
-                            ),
-                            contentDescription = "",
-                            tint = Color.Unspecified
-                        )
+                            else -> Icon(
+                                painter = rememberAsyncImagePainter(
+                                    model = AppBottomBarItem.values()[index].unselectedIconId
+                                ),
+                                contentDescription = "",
+                                tint = Color.Unspecified
+                            )
+                        }
                     }
                 }
             }
@@ -81,14 +66,24 @@ fun AppBottomBar(
 }
 
 enum class AppBottomBarItem(
-    val selectedIconId:Int,
-    val unselectedIconId:Int,
-    val route:String
-){
+    val selectedIconId: Int,
+    val unselectedIconId: Int,
+    val route: String
+) {
     Home(
         R.drawable.bottombar_home_selected,
         R.drawable.bottombar_home_unselected,
         NavRoute.Home.name
+    ),
+    Compare(
+        R.drawable.bottombar_komparasi_selected,
+        R.drawable.bottombar_komparasi_unselected,
+        NavRoute.Comparation.name
+    ),
+    Favorite(
+        R.drawable.bottombar_favorite_selected,
+        R.drawable.bottombar_favorite_unselected,
+        NavRoute.Favorite.name
     ),
     Profile(
         R.drawable.bottombar_profile_selected,

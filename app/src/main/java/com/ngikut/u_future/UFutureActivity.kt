@@ -95,7 +95,9 @@ class UFutureActivity : ComponentActivity() {
 
                 rootViewmodel.showBottombar.value = when (destination.route ?: "") {
                     NavRoute.Home.name -> true
+                    NavRoute.Comparation.name -> true
                     NavRoute.UBot.name -> true
+                    NavRoute.Favorite.name -> true
                     NavRoute.Profile.name -> true
                     else -> false
                 }
@@ -149,7 +151,15 @@ class UFutureActivity : ComponentActivity() {
 
                         }
 
+                        composable(NavRoute.Comparation.name){
+
+                        }
+
                         composable(NavRoute.UBot.name) {
+
+                        }
+
+                        composable(NavRoute.Favorite.name){
 
                         }
 
