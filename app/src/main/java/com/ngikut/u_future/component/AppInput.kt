@@ -35,7 +35,7 @@ fun AppTextInputNormal(
     textStyle: TextStyle = AppType.subheading3,
     value: String,
     onValueChange: (String) -> Unit,
-    shape: Shape = RoundedCornerShape(4.dp),
+    shape: Shape = RoundedCornerShape(10.dp),
     enabled: Boolean = true,
     readOnly: Boolean = false,
     leadingIcon: @Composable (() -> Unit)? = null,

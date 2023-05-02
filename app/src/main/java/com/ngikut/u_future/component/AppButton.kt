@@ -36,7 +36,7 @@ fun AppButton(
     enabled: Boolean = true,
     borderWidth: Dp = 0.dp,
     borderColor: Color = Color.Unspecified,
-    shape: Shape = RoundedCornerShape(8.dp),
+    shape: Shape = RoundedCornerShape(10.dp),
     contentAlignment: Alignment = Alignment.Center,
     content: @Composable () -> Unit
 ) {
@@ -89,7 +89,7 @@ fun AppButton(
     enabled: Boolean = true,
     borderWidth: Dp = 0.dp,
     borderColor: Color = Color.Unspecified,
-    shape: Shape = RoundedCornerShape(8.dp),
+    shape: Shape = RoundedCornerShape(10.dp),
     contentAlignment: Alignment = Alignment.Center,
     text: String,
     textColor: Color = AppColor.grey50

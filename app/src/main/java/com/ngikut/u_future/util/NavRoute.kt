@@ -11,5 +11,8 @@ enum class NavRoute {
     Login,
     Register,
     PenjurusanLanding,
-    Penjurusan
+    Penjurusan,
+    InfoJurusan,
+    InfoKampus,
+    InfoBeasiswa
 }

@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -22,6 +23,7 @@ import com.ngikut.u_future.component.AppBottomSheetScaffold
 import com.ngikut.u_future.component.AppButton
 import com.ngikut.u_future.component.AppText
 import com.ngikut.u_future.component.AppTextButton
+import com.ngikut.u_future.component.AppTextFromHtml
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.ui.theme.AppType
 import com.ngikut.u_future.util.NavRoute
@@ -58,7 +60,10 @@ fun PenjurusanLandingScreen(
                     .fillMaxWidth()
                     .background(AppColor.grey50)
             ) {
-                Column(modifier = Modifier.padding(32.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                Column(
+                    modifier = Modifier.padding(32.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
                     Column {
                         AppText(
                             modifier = Modifier.fillMaxWidth(),
@@ -88,15 +93,19 @@ fun PenjurusanLandingScreen(
                             text = "Instruksi",
                             style = AppType.h3,
                         )
-                        /*TODO some instructions here*/
-                        AppText(
-                            text = "...",
-                            style = AppType.body2,
+                        AppTextFromHtml(
+                            text = "<ol>" +
+                                    "    <li>Bacalah setiap pernyataan yang diberikan dengan baik dan teliti.</li>" +
+                                    "    <li>Jawablah setiap pertanyaan dengan jujur berdasarkan pikiran, perasaan, dan pengalaman kamu sendiri.</li>" +
+                                    "    <li>Tap atau swipe untuk memilih jawaban yang sesuai.</li>" +
+                                    "</ol>",
+                            fontId = R.font.sf_display_regular,
+                            fontSize = 14.sp,
                             color = AppColor.grey500
                         )
                     }
 
-                    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center){
+                    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                         AppButton(onClick = { /*TODO*/ }, text = "Mulai Tes")
                     }
                 }

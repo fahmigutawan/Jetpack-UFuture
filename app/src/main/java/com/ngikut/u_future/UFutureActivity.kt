@@ -21,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.ngikut.u_future.component.AppBottomBar
 import com.ngikut.u_future.component.AppSnackbar
+import com.ngikut.u_future.screen.home.HomeScreen
 import com.ngikut.u_future.screen.login.LoginScreen
 import com.ngikut.u_future.screen.onboarding.OnboardingScreen
 import com.ngikut.u_future.screen.penjurusan.PenjurusanLandingScreen
@@ -148,7 +149,7 @@ class UFutureActivity : ComponentActivity() {
                         }
 
                         composable(NavRoute.Home.name) {
-
+                            HomeScreen(navController = navController)
                         }
 
                         composable(NavRoute.Comparation.name){
@@ -183,6 +184,18 @@ class UFutureActivity : ComponentActivity() {
                             PenjurusanLandingScreen(
                                 navController = navController
                             )
+                        }
+
+                        composable(NavRoute.InfoJurusan.name){
+
+                        }
+
+                        composable(NavRoute.InfoKampus.name){
+
+                        }
+
+                        composable(NavRoute.InfoBeasiswa.name){
+
                         }
                     }
                 }
