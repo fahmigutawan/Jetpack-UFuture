@@ -26,6 +26,7 @@ import com.ngikut.u_future.screen.login.LoginScreen
 import com.ngikut.u_future.screen.onboarding.OnboardingScreen
 import com.ngikut.u_future.screen.penjurusan.PenjurusanLandingScreen
 import com.ngikut.u_future.screen.splash.SplashScreen
+import com.ngikut.u_future.screen.ubot.UbotScreen
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.util.NavRoute
 import com.ngikut.u_future.viewmodel.RootViewmodel
@@ -97,7 +98,6 @@ class UFutureActivity : ComponentActivity() {
                 rootViewmodel.showBottombar.value = when (destination.route ?: "") {
                     NavRoute.Home.name -> true
                     NavRoute.Comparation.name -> true
-                    NavRoute.UBot.name -> true
                     NavRoute.Favorite.name -> true
                     NavRoute.Profile.name -> true
                     else -> false
@@ -136,67 +136,65 @@ class UFutureActivity : ComponentActivity() {
                 isFloatingActionButtonDocked = true,
                 floatingActionButtonPosition = FabPosition.Center
             ) {
-                Box(
+                NavHost(
                     modifier = Modifier
                         .fillMaxSize()
+                        .padding(bottom = it.calculateBottomPadding()),
+                    navController = navController,
+                    startDestination = NavRoute.Splash.name
                 ) {
-                    NavHost(
-                        navController = navController,
-                        startDestination = NavRoute.Splash.name
-                    ) {
-                        composable(NavRoute.Splash.name) {
-                            SplashScreen(navController = navController)
-                        }
+                    composable(NavRoute.Splash.name) {
+                        SplashScreen(navController = navController)
+                    }
 
-                        composable(NavRoute.Home.name) {
-                            HomeScreen(navController = navController)
-                        }
+                    composable(NavRoute.Home.name) {
+                        HomeScreen(navController = navController)
+                    }
 
-                        composable(NavRoute.Comparation.name){
+                    composable(NavRoute.Comparation.name) {
 
-                        }
+                    }
 
-                        composable(NavRoute.UBot.name) {
+                    composable(NavRoute.UBot.name) {
+                        UbotScreen(navController = navController)
+                    }
 
-                        }
+                    composable(NavRoute.Favorite.name) {
 
-                        composable(NavRoute.Favorite.name){
+                    }
 
-                        }
+                    composable(NavRoute.Profile.name) {
 
-                        composable(NavRoute.Profile.name) {
+                    }
 
-                        }
+                    composable(NavRoute.Onboard.name) {
+                        OnboardingScreen(navController = navController)
+                    }
 
-                        composable(NavRoute.Onboard.name) {
-                            OnboardingScreen(navController = navController)
-                        }
+                    composable(NavRoute.Login.name) {
+                        LoginScreen(navController = navController, showSnackbar = showSnackbar)
+                    }
 
-                        composable(NavRoute.Login.name) {
-                            LoginScreen(navController = navController, showSnackbar = showSnackbar)
-                        }
+                    composable(NavRoute.Register.name) {
 
-                        composable(NavRoute.Register.name) {
+                    }
 
-                        }
+                    composable(NavRoute.PenjurusanLanding.name) {
+                        PenjurusanLandingScreen(
+                            navController = navController
+                        )
+                    }
 
-                        composable(NavRoute.PenjurusanLanding.name){
-                            PenjurusanLandingScreen(
-                                navController = navController
-                            )
-                        }
+                    composable(NavRoute.InfoJurusan.name) {
 
-                        composable(NavRoute.InfoJurusan.name){
+                    }
 
-                        }
+                    composable(NavRoute.InfoKampus.name) {
 
-                        composable(NavRoute.InfoKampus.name){
+                    }
 
-                        }
+                    composable(NavRoute.InfoBeasiswa.name) {
 
-                        composable(NavRoute.InfoBeasiswa.name){
-
-                        }
                     }
                 }
             }

@@ -27,7 +27,7 @@ fun AppBottomBar(
 ) {
     BottomAppBar(
         backgroundColor = AppColor.grey50,
-        elevation = 16.dp
+        elevation = 32.dp
     ) {
         Row(
             modifier = Modifier.fillMaxSize(),
