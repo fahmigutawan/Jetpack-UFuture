@@ -1,20 +1,19 @@
 package com.ngikut.u_future
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -35,12 +34,15 @@ import dagger.hilt.android.HiltAndroidApp
 
 @AndroidEntryPoint
 class UFutureActivity : ComponentActivity() {
+    private lateinit var navController:NavHostController
+    private lateinit var rootViewmodel:RootViewmodel
+
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val rootViewmodel by viewModels<RootViewmodel>()
-            val navController = rememberNavController()
+            navController = rememberNavController()
+            rootViewmodel = viewModel()
             val scaffoldState = rememberScaffoldState()
             val showSnackbar: (message: String) -> Unit = { message ->
                 rootViewmodel.snackbarMessage.value = message
@@ -199,6 +201,11 @@ class UFutureActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    fun navigateAndCleanBackStack(route:String){
+        navController.backQueue.clear()
+        navController.navigate(route = route)
     }
 }
 

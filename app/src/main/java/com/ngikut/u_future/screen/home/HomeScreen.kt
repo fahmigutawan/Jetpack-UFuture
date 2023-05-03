@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -23,7 +22,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.material.icons.filled.ArrowRightAlt
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.SwipeRight
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -35,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -42,6 +41,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.ngikut.u_future.R
+import com.ngikut.u_future.UFutureActivity
 import com.ngikut.u_future.component.AppButton
 import com.ngikut.u_future.component.AppText
 import com.ngikut.u_future.component.AppTextButton
@@ -154,9 +154,14 @@ fun HomeScreen(navController: NavController) {
                             contentDescription = ""
                         )
                         Column {
+                            val context = LocalContext.current
+
                             AppText(text = "Tes Penjurusan", style = AppType.h3)
                             AppText(text = "Temukan jurusan yang sesuai", style = AppType.body2)
-                            AppButton(onClick = { /*TODO*/ }) {
+                            AppButton(onClick = {
+                                val act = context as UFutureActivity
+                                act.navigateAndCleanBackStack(NavRoute.Login.name)
+                            }) {
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.spacedBy(8.dp)
