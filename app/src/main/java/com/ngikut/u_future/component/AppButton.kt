@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.ngikut.u_future.ui.theme.AppColor
@@ -40,6 +41,7 @@ fun AppButton(
     contentAlignment: Alignment = Alignment.Center,
     content: @Composable () -> Unit
 ) {
+    val focus = LocalFocusManager.current
     val contentHeight = remember { mutableStateOf(0.dp) }
     val contentWidth = remember { mutableStateOf(0.dp) }
     val localDensity = LocalDensity.current
@@ -73,7 +75,10 @@ fun AppButton(
                     enabled = enabled,
                     interactionSource = remember { MutableInteractionSource() },
                     indication = rememberRipple(color = rippleColor),
-                    onClick = onClick
+                    onClick = {
+                        focus.clearFocus(true)
+                        onClick()
+                    }
                 )
         )
     }
@@ -94,6 +99,7 @@ fun AppButton(
     text: String,
     textColor: Color = AppColor.grey50
 ) {
+    val focus = LocalFocusManager.current
     val contentHeight = remember { mutableStateOf(0.dp) }
     val contentWidth = remember { mutableStateOf(0.dp) }
     val localDensity = LocalDensity.current
@@ -127,7 +133,10 @@ fun AppButton(
                     enabled = enabled,
                     interactionSource = remember { MutableInteractionSource() },
                     indication = rememberRipple(color = rippleColor),
-                    onClick = onClick
+                    onClick = {
+                        focus.clearFocus(true)
+                        onClick()
+                    }
                 )
         )
     }
@@ -140,12 +149,17 @@ fun AppTextButton(
     rippleColor: Color = AppColor.grey800,
     content: @Composable () -> Unit
 ) {
+    val focus = LocalFocusManager.current
+
     Box(
         modifier = modifier
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = rippleColor),
-                onClick = onClick
+                onClick = {
+                    focus.clearFocus(true)
+                    onClick()
+                }
             )
             .padding(8.dp),
         contentAlignment = Alignment.Center
