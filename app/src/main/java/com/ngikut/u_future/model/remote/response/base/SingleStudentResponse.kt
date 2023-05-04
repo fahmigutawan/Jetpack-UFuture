@@ -1,8 +1,5 @@
 package com.ngikut.u_future.model.remote.response.base
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 data class SingleStudentResponse(
     val id: String,
     val name: String,
