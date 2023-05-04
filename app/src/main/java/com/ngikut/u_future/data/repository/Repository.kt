@@ -24,6 +24,7 @@ class Repository @Inject constructor(
     fun getToken() = datastoreSource.getToken()
 
     fun login(email:String, password:String): Flow<Resource<LoginResponse>> = flow{
+        emit(Resource.Loading())
         when(val res = remoteSource.login(LoginRequest(email, password)).first()){
             ApiResponse.Empty -> {
                 emit(Resource.Error(""))

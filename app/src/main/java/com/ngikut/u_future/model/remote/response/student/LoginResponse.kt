@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LoginResponse(
     val meta: MetaResponse,
-    val data: LoginResponseData
+    val data: LoginResponseData? = null
 )
 
 @Serializable

@@ -12,6 +12,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -25,18 +27,39 @@ import com.ngikut.u_future.R
 import com.ngikut.u_future.component.AppButton
 import com.ngikut.u_future.component.AppTextButton
 import com.ngikut.u_future.component.AppTextInputNormal
+import com.ngikut.u_future.data.remote.Resource
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.ui.theme.AppType
 import com.ngikut.u_future.util.NavRoute
 import com.ngikut.u_future.viewmodel.login.LoginViewmodel
+import kotlinx.coroutines.delay
 
 @Composable
 fun LoginScreen(
     navController: NavController,
-    showSnackbar:(String) -> Unit
+    showSnackbar: (String) -> Unit
 ) {
     val viewModel = hiltViewModel<LoginViewmodel>()
     val iconWidth = LocalConfiguration.current.screenWidthDp / 2
+    val loginState = viewModel.loginState.collectAsState()
+
+    LaunchedEffect(key1 = loginState.value) {
+        when (loginState.value) {
+            is Resource.Error -> {
+                showSnackbar(loginState.value.message.toString())
+            }
+
+            is Resource.Loading -> {/*TODO*/ }
+
+            is Resource.Success -> {
+                loginState.value.data?.let {
+                    viewModel.saveToken(it.data?.token ?: "")
+                    delay(2000)
+                    navController.navigate(route = NavRoute.Home.name)
+                }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -104,12 +127,11 @@ fun LoginScreen(
             AppButton(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                          if(viewModel.passwordState.value.isEmpty() || viewModel.emailState.value.isEmpty()){
-                              showSnackbar("Isi semua data dengan benar")
-                          }else{
-                              /*TODO Connect to API later*/
-                              navController.navigate(route = NavRoute.PenjurusanLanding.name)
-                          }
+                    if (viewModel.passwordState.value.isEmpty() || viewModel.emailState.value.isEmpty()) {
+                        showSnackbar("Isi semua data dengan benar")
+                    } else {
+                        viewModel.login()
+                    }
                 },
                 text = "Login"
             )

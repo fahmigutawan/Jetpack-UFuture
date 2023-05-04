@@ -9,6 +9,7 @@ data class RegisterResponse(
     val data: RegisterResponseData
 )
 
+@Serializable
 data class RegisterResponseData(
     val token: String
 )
