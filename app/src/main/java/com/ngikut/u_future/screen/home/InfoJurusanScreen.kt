@@ -1,44 +1,120 @@
 package com.ngikut.u_future.screen.home
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.NavigateNext
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.ngikut.u_future.R
 import com.ngikut.u_future.component.AppText
+import com.ngikut.u_future.component.AppTextButton
 import com.ngikut.u_future.component.AppTextInputNormal
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.ui.theme.AppType
 import com.ngikut.u_future.viewmodel.home.InfoJurusanViewmodel
+import kotlin.math.roundToInt
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun InfoJurusanScreen(
     navController: NavController
 ) {
     val viewModel = hiltViewModel<InfoJurusanViewmodel>()
     val localFocus = LocalFocusManager.current
+    val recommendationItemWidth = LocalConfiguration.current.screenWidthDp * 7 / 10
+    val fakultasItemWidth = LocalConfiguration.current.screenWidthDp / 6
+    val fakultasItemMinHeight = fakultasItemWidth * 3 / 2
 
-    LazyColumn(
+    val listOfDummyRecom = listOf(
+        DummyAiInfoJurusanRecomendation(
+            prodiName = "Teknik Informatika",
+            arah = "Saintek",
+            tag = "Komputer, Jaringan",
+            percent = 75.0
+        ),
+        DummyAiInfoJurusanRecomendation(
+            prodiName = "Teknologi Informasi",
+            arah = "Saintek",
+            tag = "Komputer, Jaringan",
+            percent = 39.0
+        ),
+        DummyAiInfoJurusanRecomendation(
+            prodiName = "Sistem Informasi",
+            arah = "Saintek",
+            tag = "Komputer, Jaringan",
+            percent = 66.0
+        ), DummyAiInfoJurusanRecomendation(
+            prodiName = "Pendidikan Teknologi Informasi",
+            arah = "Saintek",
+            tag = "Komputer, Jaringan",
+            percent = 72.0
+        ), DummyAiInfoJurusanRecomendation(
+            prodiName = "Teknik Komputer",
+            arah = "Saintek",
+            tag = "Komputer, Jaringan",
+            percent = 74.0
+        )
+    )
+    val listOfDummyFakultas = listOf(
+        DummyFakultasInfoJurusan(
+            icon = R.drawable.infojurusan_fak_komputer_icon,
+            text = "Komputer & Teknologi"
+        ),
+        DummyFakultasInfoJurusan(
+            icon = R.drawable.infojurusan_fak_ekonomibisnis_icon,
+            text = "Ekonomi & Bisnis"
+        ),
+        DummyFakultasInfoJurusan(
+            icon = R.drawable.infojurusan_fak_sosial_icon,
+            text = "Sosial & Humaniora"
+        ),
+        DummyFakultasInfoJurusan(
+            icon = R.drawable.infojurusan_fak_mipa_icon,
+            text = "Matematika & IPA"
+        ),
+        DummyFakultasInfoJurusan(
+            icon = R.drawable.infojurusan_fak_kesehatan_icon,
+            text = "Kedokteran & Kesehatan"
+        ),
+        DummyFakultasInfoJurusan(
+            icon = R.drawable.infojurusan_fak_teknik_icon,
+            text = "Teknik"
+        )
+    )
+
+    LazyVerticalGrid(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColor.grey50)
+            .background(AppColor.grey50),
+        columns = GridCells.Fixed(3)
     ) {
-        item {
+        item(
+            span = { GridItemSpan(3) }
+        ) {
             Box(modifier = Modifier.background(AppColor.primary400)) {
                 Box(
                     modifier = Modifier
@@ -101,5 +177,241 @@ fun InfoJurusanScreen(
                 }
             }
         }
+
+        item(
+            span = {
+                GridItemSpan(3)
+            }
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(AppColor.primary400)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(topEnd = 25.dp, topStart = 25.dp))
+                        .background(AppColor.primary600)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 10.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .background(AppColor.primary50)
+                        ) {
+                            Icon(
+                                modifier = Modifier.padding(8.dp),
+                                painter = rememberAsyncImagePainter(model = R.drawable.bottombar_ubot),
+                                contentDescription = "",
+                                tint = AppColor.primary400
+                            )
+                        }
+
+                        AppText(
+                            text = "Berikut adalah rekomendasi untukmu!",
+                            style = AppType.subheading2,
+                            color = AppColor.grey50
+                        )
+                    }
+                }
+            }
+        }
+
+        item(
+            span = { GridItemSpan(3) }
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(AppColor.primary600)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
+                        .background(AppColor.grey50)
+                ) {
+                    Column {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 20.dp, start = 20.dp, end = 20.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            AppText(text = "Rekomendasi oleh AI", style = AppType.h3)
+                            AppTextButton(onClick = { /*TODO*/ }) {
+                                AppText(
+                                    text = "Lihat semua",
+                                    style = AppType.body2,
+                                    color = AppColor.grey600
+                                )
+                            }
+                        }
+
+                        Row(
+                            modifier = Modifier.horizontalScroll(state = rememberScrollState()),
+                            horizontalArrangement = Arrangement.spacedBy(20.dp)
+                        ) {
+                            Spacer(modifier = Modifier)
+                            listOfDummyRecom.forEach {
+                                Box(
+                                    modifier = Modifier
+                                        .width(recommendationItemWidth.dp)
+                                        .clip(RoundedCornerShape(16.dp))
+                                        .background(AppColor.grey50)
+                                        .border(
+                                            width = 1.dp,
+                                            color = AppColor.grey600,
+                                            shape = RoundedCornerShape(16.dp)
+                                        )
+                                ) {
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(12.dp),
+                                        horizontalArrangement = Arrangement.SpaceBetween
+                                    ) {
+                                        Column {
+                                            AppText(
+                                                text = it.prodiName,
+                                                style = AppType.subheading2
+                                            )
+                                            Box(
+                                                modifier = Modifier
+                                                    .clip(RoundedCornerShape(Int.MAX_VALUE.dp))
+                                                    .background(AppColor.primary50)
+                                            ) {
+                                                AppText(
+                                                    modifier = Modifier.padding(8.dp),
+                                                    text = it.arah,
+                                                    style = AppType.body2,
+                                                    color = AppColor.primary400
+                                                )
+                                            }
+                                            AppText(
+                                                text = it.tag,
+                                                style = AppType.subheading3,
+                                                color = AppColor.grey600
+                                            )
+                                            Row(
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                            ) {
+                                                CircularProgressIndicator(
+                                                    progress = (it.percent / 100).toFloat(),
+                                                    color = AppColor.primary400,
+                                                    modifier = Modifier.size(24.dp),
+                                                    strokeWidth = 3.dp
+                                                )
+                                                AppText(
+                                                    text = "${it.percent.roundToInt()}% Match",
+                                                    style = AppType.subheading3
+                                                )
+                                            }
+                                        }
+
+                                        Box(
+                                            modifier = Modifier
+                                                .clip(CircleShape)
+                                                .background(AppColor.primary50)
+                                                .clickable(
+                                                    interactionSource = MutableInteractionSource(),
+                                                    indication = rememberRipple(
+                                                        bounded = true,
+                                                        color = AppColor.grey800
+                                                    ),
+                                                    onClick = {/*TODO*/ }
+                                                ),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Icon(
+                                                modifier = Modifier.padding(8.dp),
+                                                imageVector = Icons.Default.FavoriteBorder,
+                                                contentDescription = "",
+                                                tint = AppColor.grey500
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                            Spacer(modifier = Modifier)
+                        }
+                    }
+                }
+            }
+        }
+
+        item(
+            span = { GridItemSpan(3) }
+        ) {
+            AppText(
+                modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp),
+                text = "Fakultas",
+                style = AppType.h3
+            )
+        }
+
+        items(listOfDummyFakultas) { item ->
+            Box(
+                modifier = Modifier
+                    .width(fakultasItemWidth.dp)
+                    .heightIn(min = fakultasItemMinHeight.dp)
+                    .padding(12.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(AppColor.grey50)
+                    .border(
+                        color = AppColor.grey400,
+                        width = 1.dp,
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                    .clickable(
+                        interactionSource = MutableInteractionSource(),
+                        indication = rememberRipple(color = AppColor.grey800, bounded = true),
+                        onClick = {/*TODO*/ }
+                    )
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(12.dp)
+                        .fillMaxWidth()
+                        .heightIn(min = fakultasItemMinHeight.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        modifier = Modifier.size(42.dp),
+                        painter = rememberAsyncImagePainter(model = item.icon),
+                        contentDescription = "",
+                        tint = Color.Unspecified
+                    )
+
+                    AppText(
+                        text = item.text,
+                        style = AppType.subheading3,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        }
     }
 }
+
+data class DummyAiInfoJurusanRecomendation(
+    val prodiName: String,
+    val arah: String,
+    val tag: String,
+    val percent: Double
+)
+
+data class DummyFakultasInfoJurusan(
+    val icon: Int,
+    val text: String
+)
