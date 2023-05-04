@@ -55,7 +55,12 @@ fun LoginScreen(
                 loginState.value.data?.let {
                     viewModel.saveToken(it.data?.token ?: "")
                     delay(2000)
-                    navController.navigate(route = NavRoute.Home.name)
+                    /*TODO Should be checking if user have got penjurusan test or no before navigating. Handle this later hehe*/
+                    navController.navigate(route = NavRoute.Home.name){
+                        popUpTo(NavRoute.Login.name){
+                            inclusive = true
+                        }
+                    }
                 }
             }
         }
@@ -130,7 +135,13 @@ fun LoginScreen(
                     if (viewModel.passwordState.value.isEmpty() || viewModel.emailState.value.isEmpty()) {
                         showSnackbar("Isi semua data dengan benar")
                     } else {
-                        viewModel.login()
+                        navController.navigate(route = NavRoute.Home.name){
+                            popUpTo(NavRoute.Login.name){
+                                inclusive = true
+                            }
+                        }
+                        /*TODO Just uncomment this later*/
+//                        viewModel.login()
                     }
                 },
                 text = "Login"

@@ -4,6 +4,7 @@ import com.ngikut.u_future.data.datastore.DatastoreSource
 import com.ngikut.u_future.data.remote.RemoteSource
 import com.ngikut.u_future.data.remote.Resource
 import com.ngikut.u_future.model.remote.request.student.LoginRequest
+import com.ngikut.u_future.model.remote.request.student.RegisterRequest
 import com.ngikut.u_future.model.remote.response.student.LoginResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -14,13 +15,29 @@ class Repository @Inject constructor(
     private val remoteSource: RemoteSource,
     private val datastoreSource: DatastoreSource
 ) {
-    suspend fun setFirstTimeState(firstTime:Boolean) = datastoreSource.setFirstTimeState(firstTime)
+    suspend fun setFirstTimeState(firstTime: Boolean) = datastoreSource.setFirstTimeState(firstTime)
 
     fun getFirstTimeState() = datastoreSource.getFirstTimeState()
 
-    suspend fun setToken(token:String) = datastoreSource.setToken(token)
+    suspend fun setToken(token: String) = datastoreSource.setToken(token)
 
     fun getToken() = datastoreSource.getToken()
 
-    fun login(email:String, password:String): Flow<Resource<LoginResponse>> = remoteSource.login(LoginRequest(email, password))
+    fun login(email: String, password: String) =
+        remoteSource.login(
+            LoginRequest(
+                email = email,
+                password = password
+            )
+        )
+
+    fun register(school_id: String, name: String, email: String, password: String) =
+        remoteSource.register(
+            RegisterRequest(
+                school_id = school_id,
+                name = name,
+                email = email,
+                password = password
+            )
+        )
 }

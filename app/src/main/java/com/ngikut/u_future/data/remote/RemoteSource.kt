@@ -1,7 +1,9 @@
 package com.ngikut.u_future.data.remote
 
 import com.ngikut.u_future.model.remote.request.student.LoginRequest
+import com.ngikut.u_future.model.remote.request.student.RegisterRequest
 import com.ngikut.u_future.model.remote.response.student.LoginResponse
+import com.ngikut.u_future.model.remote.response.student.RegisterResponse
 import com.ngikut.u_future.util.getResponse
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -27,6 +29,22 @@ class RemoteSource @Inject constructor(
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body<LoginResponse>()
+
+        if(res.meta.success){
+            Resource.Success(res)
+        }else{
+            Resource.Error(res.meta.message)
+        }
+    }
+
+    fun register(
+        request:RegisterRequest
+    ):Flow<Resource<RegisterResponse>> = getResponse {
+        val res = client.post {
+            url(HttpEndpoint.LOGIN)
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }.body<RegisterResponse>()
 
         if(res.meta.success){
             Resource.Success(res)

@@ -21,6 +21,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.ngikut.u_future.component.AppBottomBar
 import com.ngikut.u_future.component.AppSnackbar
 import com.ngikut.u_future.screen.home.HomeScreen
+import com.ngikut.u_future.screen.home.InfoJurusanScreen
 import com.ngikut.u_future.screen.login.LoginScreen
 import com.ngikut.u_future.screen.onboarding.OnboardingScreen
 import com.ngikut.u_future.screen.penjurusan.PenjurusanLandingScreen
@@ -34,8 +35,8 @@ import dagger.hilt.android.HiltAndroidApp
 
 @AndroidEntryPoint
 class UFutureActivity : ComponentActivity() {
-    private lateinit var navController:NavHostController
-    private lateinit var rootViewmodel:RootViewmodel
+    private lateinit var navController: NavHostController
+    private lateinit var rootViewmodel: RootViewmodel
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -188,7 +189,9 @@ class UFutureActivity : ComponentActivity() {
                     }
 
                     composable(NavRoute.InfoJurusan.name) {
-
+                        InfoJurusanScreen(
+                            navController = navController
+                        )
                     }
 
                     composable(NavRoute.InfoKampus.name) {
@@ -203,7 +206,7 @@ class UFutureActivity : ComponentActivity() {
         }
     }
 
-    fun navigateAndCleanBackStack(route:String){
+    fun navigateAndCleanBackStack(route: String) {
         navController.backQueue.clear()
         navController.navigate(route = route)
     }
