@@ -1,16 +1,14 @@
-package com.ngikut.u_future.screen.home
+package com.ngikut.u_future.screen.info_jurusan
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -28,15 +26,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
 import com.ngikut.u_future.R
 import com.ngikut.u_future.component.AppText
 import com.ngikut.u_future.component.AppTextButton
 import com.ngikut.u_future.component.AppTextInputNormal
+import com.ngikut.u_future.component.InfoJurusanRecommendationByAI
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.ui.theme.AppType
-import com.ngikut.u_future.viewmodel.home.InfoJurusanViewmodel
-import kotlin.math.roundToInt
+import com.ngikut.u_future.util.NavRoute
+import com.ngikut.u_future.viewmodel.info_jurusan.InfoJurusanViewmodel
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -48,7 +46,6 @@ fun InfoJurusanScreen(
     val recommendationItemWidth = LocalConfiguration.current.screenWidthDp * 7 / 10
     val fakultasItemWidth = LocalConfiguration.current.screenWidthDp / 6
     val fakultasItemMinHeight = fakultasItemWidth * 3 / 2
-
     val listOfDummyRecom = listOf(
         DummyAiInfoJurusanRecomendation(
             prodiName = "Teknik Informatika",
@@ -161,7 +158,12 @@ fun InfoJurusanScreen(
                                             ),
                                             onClick = {
                                                 localFocus.clearFocus(true)
-                                                /*TODO Call search function here*/
+                                                if (viewModel.searchState.value
+                                                        .trim()
+                                                        .isNotEmpty()
+                                                ) {
+                                                    navController.navigate(route = "${NavRoute.InfoJurusanOnSearch.name}/${viewModel.searchState.value.trim()}")
+                                                }
                                             }
                                         )
                                 ) {
@@ -262,85 +264,7 @@ fun InfoJurusanScreen(
                         ) {
                             Spacer(modifier = Modifier)
                             listOfDummyRecom.forEach {
-                                Box(
-                                    modifier = Modifier
-                                        .width(recommendationItemWidth.dp)
-                                        .clip(RoundedCornerShape(16.dp))
-                                        .background(AppColor.grey50)
-                                        .border(
-                                            width = 1.dp,
-                                            color = AppColor.grey600,
-                                            shape = RoundedCornerShape(16.dp)
-                                        )
-                                ) {
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(12.dp),
-                                        horizontalArrangement = Arrangement.SpaceBetween
-                                    ) {
-                                        Column {
-                                            AppText(
-                                                text = it.prodiName,
-                                                style = AppType.subheading2
-                                            )
-                                            Box(
-                                                modifier = Modifier
-                                                    .clip(RoundedCornerShape(Int.MAX_VALUE.dp))
-                                                    .background(AppColor.primary50)
-                                            ) {
-                                                AppText(
-                                                    modifier = Modifier.padding(8.dp),
-                                                    text = it.arah,
-                                                    style = AppType.body2,
-                                                    color = AppColor.primary400
-                                                )
-                                            }
-                                            AppText(
-                                                text = it.tag,
-                                                style = AppType.subheading3,
-                                                color = AppColor.grey600
-                                            )
-                                            Row(
-                                                verticalAlignment = Alignment.CenterVertically,
-                                                horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                            ) {
-                                                CircularProgressIndicator(
-                                                    progress = (it.percent / 100).toFloat(),
-                                                    color = AppColor.primary400,
-                                                    modifier = Modifier.size(24.dp),
-                                                    strokeWidth = 3.dp
-                                                )
-                                                AppText(
-                                                    text = "${it.percent.roundToInt()}% Match",
-                                                    style = AppType.subheading3
-                                                )
-                                            }
-                                        }
-
-                                        Box(
-                                            modifier = Modifier
-                                                .clip(CircleShape)
-                                                .background(AppColor.primary50)
-                                                .clickable(
-                                                    interactionSource = MutableInteractionSource(),
-                                                    indication = rememberRipple(
-                                                        bounded = true,
-                                                        color = AppColor.grey800
-                                                    ),
-                                                    onClick = {/*TODO*/ }
-                                                ),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            Icon(
-                                                modifier = Modifier.padding(8.dp),
-                                                imageVector = Icons.Default.FavoriteBorder,
-                                                contentDescription = "",
-                                                tint = AppColor.grey500
-                                            )
-                                        }
-                                    }
-                                }
+                                InfoJurusanRecommendationByAI(item = it, recommendationItemWidth = recommendationItemWidth, onClick = {/*TODO*/})
                             }
                             Spacer(modifier = Modifier)
                         }
@@ -375,7 +299,9 @@ fun InfoJurusanScreen(
                     .clickable(
                         interactionSource = MutableInteractionSource(),
                         indication = rememberRipple(color = AppColor.grey800, bounded = true),
-                        onClick = {/*TODO*/ }
+                        onClick = {
+                            navController.navigate(route = "${NavRoute.InfoJurusanByFakultas.name}/${item.text}")
+                        }
                     )
             ) {
                 Column(

@@ -1,7 +1,6 @@
 package com.ngikut.u_future
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -14,14 +13,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import coil.compose.rememberAsyncImagePainter
 import com.ngikut.u_future.component.AppBottomBar
 import com.ngikut.u_future.component.AppSnackbar
 import com.ngikut.u_future.screen.home.HomeScreen
-import com.ngikut.u_future.screen.home.InfoJurusanScreen
+import com.ngikut.u_future.screen.info_jurusan.InfoJurusanByFakultasScreen
+import com.ngikut.u_future.screen.info_jurusan.InfoJurusanOnSearchScreen
+import com.ngikut.u_future.screen.info_jurusan.InfoJurusanScreen
 import com.ngikut.u_future.screen.login.LoginScreen
 import com.ngikut.u_future.screen.onboarding.OnboardingScreen
 import com.ngikut.u_future.screen.penjurusan.PenjurusanLandingScreen
@@ -200,6 +203,36 @@ class UFutureActivity : ComponentActivity() {
 
                     composable(NavRoute.InfoBeasiswa.name) {
 
+                    }
+
+                    composable(
+                        "${NavRoute.InfoJurusanOnSearch.name}/{query}",
+                        arguments = listOf(
+                            navArgument(name = "query") {
+                                type = NavType.StringType
+                            }
+                        )
+                    ) {
+                        val query = it.arguments?.getString("query") ?: ""
+                        InfoJurusanOnSearchScreen(
+                            navController = navController,
+                            query = query
+                        )
+                    }
+
+                    composable(
+                        "${NavRoute.InfoJurusanByFakultas.name}/{name}",
+                        arguments = listOf(
+                            navArgument(name = "name") {
+                                type = NavType.StringType
+                            }
+                        )
+                    ) {
+                        val name = it.arguments?.getString("name") ?: ""
+                        InfoJurusanByFakultasScreen(
+                            navController = navController,
+                            fakultasName = name
+                        )
                     }
                 }
             }
