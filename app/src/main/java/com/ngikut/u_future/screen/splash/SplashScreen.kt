@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -16,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.ngikut.u_future.R
+import com.ngikut.u_future.data.remote.Resource
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.util.NavRoute
 import com.ngikut.u_future.viewmodel.splash.SplashViewmodel
@@ -26,6 +28,46 @@ fun SplashScreen(
 ) {
     val viewModel = hiltViewModel<SplashViewmodel>()
     val iconWidth = LocalConfiguration.current.screenWidthDp / 2
+    val checkPenjurusanState = viewModel.checkPenjurusanState.collectAsState()
+
+    LaunchedEffect(key1 = checkPenjurusanState.value){
+        if(viewModel.startCheckingPenjurusanState.value){
+            when(checkPenjurusanState.value){
+                is Resource.Error -> {
+                    navController.navigate(NavRoute.Home.name) {
+                        popUpTo(NavRoute.Splash.name) {
+                            inclusive = true
+                        }
+                    }
+                    viewModel.startCheckingPenjurusanState.value = false
+                }
+                is Resource.Loading -> {/*TODO*/}
+                is Resource.Success -> {
+                    checkPenjurusanState.value.data?.let {
+                        if(it.data.already_taken){
+                            navController.navigate(NavRoute.Home.name) {
+                                popUpTo(NavRoute.Splash.name) {
+                                    inclusive = true
+                                }
+                            }
+                        }else{
+                            navController.navigate(NavRoute.PenjurusanLanding.name){
+                                popUpTo(NavRoute.Splash.name) {
+                                    inclusive = true
+                                }
+                            }
+                        }
+                    }
+                    viewModel.startCheckingPenjurusanState.value = false
+                }
+            }
+        }
+    }
+    LaunchedEffect(key1 = viewModel.startCheckingPenjurusanState.value){
+        if(viewModel.startCheckingPenjurusanState.value){
+            viewModel.checkPenjurusanState()
+        }
+    }
 
     LaunchedEffect(key1 = true) {
         viewModel.getFirstTimeState { firstTime ->
@@ -44,11 +86,7 @@ fun SplashScreen(
                             }
                         }
                     }else{
-                        navController.navigate(NavRoute.Home.name) {
-                            popUpTo(NavRoute.Splash.name) {
-                                inclusive = true
-                            }
-                        }
+                        viewModel.startCheckingPenjurusanState.value = true
                     }
                 }
 

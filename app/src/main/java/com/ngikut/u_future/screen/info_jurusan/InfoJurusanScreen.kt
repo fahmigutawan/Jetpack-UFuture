@@ -134,9 +134,9 @@ fun InfoJurusanScreen(
                         AppTextInputNormal(
                             modifier = Modifier.fillMaxWidth(),
                             placeHolder = "Kata Kunci",
-                            value = viewModel.searchState.value,
+                            value = viewModel.searchValueState.value,
                             onValueChange = {
-                                viewModel.searchState.value = it
+                                viewModel.searchValueState.value = it
                             },
                             leadingIcon = {
                                 Icon(
@@ -158,11 +158,11 @@ fun InfoJurusanScreen(
                                             ),
                                             onClick = {
                                                 localFocus.clearFocus(true)
-                                                if (viewModel.searchState.value
+                                                if (viewModel.searchValueState.value
                                                         .trim()
                                                         .isNotEmpty()
                                                 ) {
-                                                    navController.navigate(route = "${NavRoute.InfoJurusanOnSearch.name}/${viewModel.searchState.value.trim()}")
+                                                    navController.navigate(route = "${NavRoute.InfoJurusanOnSearch.name}/${viewModel.searchValueState.value.trim()}")
                                                 }
                                             }
                                         )

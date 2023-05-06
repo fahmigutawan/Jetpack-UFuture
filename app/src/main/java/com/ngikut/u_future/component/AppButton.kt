@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
@@ -31,6 +32,8 @@ import com.ngikut.u_future.ui.theme.AppType
 fun AppButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    isLoading: Boolean = false,
+    loadingColor: Color = AppColor.grey50,
     backgroundColor: Color = AppColor.primary400,
     disabledBackgroundColor: Color = AppColor.grey400,
     rippleColor: Color = AppColor.grey800,
@@ -55,16 +58,20 @@ fun AppButton(
                 .background(if (enabled) backgroundColor else disabledBackgroundColor)
         )
 
-        Box(
-            modifier = modifier
-                .onSizeChanged {
-                    contentWidth.value = with(localDensity) { it.width.toDp() }
-                    contentHeight.value = with(localDensity) { it.height.toDp() }
-                }
-                .padding(start = 12.dp, end = 12.dp, top = 12.dp, bottom = 12.dp),
-            contentAlignment = contentAlignment
-        ) {
-            content()
+        if (isLoading) {
+            CircularProgressIndicator(color = loadingColor)
+        } else {
+            Box(
+                modifier = modifier
+                    .onSizeChanged {
+                        contentWidth.value = with(localDensity) { it.width.toDp() }
+                        contentHeight.value = with(localDensity) { it.height.toDp() }
+                    }
+                    .padding(start = 12.dp, end = 12.dp, top = 12.dp, bottom = 12.dp),
+                contentAlignment = contentAlignment
+            ) {
+                content()
+            }
         }
 
         Box(
@@ -88,6 +95,7 @@ fun AppButton(
 fun AppButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    isLoading: Boolean = false,
     backgroundColor: Color = AppColor.primary400,
     disabledBackgroundColor: Color = AppColor.grey400,
     rippleColor: Color = AppColor.grey800,
@@ -113,16 +121,20 @@ fun AppButton(
                 .background(if (enabled) backgroundColor else disabledBackgroundColor)
         )
 
-        Box(
-            modifier = modifier
-                .onSizeChanged {
-                    contentWidth.value = with(localDensity) { it.width.toDp() }
-                    contentHeight.value = with(localDensity) { it.height.toDp() }
-                }
-                .padding(start = 24.dp, end = 24.dp, top = 12.dp, bottom = 12.dp),
-            contentAlignment = contentAlignment
-        ) {
-            Text(text = text, style = AppType.h4, color = textColor)
+        if (isLoading) {
+            CircularProgressIndicator(color = textColor)
+        } else {
+            Box(
+                modifier = modifier
+                    .onSizeChanged {
+                        contentWidth.value = with(localDensity) { it.width.toDp() }
+                        contentHeight.value = with(localDensity) { it.height.toDp() }
+                    }
+                    .padding(start = 24.dp, end = 24.dp, top = 12.dp, bottom = 12.dp),
+                contentAlignment = contentAlignment
+            ) {
+                Text(text = text, style = AppType.h4, color = textColor)
+            }
         }
 
         Box(

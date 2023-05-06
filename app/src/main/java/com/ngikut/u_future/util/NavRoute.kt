@@ -16,5 +16,5 @@ enum class NavRoute {
     InfoKampus,
     InfoBeasiswa,
     InfoJurusanOnSearch,
-    InfoJurusanByFakultas
+    InfoJurusanByFakultas,
 }

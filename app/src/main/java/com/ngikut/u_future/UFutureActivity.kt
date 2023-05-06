@@ -25,6 +25,7 @@ import com.ngikut.u_future.screen.home.HomeScreen
 import com.ngikut.u_future.screen.info_jurusan.InfoJurusanByFakultasScreen
 import com.ngikut.u_future.screen.info_jurusan.InfoJurusanOnSearchScreen
 import com.ngikut.u_future.screen.info_jurusan.InfoJurusanScreen
+import com.ngikut.u_future.screen.komparasi_jurusan.KomparasiJurusanScreen
 import com.ngikut.u_future.screen.login.LoginScreen
 import com.ngikut.u_future.screen.onboarding.OnboardingScreen
 import com.ngikut.u_future.screen.penjurusan.PenjurusanLandingScreen
@@ -158,7 +159,7 @@ class UFutureActivity : ComponentActivity() {
                     }
 
                     composable(NavRoute.Comparation.name) {
-
+                        KomparasiJurusanScreen(navController = navController)
                     }
 
                     composable(NavRoute.UBot.name) {

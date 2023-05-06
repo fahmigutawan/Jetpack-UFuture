@@ -40,4 +40,6 @@ class Repository @Inject constructor(
                 password = password
             )
         )
+
+    fun checkPenjurusanState() = remoteSource.checkPenjurusanState()
 }

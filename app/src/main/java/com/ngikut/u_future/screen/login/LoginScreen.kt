@@ -42,28 +42,65 @@ fun LoginScreen(
     val viewModel = hiltViewModel<LoginViewmodel>()
     val iconWidth = LocalConfiguration.current.screenWidthDp / 2
     val loginState = viewModel.loginState.collectAsState()
+    val checkPenjurusanState = viewModel.checkPenjurusanState.collectAsState()
 
-    LaunchedEffect(key1 = loginState.value) {
+    LaunchedEffect(loginState.value) {
         when (loginState.value) {
             is Resource.Error -> {
                 showSnackbar(loginState.value.message.toString())
+                viewModel.startLogin.value = false
             }
 
-            is Resource.Loading -> {/*TODO*/ }
+            is Resource.Loading -> {/*TODO*/
+            }
 
             is Resource.Success -> {
                 loginState.value.data?.let {
                     viewModel.saveToken(it.data?.token ?: "")
-                    delay(2000)
-                    /*TODO Should be checking if user have got penjurusan test or no before navigating. Handle this later hehe*/
-                    navController.navigate(route = NavRoute.Home.name){
-                        popUpTo(NavRoute.Login.name){
-                            inclusive = true
-                        }
-                    }
+                    delay(1500)
+                    viewModel.startCheckingPenjurusanState.value = true
+                    viewModel.startLogin.value = false
                 }
             }
         }
+    }
+    LaunchedEffect(checkPenjurusanState.value) {
+        when (checkPenjurusanState.value) {
+            is Resource.Error -> {
+                showSnackbar(checkPenjurusanState.value.message.toString())
+                viewModel.startCheckingPenjurusanState.value = false
+            }
+            is Resource.Loading -> {/*TODO*/
+            }
+            is Resource.Success -> {
+                checkPenjurusanState.value.data?.let {
+                    when (it.data.already_taken) {
+                        true -> {
+                            navController.navigate(NavRoute.Home.name) {
+                                popUpTo(NavRoute.Login.name) {
+                                    inclusive = true
+                                }
+                            }
+                        }
+                        false -> {
+                            navController.navigate(NavRoute.PenjurusanLanding.name) {
+                                popUpTo(NavRoute.Login.name) {
+                                    inclusive = true
+                                }
+                            }
+                        }
+                    }
+                    viewModel.startCheckingPenjurusanState.value = false
+                }
+            }
+        }
+    }
+
+    if (viewModel.startLogin.value) {
+        viewModel.login()
+    }
+    if (viewModel.startCheckingPenjurusanState.value) {
+        viewModel.checkPenjurusanState()
     }
 
     Column(
@@ -135,15 +172,10 @@ fun LoginScreen(
                     if (viewModel.passwordState.value.isEmpty() || viewModel.emailState.value.isEmpty()) {
                         showSnackbar("Isi semua data dengan benar")
                     } else {
-                        navController.navigate(route = NavRoute.Home.name){
-                            popUpTo(NavRoute.Login.name){
-                                inclusive = true
-                            }
-                        }
-                        /*TODO Just uncomment this later*/
-//                        viewModel.login()
+                        viewModel.startLogin.value = true
                     }
                 },
+                isLoading = viewModel.startLogin.value || viewModel.startCheckingPenjurusanState.value,
                 text = "Login"
             )
 

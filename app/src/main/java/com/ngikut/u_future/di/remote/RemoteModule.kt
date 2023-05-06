@@ -33,9 +33,9 @@ class RemoteModule {
             gson()
         }
         install(HttpTimeout) {
-            requestTimeoutMillis = 5000
-            connectTimeoutMillis = 5000
-            socketTimeoutMillis = 5000
+            requestTimeoutMillis = 30000
+            connectTimeoutMillis = 30000
+            socketTimeoutMillis = 30000
         }
         install(Auth) {
             bearer {

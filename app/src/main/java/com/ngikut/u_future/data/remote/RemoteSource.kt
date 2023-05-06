@@ -2,6 +2,7 @@ package com.ngikut.u_future.data.remote
 
 import com.ngikut.u_future.model.remote.request.student.LoginRequest
 import com.ngikut.u_future.model.remote.request.student.RegisterRequest
+import com.ngikut.u_future.model.remote.response.quiz.CheckPenjurusanStateResponse
 import com.ngikut.u_future.model.remote.response.student.LoginResponse
 import com.ngikut.u_future.model.remote.response.student.RegisterResponse
 import com.ngikut.u_future.util.getResponse
@@ -45,6 +46,19 @@ class RemoteSource @Inject constructor(
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body<RegisterResponse>()
+
+        if(res.meta.success){
+            Resource.Success(res)
+        }else{
+            Resource.Error(res.meta.message)
+        }
+    }
+
+    fun checkPenjurusanState() = getResponse {
+        val res = client.get {
+            url(HttpEndpoint.CHECK_PENJURUSAN)
+            contentType(ContentType.Application.Json)
+        }.body<CheckPenjurusanStateResponse>()
 
         if(res.meta.success){
             Resource.Success(res)

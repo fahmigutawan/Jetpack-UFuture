@@ -3,19 +3,9 @@ package com.ngikut.u_future.screen.ubot
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowCircleLeft
@@ -23,15 +13,20 @@ import androidx.compose.material.icons.filled.ArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.ngikut.u_future.R
+import com.ngikut.u_future.component.AppButton
 import com.ngikut.u_future.component.AppText
+import com.ngikut.u_future.component.AppTextInputBasic
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.ui.theme.AppType
 import com.ngikut.u_future.viewmodel.ubot.UbotViewmodel
@@ -40,6 +35,9 @@ import com.ngikut.u_future.viewmodel.ubot.UbotViewmodel
 @Composable
 fun UbotScreen(navController: NavController) {
     val viewModel = hiltViewModel<UbotViewmodel>()
+    val sendIconSize = 42.dp
+    val textInputWidth = LocalConfiguration.current.screenWidthDp / 4 * 3
+    val tmp = remember{ mutableStateOf("") }
 
     Scaffold(
         topBar = {
@@ -48,7 +46,9 @@ fun UbotScreen(navController: NavController) {
                 elevation = 16.dp
             ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -109,6 +109,38 @@ fun UbotScreen(navController: NavController) {
                                 tint = AppColor.grey500
                             )
                         }
+                    }
+                }
+            }
+        },
+        bottomBar = {
+            BottomAppBar(
+                modifier = Modifier.fillMaxWidth(),
+                backgroundColor = AppColor.grey50,
+                elevation = 16.dp
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    AppTextInputBasic(
+                        modifier = Modifier
+                            .width(textInputWidth.dp),
+                        placeHolder = "Tulis sesuatu...",
+                        value = tmp.value,
+                        onValueChange = {tmp.value = it})
+                    AppButton(
+                        modifier = Modifier.size(sendIconSize),
+                        onClick = { /*TODO*/ },
+                        shape = CircleShape,
+                        backgroundColor = AppColor.primary400
+                    ) {
+                        Icon(
+                            painter = rememberAsyncImagePainter(model = R.drawable.ubot_send_icon),
+                            contentDescription = "",
+                            tint = AppColor.grey50
+                        )
                     }
                 }
             }
