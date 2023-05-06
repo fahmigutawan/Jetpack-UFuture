@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.ArrowRightAlt
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -53,6 +54,8 @@ import com.ngikut.u_future.viewmodel.home.HomeViewmodel
 @Composable
 fun HomeScreen(navController: NavController) {
     val viewModel = hiltViewModel<HomeViewmodel>()
+    val checkPenjurusanState = viewModel.checkPenjurusanState.collectAsState()
+    val getProfileState = viewModel.getProfileState.collectAsState()
 
     LazyColumn(
         modifier = Modifier
@@ -158,10 +161,11 @@ fun HomeScreen(navController: NavController) {
 
                             AppText(text = "Tes Penjurusan", style = AppType.h3)
                             AppText(text = "Temukan jurusan yang sesuai", style = AppType.body2)
-                            AppButton(onClick = {
-                                val act = context as UFutureActivity
-                                act.navigateAndCleanBackStack(NavRoute.Login.name)
-                            }) {
+                            AppButton(
+                                onClick = {
+
+                                }
+                            ) {
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -198,7 +202,9 @@ fun HomeScreen(navController: NavController) {
                 ) {
                     AppTextButton(onClick = { /*TODO*/ }) {
                         Row(
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 12.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {

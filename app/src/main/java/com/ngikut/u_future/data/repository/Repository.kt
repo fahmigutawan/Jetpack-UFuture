@@ -42,4 +42,6 @@ class Repository @Inject constructor(
         )
 
     fun checkPenjurusanState() = remoteSource.checkPenjurusanState()
+
+    fun getProfile() = remoteSource.getProfile()
 }

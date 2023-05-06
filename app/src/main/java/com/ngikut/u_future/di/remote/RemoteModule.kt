@@ -50,7 +50,7 @@ class RemoteModule {
                     val activity = context as UFutureActivity
                     datastoreSource.setToken("")
                     delay(2000)
-                    activity.navigateAndCleanBackStack(NavRoute.Login.name)
+                    activity.showSessionEndedDialog()
 
                     BearerTokens("", "")
                 }

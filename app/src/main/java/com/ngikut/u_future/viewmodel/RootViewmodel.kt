@@ -18,4 +18,6 @@ class RootViewmodel @Inject constructor(
 
     val currentRoute = mutableStateOf("")
     val showBottombar = mutableStateOf(false)
+
+    val showLoginSessionEndedDialog = mutableStateOf(false)
 }

@@ -5,12 +5,23 @@ import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -20,7 +31,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import coil.compose.rememberAsyncImagePainter
 import com.ngikut.u_future.component.AppBottomBar
+import com.ngikut.u_future.component.AppButton
 import com.ngikut.u_future.component.AppSnackbar
+import com.ngikut.u_future.component.AppText
 import com.ngikut.u_future.screen.home.HomeScreen
 import com.ngikut.u_future.screen.info_jurusan.InfoJurusanByFakultasScreen
 import com.ngikut.u_future.screen.info_jurusan.InfoJurusanOnSearchScreen
@@ -32,6 +45,7 @@ import com.ngikut.u_future.screen.penjurusan.PenjurusanLandingScreen
 import com.ngikut.u_future.screen.splash.SplashScreen
 import com.ngikut.u_future.screen.ubot.UbotScreen
 import com.ngikut.u_future.ui.theme.AppColor
+import com.ngikut.u_future.ui.theme.AppType
 import com.ngikut.u_future.util.NavRoute
 import com.ngikut.u_future.viewmodel.RootViewmodel
 import dagger.hilt.android.AndroidEntryPoint
@@ -93,6 +107,55 @@ class UFutureActivity : ComponentActivity() {
                                     rootViewmodel.snackbarAction.value(scaffoldState.snackbarHostState.currentSnackbarData)
                                     resetSnackbarState()
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+            if (rootViewmodel.showLoginSessionEndedDialog.value) {
+                Dialog(
+                    onDismissRequest = { /*TODO*/ },
+                    properties = DialogProperties(
+                        dismissOnBackPress = false,
+                        dismissOnClickOutside = false
+                    )
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(AppColor.grey50)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(20.dp),
+                            verticalArrangement = Arrangement.spacedBy(16.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            AppText(text = "Sesi Login Habis", style = AppType.h3)
+                            AppText(
+                                text = "Harap lakukan login ulang untuk melanjutkan menggunakan aplikasi U-Future",
+                                style = AppType.subheading3,
+                                textAlign = TextAlign.Center
+                            )
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                AppButton(
+                                    onClick = { System.exit(0) },
+                                    text = "Keluar",
+                                    textColor = AppColor.primary400,
+                                    backgroundColor = AppColor.grey50,
+                                    borderColor = AppColor.primary400,
+                                    borderWidth = 1.dp
+                                )
+                                AppButton(
+                                    onClick = {
+                                        navController.backQueue.clear()
+                                        navController.navigate(NavRoute.Login.name)
+                                        rootViewmodel.showLoginSessionEndedDialog.value = false
+                                    },
+                                    text = "Login"
+                                )
                             }
                         }
                     }
@@ -240,9 +303,8 @@ class UFutureActivity : ComponentActivity() {
         }
     }
 
-    fun navigateAndCleanBackStack(route: String) {
-        navController.backQueue.clear()
-        navController.navigate(route = route)
+    fun showSessionEndedDialog() {
+        rootViewmodel.showLoginSessionEndedDialog.value = true
     }
 }
 
