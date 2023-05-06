@@ -132,6 +132,14 @@ fun PenjurusanScreen(
                     shape = RoundedCornerShape(10.dp)
                 )
             }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+            ) {
+
+            }
         }
     }
 }
