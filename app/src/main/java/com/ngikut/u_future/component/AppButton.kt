@@ -5,11 +5,13 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
@@ -20,11 +22,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImagePainter
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.ui.theme.AppType
 
@@ -150,6 +154,69 @@ fun AppButton(
                         onClick()
                     }
                 )
+        )
+    }
+}
+
+@Composable
+fun AppIconButton(
+    modifier: Modifier = Modifier,
+    iconModifier: Modifier = Modifier,
+    iconPadding: PaddingValues = PaddingValues(8.dp),
+    painter: AsyncImagePainter,
+    onClick: () -> Unit,
+    shape: Shape = CircleShape,
+    backgroundColor: Color = Color.Unspecified,
+    rippleColor: Color = AppColor.grey800,
+    tint: Color = Color.Unspecified
+) {
+    Box(
+        modifier = modifier
+            .clip(shape)
+            .background(backgroundColor)
+            .clickable(
+                interactionSource = MutableInteractionSource(),
+                indication = rememberRipple(color = rippleColor, bounded = true),
+                onClick = onClick
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            modifier = iconModifier
+                .padding(iconPadding), painter = painter, contentDescription = "", tint = tint
+        )
+    }
+}
+
+@Composable
+fun AppIconButton(
+    modifier: Modifier = Modifier,
+    iconModifier: Modifier = Modifier,
+    iconPadding: PaddingValues = PaddingValues(8.dp),
+    imageVector: ImageVector,
+    onClick: () -> Unit,
+    shape: Shape = CircleShape,
+    backgroundColor: Color = Color.Unspecified,
+    rippleColor: Color = AppColor.grey800,
+    tint: Color = Color.Unspecified
+) {
+    Box(
+        modifier = modifier
+            .clip(shape)
+            .background(backgroundColor)
+            .clickable(
+                interactionSource = MutableInteractionSource(),
+                indication = rememberRipple(color = rippleColor, bounded = true),
+                onClick = onClick
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            modifier = iconModifier
+                .padding(iconPadding),
+            imageVector = imageVector,
+            contentDescription = "",
+            tint = tint
         )
     }
 }

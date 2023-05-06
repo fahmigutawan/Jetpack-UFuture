@@ -42,6 +42,7 @@ import com.ngikut.u_future.screen.komparasi_jurusan.KomparasiJurusanScreen
 import com.ngikut.u_future.screen.login.LoginScreen
 import com.ngikut.u_future.screen.onboarding.OnboardingScreen
 import com.ngikut.u_future.screen.penjurusan.PenjurusanLandingScreen
+import com.ngikut.u_future.screen.penjurusan.PenjurusanScreen
 import com.ngikut.u_future.screen.splash.SplashScreen
 import com.ngikut.u_future.screen.ubot.UbotScreen
 import com.ngikut.u_future.ui.theme.AppColor
@@ -253,6 +254,10 @@ class UFutureActivity : ComponentActivity() {
                         PenjurusanLandingScreen(
                             navController = navController
                         )
+                    }
+
+                    composable(NavRoute.Penjurusan.name){
+                        PenjurusanScreen(navController = navController)
                     }
 
                     composable(NavRoute.InfoJurusan.name) {

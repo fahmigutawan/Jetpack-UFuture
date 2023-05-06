@@ -106,7 +106,16 @@ fun PenjurusanLandingScreen(
                     }
 
                     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                        AppButton(onClick = { /*TODO*/ }, text = "Mulai Tes")
+                        AppButton(
+                            onClick = {
+                                navController.navigate(route = NavRoute.Penjurusan.name) {
+                                    popUpTo(NavRoute.PenjurusanLanding.name) {
+                                        inclusive = true
+                                    }
+                                }
+                            },
+                            text = "Mulai Tes"
+                        )
                     }
                 }
             }
@@ -181,8 +190,11 @@ fun PenjurusanLandingScreen(
                     text = "Ambil tes sekarang"
                 )
                 AppTextButton(onClick = {
-                    navController.navigate(NavRoute.Home.name)
-                    /*TODO handle this later*/
+                    navController.navigate(NavRoute.Home.name) {
+                        popUpTo(NavRoute.PenjurusanLanding.name) {
+                            inclusive = true
+                        }
+                    }
                 }) {
                     AppText(text = "Lewati", style = AppType.body2, color = AppColor.grey500)
                 }
