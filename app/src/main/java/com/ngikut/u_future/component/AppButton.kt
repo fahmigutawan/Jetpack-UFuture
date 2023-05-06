@@ -226,6 +226,7 @@ fun AppTextButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     rippleColor: Color = AppColor.grey800,
+    contentAlignment: Alignment = Alignment.Center,
     content: @Composable () -> Unit
 ) {
     val focus = LocalFocusManager.current
@@ -241,7 +242,7 @@ fun AppTextButton(
                 }
             )
             .padding(8.dp),
-        contentAlignment = Alignment.Center
+        contentAlignment = contentAlignment
     ) {
         content()
     }

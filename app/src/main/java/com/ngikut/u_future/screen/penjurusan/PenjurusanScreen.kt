@@ -42,18 +42,18 @@ fun PenjurusanScreen(
                     .fillMaxWidth()
                     .background(AppColor.grey50)
             ) {
-
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 20.dp),
-                    verticalArrangement = Arrangement.spacedBy(20.dp)
+                        .padding(vertical = 20.dp)
                 ) {
                     AppTextButton(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 20.dp),
-                        onClick = { /*TODO*/ }) {
+                        onClick = { /*TODO*/ },
+                        contentAlignment = Alignment.CenterStart
+                    ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(10.dp)
@@ -79,7 +79,8 @@ fun PenjurusanScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 20.dp),
-                        onClick = { /*TODO*/ }
+                        onClick = { /*TODO*/ },
+                        contentAlignment = Alignment.CenterStart
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
