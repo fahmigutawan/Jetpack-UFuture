@@ -44,4 +44,6 @@ class Repository @Inject constructor(
     fun checkPenjurusanState() = remoteSource.checkPenjurusanState()
 
     fun getProfile() = remoteSource.getProfile()
+
+    fun getQuizQuestion(title:String) = remoteSource.getQuizQuestion(title)
 }

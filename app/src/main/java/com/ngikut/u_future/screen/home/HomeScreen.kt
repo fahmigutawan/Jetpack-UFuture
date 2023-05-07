@@ -163,7 +163,7 @@ fun HomeScreen(navController: NavController) {
                             AppText(text = "Temukan jurusan yang sesuai", style = AppType.body2)
                             AppButton(
                                 onClick = {
-
+                                    navController.navigate(NavRoute.PenjurusanLanding.name)
                                 }
                             ) {
                                 Row(

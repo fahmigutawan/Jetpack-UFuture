@@ -8,4 +8,5 @@ object HttpEndpoint {
     const val SEARCH_SCHOOL = "$BASE_URL/school/search"
     const val SINGLE_SCHOOL = "$BASE_URL/school/single"
     const val CHECK_PENJURUSAN = "$BASE_URL/quiz/status-quiz"
+    const val GET_QUIZ_QUESTION = "$BASE_URL/quiz/question"
 }

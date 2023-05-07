@@ -3,6 +3,7 @@ package com.ngikut.u_future.data.remote
 import com.ngikut.u_future.model.remote.request.student.LoginRequest
 import com.ngikut.u_future.model.remote.request.student.RegisterRequest
 import com.ngikut.u_future.model.remote.response.quiz.CheckPenjurusanStateResponse
+import com.ngikut.u_future.model.remote.response.quiz.GetQuizQuestionResponse
 import com.ngikut.u_future.model.remote.response.student.GetProfileResponse
 import com.ngikut.u_future.model.remote.response.student.LoginResponse
 import com.ngikut.u_future.model.remote.response.student.RegisterResponse
@@ -21,36 +22,36 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class RemoteSource @Inject constructor(
-    private val client:HttpClient
+    private val client: HttpClient
 ) {
     fun login(
-        request:LoginRequest
-    ):Flow<Resource<LoginResponse>> = getResponse {
+        request: LoginRequest
+    ): Flow<Resource<LoginResponse>> = getResponse {
         val res = client.post {
             url(HttpEndpoint.LOGIN)
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body<LoginResponse>()
 
-        if(res.meta.success){
+        if (res.meta.success) {
             Resource.Success(res)
-        }else{
+        } else {
             Resource.Error(res.meta.message)
         }
     }
 
     fun register(
-        request:RegisterRequest
-    ):Flow<Resource<RegisterResponse>> = getResponse {
+        request: RegisterRequest
+    ): Flow<Resource<RegisterResponse>> = getResponse {
         val res = client.post {
             url(HttpEndpoint.LOGIN)
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body<RegisterResponse>()
 
-        if(res.meta.success){
+        if (res.meta.success) {
             Resource.Success(res)
-        }else{
+        } else {
             Resource.Error(res.meta.message)
         }
     }
@@ -61,9 +62,9 @@ class RemoteSource @Inject constructor(
             contentType(ContentType.Application.Json)
         }.body<CheckPenjurusanStateResponse>()
 
-        if(res.meta.success){
+        if (res.meta.success) {
             Resource.Success(res)
-        }else{
+        } else {
             Resource.Error(res.meta.message)
         }
     }
@@ -73,6 +74,19 @@ class RemoteSource @Inject constructor(
             url(HttpEndpoint.GET_USER)
             contentType(ContentType.Application.Json)
         }.body<GetProfileResponse>()
+
+        if (res.meta.success) {
+            Resource.Success(res)
+        } else {
+            Resource.Error(res.meta.message)
+        }
+    }
+
+    fun getQuizQuestion(title:String) = getResponse{
+        val res = client.get {
+            url("${HttpEndpoint.GET_QUIZ_QUESTION}?title=$title")
+            contentType(ContentType.Application.Json)
+        }.body<GetQuizQuestionResponse>()
 
         if(res.meta.success){
             Resource.Success(res)

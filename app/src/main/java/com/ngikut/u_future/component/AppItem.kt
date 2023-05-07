@@ -20,7 +20,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.ngikut.u_future.model.remote.response.base.SingleQuizResponse
 import com.ngikut.u_future.screen.info_jurusan.DummyAiInfoJurusanRecomendation
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.ui.theme.AppType
@@ -228,6 +231,104 @@ fun JurusanItem(
                     imageVector = Icons.Default.FavoriteBorder,
                     contentDescription = "",
                     tint = AppColor.grey500
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun QuizQuestionItem(
+    minHeigth: Dp,
+    item:SingleQuizResponse,
+    onAnswerClick: (answerId:String) -> Unit
+) {
+    val density = LocalDensity.current
+    val answerCardWidth = remember { mutableStateOf(0.dp) }
+    val answerCardHeight = remember { mutableStateOf(0.dp) }
+
+    Box(
+        modifier = Modifier
+            .padding(20.dp)
+            .fillMaxWidth()
+            .heightIn(min = minHeigth)
+            .clip(RoundedCornerShape(25.dp))
+            .background(AppColor.grey50)
+            .border(
+                color = AppColor.grey200,
+                width = 3.dp,
+                shape = RoundedCornerShape(25.dp)
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(48.dp)
+        ) {
+            AppText(
+                text = item.text,
+                style = AppType.h3,
+                textAlign = TextAlign.Center
+            )
+
+            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                item.options.forEach { option ->
+                    Box(
+                        modifier = Modifier
+                            .padding(horizontal = 12.dp),
+                        contentAlignment = Alignment.CenterEnd
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(answerCardHeight.value)
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(AppColor.primary400)
+                                .onSizeChanged {
+                                    density.run {
+                                        answerCardWidth.value = it.width.toDp()
+                                    }
+                                }
+                        )
+                        Box(
+                            modifier = Modifier
+                                .width((answerCardWidth.value.value - 4).dp)
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(AppColor.grey100)
+                                .onSizeChanged {
+                                    density.run {
+                                        answerCardHeight.value = it.height.toDp()
+                                    }
+                                }
+                                .clickable(
+                                    interactionSource = MutableInteractionSource(),
+                                    indication = rememberRipple(
+                                        bounded = true,
+                                        color = AppColor.grey800
+                                    ),
+                                    onClick = {
+                                        onAnswerClick(item.id)
+                                    }
+                                )
+                        ) {
+                            AppText(
+                                modifier = Modifier.padding(16.dp),
+                                text = option.text,
+                                style = AppType.subheading1
+                            )
+                        }
+                    }
+                }
+            }
+
+            AppTextButton(
+                onClick = { /*TODO*/ }
+            ) {
+                AppText(
+                    text = "Berikan pertanyaan lain",
+                    style = AppType.h5,
+                    color = AppColor.grey500
                 )
             }
         }
