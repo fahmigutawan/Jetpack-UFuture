@@ -257,7 +257,11 @@ class UFutureActivity : ComponentActivity() {
                     }
 
                     composable(NavRoute.Penjurusan.name){
-                        PenjurusanScreen(navController = navController, title = "SectionOne")
+                        PenjurusanScreen(
+                            navController = navController,
+                            rootViewmodel = rootViewmodel,
+                            title = "SectionOne"
+                        )
                     }
 
                     composable(NavRoute.InfoJurusan.name) {

@@ -1,5 +1,7 @@
 package com.ngikut.u_future.component
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -237,16 +239,15 @@ fun JurusanItem(
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun QuizQuestionItem(
     minHeigth: Dp,
     item:SingleQuizResponse,
-    onAnswerClick: (answerId:String) -> Unit
+    pickedAnswerId:String,
+    onAnswerClick: (answerId:String) -> Unit,
+    onOtherQuestionClick: () -> Unit
 ) {
-    val density = LocalDensity.current
-    val answerCardWidth = remember { mutableStateOf(0.dp) }
-    val answerCardHeight = remember { mutableStateOf(0.dp) }
-
     Box(
         modifier = Modifier
             .padding(20.dp)
@@ -279,44 +280,34 @@ fun QuizQuestionItem(
                             .padding(horizontal = 12.dp),
                         contentAlignment = Alignment.CenterEnd
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(answerCardHeight.value)
-                                .clip(RoundedCornerShape(8.dp))
-                                .background(AppColor.primary400)
-                                .onSizeChanged {
-                                    density.run {
-                                        answerCardWidth.value = it.width.toDp()
-                                    }
-                                }
-                        )
-                        Box(
-                            modifier = Modifier
-                                .width((answerCardWidth.value.value - 4).dp)
-                                .clip(RoundedCornerShape(8.dp))
-                                .background(AppColor.grey100)
-                                .onSizeChanged {
-                                    density.run {
-                                        answerCardHeight.value = it.height.toDp()
-                                    }
-                                }
-                                .clickable(
-                                    interactionSource = MutableInteractionSource(),
-                                    indication = rememberRipple(
-                                        bounded = true,
-                                        color = AppColor.grey800
-                                    ),
-                                    onClick = {
-                                        onAnswerClick(item.id)
-                                    }
+                        AnimatedContent(
+                            targetState = pickedAnswerId == option.id,
+                            transitionSpec = {
+                                fadeIn(animationSpec = tween(250)) with fadeOut(animationSpec = tween(250))
+                            }
+                        ) { isPicked ->
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(if (isPicked) AppColor.primary100 else AppColor.grey100)
+                                    .clickable(
+                                        interactionSource = MutableInteractionSource(),
+                                        indication = rememberRipple(
+                                            bounded = true,
+                                            color = AppColor.grey800
+                                        ),
+                                        onClick = {
+                                            onAnswerClick(option.id)
+                                        }
+                                    )
+                            ) {
+                                AppText(
+                                    modifier = Modifier.padding(16.dp),
+                                    text = option.text,
+                                    style = AppType.subheading1
                                 )
-                        ) {
-                            AppText(
-                                modifier = Modifier.padding(16.dp),
-                                text = option.text,
-                                style = AppType.subheading1
-                            )
+                            }
                         }
                     }
                 }

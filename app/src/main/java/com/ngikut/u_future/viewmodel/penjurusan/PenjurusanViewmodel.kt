@@ -21,6 +21,7 @@ class PenjurusanViewmodel @Inject constructor(
     val totalQuestionCount = mutableStateOf( 1f)
 
     val quizQuestion = MutableStateFlow<Resource<GetQuizQuestionResponse>>(Resource.Loading())
+
     fun getQuizQuestion(title:String){
         viewModelScope.launch {
             repository.getQuizQuestion(title).collect{

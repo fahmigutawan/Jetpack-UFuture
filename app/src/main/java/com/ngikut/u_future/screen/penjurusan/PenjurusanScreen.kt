@@ -29,6 +29,7 @@ import com.ngikut.u_future.data.remote.Resource
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.ui.theme.AppType
 import com.ngikut.u_future.util.NavRoute
+import com.ngikut.u_future.viewmodel.RootViewmodel
 import com.ngikut.u_future.viewmodel.penjurusan.PenjurusanViewmodel
 import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
@@ -37,6 +38,7 @@ import kotlin.system.exitProcess
 @Composable
 fun PenjurusanScreen(
     navController: NavController,
+    rootViewmodel: RootViewmodel,
     title: String
 ) {
     val bottomSheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
@@ -228,7 +230,11 @@ fun PenjurusanScreen(
                                 minHeigth = (screenHeight - topSectionHeight.value.value).dp,
                                 item = item.data.questions[index],
                                 onAnswerClick = { id ->
-
+                                    rootViewmodel.mapQuestionIdToAnswerId[item.data.questions[index].id] = id
+                                },
+                                pickedAnswerId = (rootViewmodel.mapQuestionIdToAnswerId[item.data.questions[index].id] ?: ""),
+                                onOtherQuestionClick = {
+                                    /*TODO*/
                                 }
                             )
                         }
