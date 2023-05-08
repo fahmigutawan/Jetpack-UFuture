@@ -25,6 +25,7 @@ import com.google.accompanist.pager.rememberPagerState
 import com.ngikut.u_future.R
 import com.ngikut.u_future.component.*
 import com.ngikut.u_future.data.remote.Resource
+import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizAnswerDataRequest
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.ui.theme.AppType
 import com.ngikut.u_future.util.NavRoute
@@ -46,6 +47,7 @@ fun PenjurusanScreen(
     val coroutineContext = rememberCoroutineScope()
     val viewModel = hiltViewModel<PenjurusanViewmodel>()
     val quizQuestion = viewModel.quizQuestion.collectAsState()
+    val sendQuizAnswerState = viewModel.sendQuizAnswerState.collectAsState()
     val density = LocalDensity.current
     val topSectionHeight = remember { mutableStateOf(0.dp) }
     val pagerIndicatorHeight = remember { mutableStateOf(0.dp) }
@@ -63,6 +65,40 @@ fun PenjurusanScreen(
             viewModel.startExitProcess.value = false
         }
     }
+    if (viewModel.startSendQuizAnswer.value) {
+        LaunchedEffect(key1 = true){
+            when (quizQuestion.value) {
+                is Resource.Error -> {/*TODO*/
+                }
+                is Resource.Loading -> {/*TODO*/
+                }
+                is Resource.Success -> {
+                    quizQuestion.value.data?.let {
+                        viewModel.sendQuizAnswer(
+                            title,
+                            (rootViewmodel
+                                .mapSectionIdToListOfAnswer[it.data.id]
+                                ?: listOf()).map { SingleSendQuizAnswerDataRequest(it) }
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(key1 = sendQuizAnswerState.value){
+        if(viewModel.startSendQuizAnswer.value){
+            when(sendQuizAnswerState.value){
+                is Resource.Error -> {/*TODO*/}
+                is Resource.Loading -> {/*TODO*/}
+                is Resource.Success -> {
+                    delay(1500)
+                    navController.navigate("${NavRoute.Penjurusan.name}/title=SectionTwo")
+                }
+            }
+        }
+    }
+
     LaunchedEffect(key1 = true) {
         viewModel.getQuizQuestion(title)
     }
@@ -301,7 +337,7 @@ fun PenjurusanScreen(
                                                 .mapSectionIdToMapOfQuestionIdToAnswerId[item.data.id]
                                                 ?.values ?: listOf()).none { it.isEmpty() }
                                         ) {
-                                            /*TODO Navigate to next section*/
+                                            viewModel.startSendQuizAnswer.value = true
                                         } else {
                                             when {
                                                 (index + 1) <= (item.data.questions.size - 1) -> {
@@ -312,7 +348,7 @@ fun PenjurusanScreen(
                                                                 ?.values
                                                                 ?: listOf()).none { it.isEmpty() }
                                                         ) {
-                                                            /*TODO Navigate to next section*/
+                                                            viewModel.startSendQuizAnswer.value = true
                                                         } else {
                                                             for (i in pagerState.currentPage until item.data.questions.size) {
                                                                 pagerState.animateScrollToPage(i)
@@ -340,7 +376,7 @@ fun PenjurusanScreen(
                                                             ?.values
                                                             ?: listOf()).none { it.isEmpty() }
                                                     ) {
-                                                        /*TODO Navigate to next section*/
+                                                        viewModel.startSendQuizAnswer.value = true
                                                     } else {
                                                         repeat(item.data.questions.size) { i ->
                                                             pagerState.animateScrollToPage(i)

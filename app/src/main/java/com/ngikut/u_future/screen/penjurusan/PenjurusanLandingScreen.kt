@@ -108,7 +108,7 @@ fun PenjurusanLandingScreen(
                     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                         AppButton(
                             onClick = {
-                                navController.navigate(route = NavRoute.Penjurusan.name) {
+                                navController.navigate(route = "${NavRoute.Penjurusan.name}/title=SectionOne") {
                                     popUpTo(NavRoute.PenjurusanLanding.name) {
                                         inclusive = true
                                     }

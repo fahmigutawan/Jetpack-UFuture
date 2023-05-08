@@ -307,7 +307,7 @@ fun QuizQuestionItem(
                                             color = AppColor.grey800
                                         ),
                                         onClick = {
-                                            onAnswerClick(option.id, option.text)
+                                            onAnswerClick(option.id, option.description)
                                         }
                                     )
                             ) {

@@ -256,11 +256,19 @@ class UFutureActivity : ComponentActivity() {
                         )
                     }
 
-                    composable(NavRoute.Penjurusan.name){
+                    composable(
+                        route = "${NavRoute.Penjurusan.name}/title={title}",
+                        arguments = listOf(
+                            navArgument("title"){
+                                type = NavType.StringType
+                            }
+                        )
+                    ){
+                        val type = it.arguments?.getString("title") ?: "SectionOne"
                         PenjurusanScreen(
                             navController = navController,
                             rootViewmodel = rootViewmodel,
-                            title = "SectionOne",
+                            title = type,
                             showSnackbar = showSnackbar
                         )
                     }

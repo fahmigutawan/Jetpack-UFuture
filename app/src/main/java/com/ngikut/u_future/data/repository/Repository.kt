@@ -3,6 +3,7 @@ package com.ngikut.u_future.data.repository
 import com.ngikut.u_future.data.datastore.DatastoreSource
 import com.ngikut.u_future.data.remote.RemoteSource
 import com.ngikut.u_future.data.remote.Resource
+import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizAnswerDataRequest
 import com.ngikut.u_future.model.remote.request.student.LoginRequest
 import com.ngikut.u_future.model.remote.request.student.RegisterRequest
 import com.ngikut.u_future.model.remote.response.student.LoginResponse
@@ -46,4 +47,6 @@ class Repository @Inject constructor(
     fun getProfile() = remoteSource.getProfile()
 
     fun getQuizQuestion(title:String) = remoteSource.getQuizQuestion(title)
+
+    fun sendQuizAnswer(title:String, request:List<SingleSendQuizAnswerDataRequest>) = remoteSource.sendQuizAnswer(title, request)
 }

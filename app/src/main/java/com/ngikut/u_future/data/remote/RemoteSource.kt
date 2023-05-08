@@ -1,9 +1,11 @@
 package com.ngikut.u_future.data.remote
 
+import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizAnswerDataRequest
 import com.ngikut.u_future.model.remote.request.student.LoginRequest
 import com.ngikut.u_future.model.remote.request.student.RegisterRequest
 import com.ngikut.u_future.model.remote.response.quiz.CheckPenjurusanStateResponse
 import com.ngikut.u_future.model.remote.response.quiz.GetQuizQuestionResponse
+import com.ngikut.u_future.model.remote.response.quiz.SendQuizAnswerResponse
 import com.ngikut.u_future.model.remote.response.student.GetProfileResponse
 import com.ngikut.u_future.model.remote.response.student.LoginResponse
 import com.ngikut.u_future.model.remote.response.student.RegisterResponse
@@ -87,6 +89,20 @@ class RemoteSource @Inject constructor(
             url("${HttpEndpoint.GET_QUIZ_QUESTION}?title=$title")
             contentType(ContentType.Application.Json)
         }.body<GetQuizQuestionResponse>()
+
+        if(res.meta.success){
+            Resource.Success(res)
+        }else{
+            Resource.Error(res.meta.message)
+        }
+    }
+
+    fun sendQuizAnswer(title:String,request:List<SingleSendQuizAnswerDataRequest>) = getResponse {
+        val res = client.post {
+            url("${HttpEndpoint.SEND_QUIZ_ANSWER}?title=$title")
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }.body<SendQuizAnswerResponse>()
 
         if(res.meta.success){
             Resource.Success(res)
