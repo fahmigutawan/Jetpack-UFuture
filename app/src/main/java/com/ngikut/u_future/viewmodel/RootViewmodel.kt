@@ -5,6 +5,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.lifecycle.ViewModel
 import com.ngikut.u_future.model.remote.response.quiz.GetQuizQuestionDataResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,5 +26,7 @@ class RootViewmodel @Inject constructor(
 
     val showLoginSessionEndedDialog = mutableStateOf(false)
 
-    val mapQuestionIdToAnswerId = mutableStateMapOf<String, String>()
+    val mapSectionIdToMapOfQuestionIdToAnswerId = mutableStateMapOf<String, SnapshotStateMap<String, String>>()
+    val mapSectionIdToListOfAnswer = mutableStateMapOf<String, SnapshotStateList<String>>()
+    val mapSectionIdToAlreadyOnLatestQuestionState = mutableStateMapOf<String, Boolean>()
 }

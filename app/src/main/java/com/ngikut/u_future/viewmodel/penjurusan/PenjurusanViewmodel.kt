@@ -17,7 +17,6 @@ class PenjurusanViewmodel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
     val startExitProcess = mutableStateOf(false)
-    val answeredQuestionCount = mutableStateOf(0f)
     val totalQuestionCount = mutableStateOf( 1f)
 
     val quizQuestion = MutableStateFlow<Resource<GetQuizQuestionResponse>>(Resource.Loading())

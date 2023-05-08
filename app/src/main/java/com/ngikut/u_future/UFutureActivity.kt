@@ -260,7 +260,8 @@ class UFutureActivity : ComponentActivity() {
                         PenjurusanScreen(
                             navController = navController,
                             rootViewmodel = rootViewmodel,
-                            title = "SectionOne"
+                            title = "SectionOne",
+                            showSnackbar = showSnackbar
                         )
                     }
 

@@ -25,6 +25,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPagerIndicator
+import com.google.accompanist.pager.PagerState
 import com.ngikut.u_future.model.remote.response.base.SingleQuizResponse
 import com.ngikut.u_future.screen.info_jurusan.DummyAiInfoJurusanRecomendation
 import com.ngikut.u_future.ui.theme.AppColor
@@ -239,20 +242,22 @@ fun JurusanItem(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class)
 @Composable
 fun QuizQuestionItem(
     minHeigth: Dp,
-    item:SingleQuizResponse,
-    pickedAnswerId:String,
-    onAnswerClick: (answerId:String) -> Unit,
+    item: SingleQuizResponse,
+    pickedAnswerId: String,
+    onAnswerClick: (answerId: String, data:String) -> Unit,
     onOtherQuestionClick: () -> Unit
 ) {
+    val padding = 20.dp
+
     Box(
         modifier = Modifier
             .padding(20.dp)
             .fillMaxWidth()
-            .heightIn(min = minHeigth)
+            .heightIn(min = minHeigth - (2 * padding.value).dp) //Because there is 20dp padding at top and bottom
             .clip(RoundedCornerShape(25.dp))
             .background(AppColor.grey50)
             .border(
@@ -283,7 +288,11 @@ fun QuizQuestionItem(
                         AnimatedContent(
                             targetState = pickedAnswerId == option.id,
                             transitionSpec = {
-                                fadeIn(animationSpec = tween(250)) with fadeOut(animationSpec = tween(250))
+                                fadeIn(animationSpec = tween(250)) with fadeOut(
+                                    animationSpec = tween(
+                                        250
+                                    )
+                                )
                             }
                         ) { isPicked ->
                             Box(
@@ -298,7 +307,7 @@ fun QuizQuestionItem(
                                             color = AppColor.grey800
                                         ),
                                         onClick = {
-                                            onAnswerClick(option.id)
+                                            onAnswerClick(option.id, option.text)
                                         }
                                     )
                             ) {
@@ -314,7 +323,7 @@ fun QuizQuestionItem(
             }
 
             AppTextButton(
-                onClick = { /*TODO*/ }
+                onClick = onOtherQuestionClick
             ) {
                 AppText(
                     text = "Berikan pertanyaan lain",
