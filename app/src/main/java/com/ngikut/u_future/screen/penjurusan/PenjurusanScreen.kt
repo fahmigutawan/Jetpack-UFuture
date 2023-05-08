@@ -1,6 +1,5 @@
 package com.ngikut.u_future.screen.penjurusan
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -25,13 +24,15 @@ import com.google.accompanist.pager.rememberPagerState
 import com.ngikut.u_future.R
 import com.ngikut.u_future.component.*
 import com.ngikut.u_future.data.remote.Resource
-import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizAnswerDataRequest
+import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizSectionOneAnswerDataRequest
+import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizSectionTwoAnswerDataRequest
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.ui.theme.AppType
 import com.ngikut.u_future.util.NavRoute
 import com.ngikut.u_future.viewmodel.RootViewmodel
 import com.ngikut.u_future.viewmodel.penjurusan.PenjurusanViewmodel
 import kotlinx.coroutines.*
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalPagerApi::class)
 @Composable
@@ -39,6 +40,7 @@ fun PenjurusanScreen(
     navController: NavController,
     rootViewmodel: RootViewmodel,
     showSnackbar: (String) -> Unit,
+    changeLoadingState: (Boolean) -> Unit,
     title: String
 ) {
     val bottomSheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
@@ -66,7 +68,7 @@ fun PenjurusanScreen(
         }
     }
     if (viewModel.startSendQuizAnswer.value) {
-        LaunchedEffect(key1 = true){
+        LaunchedEffect(key1 = true) {
             when (quizQuestion.value) {
                 is Resource.Error -> {/*TODO*/
                 }
@@ -74,26 +76,70 @@ fun PenjurusanScreen(
                 }
                 is Resource.Success -> {
                     quizQuestion.value.data?.let {
-                        viewModel.sendQuizAnswer(
-                            title,
-                            (rootViewmodel
-                                .mapSectionIdToListOfAnswer[it.data.id]
-                                ?: listOf()).map { SingleSendQuizAnswerDataRequest(it) }
-                        )
+                        changeLoadingState(true)
+                        when (title) {
+                            "SectionOne" -> {
+                                viewModel.sendSectionOneQuizAnswer(
+                                    title,
+                                    (rootViewmodel
+                                        .mapSectionIdToListOfAnswer[it.data.id]
+                                        ?: mutableStateMapOf()
+                                            ).map {
+                                            SingleSendQuizSectionOneAnswerDataRequest(
+                                                question_id = it.key,
+                                                data = it.value
+                                            )
+                                        }
+                                )
+                            }
+
+                            "SectionTwo" -> {
+                                viewModel.sendSectionTwoQuizAnswer(
+                                    title,
+                                    (rootViewmodel
+                                        .mapSectionIdToListOfAnswer[it.data.id]
+                                        ?: mutableStateMapOf()
+                                            ).map {
+                                            SingleSendQuizSectionTwoAnswerDataRequest(
+                                                question_id = it.key,
+                                                data = Integer.parseInt(it.value)
+                                            )
+                                        }
+                                )
+                            }
+                        }
                     }
                 }
             }
         }
     }
 
-    LaunchedEffect(key1 = sendQuizAnswerState.value){
-        if(viewModel.startSendQuizAnswer.value){
-            when(sendQuizAnswerState.value){
-                is Resource.Error -> {/*TODO*/}
-                is Resource.Loading -> {/*TODO*/}
+    LaunchedEffect(key1 = sendQuizAnswerState.value) {
+        if (viewModel.startSendQuizAnswer.value) {
+            when (sendQuizAnswerState.value) {
+                is Resource.Error -> {
+                    changeLoadingState(false)
+                }
+                is Resource.Loading -> {/*TODO*/
+                }
                 is Resource.Success -> {
                     delay(1500)
-                    navController.navigate("${NavRoute.Penjurusan.name}/title=SectionTwo")
+                    changeLoadingState(false)
+                    when (title) {
+                        "SectionOne" -> {
+                            navController.popBackStack()
+                            navController.navigate("${NavRoute.Penjurusan.name}/title=SectionTwo")
+                        }
+                        "SectionTwo" -> {
+                            navController.popBackStack()
+//                            navController.navigate("${NavRoute.Penjurusan.name}/title=SectionThree")
+                        }
+                        "SectionThree" -> {
+                            navController.popBackStack()
+                        }
+                        else -> {/*TODO*/
+                        }
+                    }
                 }
             }
         }
@@ -252,12 +298,25 @@ fun PenjurusanScreen(
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     AppText(
-                                        text = "Bagian 1/3",
+                                        text = "Bagian ${
+                                            when(title){
+                                                "SectionOne" -> 1
+                                                "SectionTwo" -> 2
+                                                "SectionThree" -> 3
+                                                else -> 3
+                                            }
+                                        }/3",
                                         style = AppType.body2,
                                         color = AppColor.grey500
                                     )
                                     AppText(
-                                        text = "1/10 Petanyaan",
+                                        text = "${
+                                            (rootViewmodel
+                                                .mapSectionIdToMapOfQuestionIdToAnswerId[item.data.id]
+                                                ?.values
+                                                ?: listOf()
+                                                    ).filter { it.isNotEmpty() }.size
+                                        }/${viewModel.totalQuestionCount.value.roundToInt()} Petanyaan",
                                         style = AppType.body2,
                                         color = AppColor.grey500
                                     )
@@ -289,7 +348,7 @@ fun PenjurusanScreen(
                                 rootViewmodel
                                     .mapSectionIdToListOfAnswer[
                                         item.data.id
-                                ] = mutableStateListOf()
+                                ] = mutableStateMapOf()
 
                                 rootViewmodel
                                     .mapSectionIdToAlreadyOnLatestQuestionState[
@@ -301,7 +360,10 @@ fun PenjurusanScreen(
                                     .questions
                                     .forEach { question ->
                                         rootViewmodel
-                                            .mapSectionIdToListOfAnswer[item.data.id]?.add("")
+                                            .mapSectionIdToListOfAnswer[item.data.id]?.put(
+                                            question.id,
+                                            ""
+                                        )
 
                                         rootViewmodel
                                             .mapSectionIdToMapOfQuestionIdToAnswerId[
@@ -329,7 +391,9 @@ fun PenjurusanScreen(
                                             ?.let { it[item.data.questions[index].id] = id }
                                         rootViewmodel
                                             .mapSectionIdToListOfAnswer[item.data.id]
-                                            ?.let { it[index] = text }
+                                            ?.let {
+                                                it[item.data.questions[index].id] = text
+                                            }
 
                                         delay(1000)
                                         if (
@@ -348,7 +412,8 @@ fun PenjurusanScreen(
                                                                 ?.values
                                                                 ?: listOf()).none { it.isEmpty() }
                                                         ) {
-                                                            viewModel.startSendQuizAnswer.value = true
+                                                            viewModel.startSendQuizAnswer.value =
+                                                                true
                                                         } else {
                                                             for (i in pagerState.currentPage until item.data.questions.size) {
                                                                 pagerState.animateScrollToPage(i)

@@ -3,7 +3,7 @@ package com.ngikut.u_future.model.remote.response.base
 data class SingleQuizResponse(
     val id:String,
     val text:String,
-    val options:List<SingleQuizOptionResponse>,
+    val options:List<SingleQuizOptionResponse>?,
     val createdAt: String,
     val updatedAt: String?,
     val deletedAt: String?

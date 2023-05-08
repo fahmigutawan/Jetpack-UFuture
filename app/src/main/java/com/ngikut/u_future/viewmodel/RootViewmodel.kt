@@ -20,6 +20,7 @@ class RootViewmodel @Inject constructor(
     val snackbarMessage = mutableStateOf("")
     val snackbarAction:MutableState<(SnackbarData?) -> Unit> = mutableStateOf({})
     val snackbarActionLabel = mutableStateOf("Tutup")
+    val isLoading = mutableStateOf(false)
 
     val currentRoute = mutableStateOf("")
     val showBottombar = mutableStateOf(false)
@@ -27,6 +28,6 @@ class RootViewmodel @Inject constructor(
     val showLoginSessionEndedDialog = mutableStateOf(false)
 
     val mapSectionIdToMapOfQuestionIdToAnswerId = mutableStateMapOf<String, SnapshotStateMap<String, String>>()
-    val mapSectionIdToListOfAnswer = mutableStateMapOf<String, SnapshotStateList<String>>()
+    val mapSectionIdToListOfAnswer = mutableStateMapOf<String, SnapshotStateMap<String, String>>()
     val mapSectionIdToAlreadyOnLatestQuestionState = mutableStateMapOf<String, Boolean>()
 }

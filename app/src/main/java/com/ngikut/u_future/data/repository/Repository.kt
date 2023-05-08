@@ -2,14 +2,10 @@ package com.ngikut.u_future.data.repository
 
 import com.ngikut.u_future.data.datastore.DatastoreSource
 import com.ngikut.u_future.data.remote.RemoteSource
-import com.ngikut.u_future.data.remote.Resource
-import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizAnswerDataRequest
+import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizSectionOneAnswerDataRequest
+import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizSectionTwoAnswerDataRequest
 import com.ngikut.u_future.model.remote.request.student.LoginRequest
 import com.ngikut.u_future.model.remote.request.student.RegisterRequest
-import com.ngikut.u_future.model.remote.response.student.LoginResponse
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class Repository @Inject constructor(
@@ -48,5 +44,7 @@ class Repository @Inject constructor(
 
     fun getQuizQuestion(title:String) = remoteSource.getQuizQuestion(title)
 
-    fun sendQuizAnswer(title:String, request:List<SingleSendQuizAnswerDataRequest>) = remoteSource.sendQuizAnswer(title, request)
+    fun sendSectionOneQuizAnswer(title:String, request:List<SingleSendQuizSectionOneAnswerDataRequest>) = remoteSource.sendSectionOneQuizAnswer(title, request)
+
+    fun sendSectionTwoQuizAnswer(title:String, request:List<SingleSendQuizSectionTwoAnswerDataRequest>) = remoteSource.sendSectionTwoQuizAnswer(title, request)
 }

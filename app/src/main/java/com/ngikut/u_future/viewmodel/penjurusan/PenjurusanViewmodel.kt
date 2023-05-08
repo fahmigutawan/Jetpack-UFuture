@@ -5,12 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ngikut.u_future.data.remote.Resource
 import com.ngikut.u_future.data.repository.Repository
-import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizAnswerDataRequest
+import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizSectionOneAnswerDataRequest
+import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizSectionTwoAnswerDataRequest
 import com.ngikut.u_future.model.remote.response.quiz.GetQuizQuestionResponse
 import com.ngikut.u_future.model.remote.response.quiz.SendQuizAnswerResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,9 +33,20 @@ class PenjurusanViewmodel @Inject constructor(
         }
     }
 
-    fun sendQuizAnswer(title:String, data:List<SingleSendQuizAnswerDataRequest>){
+    fun sendSectionOneQuizAnswer(title:String, data:List<SingleSendQuizSectionOneAnswerDataRequest>){
         viewModelScope.launch {
-            repository.sendQuizAnswer(
+            repository.sendSectionOneQuizAnswer(
+                title,
+                data
+            ).collect{
+                sendQuizAnswerState.value = it
+            }
+        }
+    }
+
+    fun sendSectionTwoQuizAnswer(title:String, data:List<SingleSendQuizSectionTwoAnswerDataRequest>){
+        viewModelScope.launch {
+            repository.sendSectionTwoQuizAnswer(
                 title,
                 data
             ).collect{

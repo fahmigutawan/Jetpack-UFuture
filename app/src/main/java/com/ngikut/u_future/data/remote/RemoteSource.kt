@@ -1,8 +1,11 @@
 package com.ngikut.u_future.data.remote
 
-import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizAnswerDataRequest
+import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizSectionOneAnswerDataRequest
+import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizSectionTwoAnswerDataRequest
 import com.ngikut.u_future.model.remote.request.student.LoginRequest
 import com.ngikut.u_future.model.remote.request.student.RegisterRequest
+import com.ngikut.u_future.model.remote.response.base.SingleQuizOptionResponse
+import com.ngikut.u_future.model.remote.response.base.SingleQuizResponse
 import com.ngikut.u_future.model.remote.response.quiz.CheckPenjurusanStateResponse
 import com.ngikut.u_future.model.remote.response.quiz.GetQuizQuestionResponse
 import com.ngikut.u_future.model.remote.response.quiz.SendQuizAnswerResponse
@@ -12,15 +15,10 @@ import com.ngikut.u_future.model.remote.response.student.RegisterResponse
 import com.ngikut.u_future.util.getResponse
 import io.ktor.client.*
 import io.ktor.client.call.*
-import io.ktor.client.plugins.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class RemoteSource @Inject constructor(
@@ -90,6 +88,85 @@ class RemoteSource @Inject constructor(
             contentType(ContentType.Application.Json)
         }.body<GetQuizQuestionResponse>()
 
+        when(title){
+            "SectionOne" -> {
+                if(res.meta.success){
+
+                    Resource.Success(res)
+                }else{
+                    Resource.Error(res.meta.message)
+                }
+            }
+
+            "SectionTwo" -> {
+                if(res.meta.success){
+                    Resource.Success(
+                        res.copy(
+                            data = res.data.copy(
+                                questions = res.data.questions.map {
+                                    SingleQuizResponse(
+                                        id = it.id,
+                                        text = it.text,
+                                        options = listOf(
+                                            SingleQuizOptionResponse(
+                                                id = "HARDCODED_1",
+                                                text = "Sangat Setuju",
+                                                description = "1",
+                                                createdAt = "",
+                                                updatedAt = "",
+                                                deletedAt = ""
+                                            ),
+                                            SingleQuizOptionResponse(
+                                                id = "HARDCODED_2",
+                                                text = "Setuju",
+                                                description = "2",
+                                                createdAt = "",
+                                                updatedAt = "",
+                                                deletedAt = ""
+                                            ),
+                                            SingleQuizOptionResponse(
+                                                id = "HARDCODED_3",
+                                                text = "Tidak Setuju",
+                                                description = "3",
+                                                createdAt = "",
+                                                updatedAt = "",
+                                                deletedAt = ""
+                                            ),
+                                            SingleQuizOptionResponse(
+                                                id = "HARDCODED_4",
+                                                text = "Sangat Tidak Setuju",
+                                                description = "4",
+                                                createdAt = "",
+                                                updatedAt = "",
+                                                deletedAt = ""
+                                            )
+                                        ),
+                                        createdAt = it.createdAt,
+                                        updatedAt = it.updatedAt,
+                                        deletedAt = it.deletedAt
+                                    )
+                                }
+                            )
+                        )
+                    )
+                }else{
+                    Resource.Error(res.meta.message)
+                }
+            }
+
+            else -> {
+                Resource.Error(res.meta.message)
+            }
+        }
+    }
+
+    fun sendSectionOneQuizAnswer(title:String,request:List<SingleSendQuizSectionOneAnswerDataRequest>) = getResponse {
+        val res = client.post {
+            url("${HttpEndpoint.SEND_QUIZ_ANSWER}?title=$title")
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }.body<SendQuizAnswerResponse>()
+
         if(res.meta.success){
             Resource.Success(res)
         }else{
@@ -97,7 +174,7 @@ class RemoteSource @Inject constructor(
         }
     }
 
-    fun sendQuizAnswer(title:String,request:List<SingleSendQuizAnswerDataRequest>) = getResponse {
+    fun sendSectionTwoQuizAnswer(title:String,request:List<SingleSendQuizSectionTwoAnswerDataRequest>) = getResponse {
         val res = client.post {
             url("${HttpEndpoint.SEND_QUIZ_ANSWER}?title=$title")
             contentType(ContentType.Application.Json)

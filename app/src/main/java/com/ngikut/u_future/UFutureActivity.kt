@@ -30,6 +30,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import coil.compose.rememberAsyncImagePainter
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.ngikut.u_future.component.AppBottomBar
 import com.ngikut.u_future.component.AppButton
 import com.ngikut.u_future.component.AppSnackbar
@@ -64,6 +66,8 @@ class UFutureActivity : ComponentActivity() {
             navController = rememberNavController()
             rootViewmodel = viewModel()
             val scaffoldState = rememberScaffoldState()
+            val loadingState =
+                rememberSwipeRefreshState(isRefreshing = rootViewmodel.isLoading.value)
             val showSnackbar: (message: String) -> Unit = { message ->
                 rootViewmodel.snackbarMessage.value = message
                 rootViewmodel.snackbarActive.value = true
@@ -77,6 +81,9 @@ class UFutureActivity : ComponentActivity() {
                 rootViewmodel.snackbarAction.value = action
                 rootViewmodel.snackbarMessage.value = message
                 rootViewmodel.snackbarActive.value = true
+            }
+            val changeLoadingState: (state: Boolean) -> Unit = {
+                rootViewmodel.isLoading.value = it
             }
             if (rootViewmodel.snackbarActive.value) {
                 LaunchedEffect(key1 = true) {
@@ -175,146 +182,149 @@ class UFutureActivity : ComponentActivity() {
                 }
             }
 
-            Scaffold(
-                scaffoldState = scaffoldState,
-                snackbarHost = {
-                    AppSnackbar(hostState = it)
-                },
-                bottomBar = {
-                    if (rootViewmodel.showBottombar.value) {
-                        AppBottomBar(
-                            currentRoute = rootViewmodel.currentRoute.value,
-                            onClick = {
-                                navController.navigate(it)
-                            }
-                        )
-                    }
-                },
-                floatingActionButton = {
-                    if (rootViewmodel.showBottombar.value) {
-                        FloatingActionButton(
-                            backgroundColor = AppColor.primary400,
-                            onClick = { navController.navigate(route = NavRoute.UBot.name) }
-                        ) {
-                            Icon(
-                                painter = rememberAsyncImagePainter(model = R.drawable.bottombar_ubot),
-                                contentDescription = "",
-                                tint = Color.Unspecified
+            SwipeRefresh(state = loadingState, onRefresh = { /*TODO*/ }) {
+                Scaffold(
+                    scaffoldState = scaffoldState,
+                    snackbarHost = {
+                        AppSnackbar(hostState = it)
+                    },
+                    bottomBar = {
+                        if (rootViewmodel.showBottombar.value) {
+                            AppBottomBar(
+                                currentRoute = rootViewmodel.currentRoute.value,
+                                onClick = {
+                                    navController.navigate(it)
+                                }
                             )
                         }
-                    }
-                },
-                isFloatingActionButtonDocked = true,
-                floatingActionButtonPosition = FabPosition.Center
-            ) {
-                NavHost(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(bottom = it.calculateBottomPadding()),
-                    navController = navController,
-                    startDestination = NavRoute.Splash.name
+                    },
+                    floatingActionButton = {
+                        if (rootViewmodel.showBottombar.value) {
+                            FloatingActionButton(
+                                backgroundColor = AppColor.primary400,
+                                onClick = { navController.navigate(route = NavRoute.UBot.name) }
+                            ) {
+                                Icon(
+                                    painter = rememberAsyncImagePainter(model = R.drawable.bottombar_ubot),
+                                    contentDescription = "",
+                                    tint = Color.Unspecified
+                                )
+                            }
+                        }
+                    },
+                    isFloatingActionButtonDocked = true,
+                    floatingActionButtonPosition = FabPosition.Center
                 ) {
-                    composable(NavRoute.Splash.name) {
-                        SplashScreen(navController = navController)
-                    }
-
-                    composable(NavRoute.Home.name) {
-                        HomeScreen(navController = navController)
-                    }
-
-                    composable(NavRoute.Comparation.name) {
-                        KomparasiJurusanScreen(navController = navController)
-                    }
-
-                    composable(NavRoute.UBot.name) {
-                        UbotScreen(navController = navController)
-                    }
-
-                    composable(NavRoute.Favorite.name) {
-
-                    }
-
-                    composable(NavRoute.Profile.name) {
-
-                    }
-
-                    composable(NavRoute.Onboard.name) {
-                        OnboardingScreen(navController = navController)
-                    }
-
-                    composable(NavRoute.Login.name) {
-                        LoginScreen(navController = navController, showSnackbar = showSnackbar)
-                    }
-
-                    composable(NavRoute.Register.name) {
-
-                    }
-
-                    composable(NavRoute.PenjurusanLanding.name) {
-                        PenjurusanLandingScreen(
-                            navController = navController
-                        )
-                    }
-
-                    composable(
-                        route = "${NavRoute.Penjurusan.name}/title={title}",
-                        arguments = listOf(
-                            navArgument("title"){
-                                type = NavType.StringType
-                            }
-                        )
-                    ){
-                        val type = it.arguments?.getString("title") ?: "SectionOne"
-                        PenjurusanScreen(
-                            navController = navController,
-                            rootViewmodel = rootViewmodel,
-                            title = type,
-                            showSnackbar = showSnackbar
-                        )
-                    }
-
-                    composable(NavRoute.InfoJurusan.name) {
-                        InfoJurusanScreen(
-                            navController = navController
-                        )
-                    }
-
-                    composable(NavRoute.InfoKampus.name) {
-
-                    }
-
-                    composable(NavRoute.InfoBeasiswa.name) {
-
-                    }
-
-                    composable(
-                        "${NavRoute.InfoJurusanOnSearch.name}/{query}",
-                        arguments = listOf(
-                            navArgument(name = "query") {
-                                type = NavType.StringType
-                            }
-                        )
+                    NavHost(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(bottom = it.calculateBottomPadding()),
+                        navController = navController,
+                        startDestination = NavRoute.Splash.name
                     ) {
-                        val query = it.arguments?.getString("query") ?: ""
-                        InfoJurusanOnSearchScreen(
-                            navController = navController,
-                            query = query
-                        )
-                    }
+                        composable(NavRoute.Splash.name) {
+                            SplashScreen(navController = navController)
+                        }
 
-                    composable(
-                        "${NavRoute.InfoJurusanByFakultas.name}/{name}",
-                        arguments = listOf(
-                            navArgument(name = "name") {
-                                type = NavType.StringType
-                            }
-                        )
-                    ) {
-                        val name = it.arguments?.getString("name") ?: ""
-                        InfoJurusanByFakultasScreen(
-                            navController = navController,
-                            fakultasName = name
-                        )
+                        composable(NavRoute.Home.name) {
+                            HomeScreen(navController = navController)
+                        }
+
+                        composable(NavRoute.Comparation.name) {
+                            KomparasiJurusanScreen(navController = navController)
+                        }
+
+                        composable(NavRoute.UBot.name) {
+                            UbotScreen(navController = navController)
+                        }
+
+                        composable(NavRoute.Favorite.name) {
+
+                        }
+
+                        composable(NavRoute.Profile.name) {
+
+                        }
+
+                        composable(NavRoute.Onboard.name) {
+                            OnboardingScreen(navController = navController)
+                        }
+
+                        composable(NavRoute.Login.name) {
+                            LoginScreen(navController = navController, showSnackbar = showSnackbar)
+                        }
+
+                        composable(NavRoute.Register.name) {
+
+                        }
+
+                        composable(NavRoute.PenjurusanLanding.name) {
+                            PenjurusanLandingScreen(
+                                navController = navController
+                            )
+                        }
+
+                        composable(
+                            route = "${NavRoute.Penjurusan.name}/title={title}",
+                            arguments = listOf(
+                                navArgument("title") {
+                                    type = NavType.StringType
+                                }
+                            )
+                        ) {
+                            val type = it.arguments?.getString("title") ?: "SectionOne"
+                            PenjurusanScreen(
+                                navController = navController,
+                                rootViewmodel = rootViewmodel,
+                                title = type,
+                                showSnackbar = showSnackbar,
+                                changeLoadingState = changeLoadingState
+                            )
+                        }
+
+                        composable(NavRoute.InfoJurusan.name) {
+                            InfoJurusanScreen(
+                                navController = navController
+                            )
+                        }
+
+                        composable(NavRoute.InfoKampus.name) {
+
+                        }
+
+                        composable(NavRoute.InfoBeasiswa.name) {
+
+                        }
+
+                        composable(
+                            "${NavRoute.InfoJurusanOnSearch.name}/{query}",
+                            arguments = listOf(
+                                navArgument(name = "query") {
+                                    type = NavType.StringType
+                                }
+                            )
+                        ) {
+                            val query = it.arguments?.getString("query") ?: ""
+                            InfoJurusanOnSearchScreen(
+                                navController = navController,
+                                query = query
+                            )
+                        }
+
+                        composable(
+                            "${NavRoute.InfoJurusanByFakultas.name}/{name}",
+                            arguments = listOf(
+                                navArgument(name = "name") {
+                                    type = NavType.StringType
+                                }
+                            )
+                        ) {
+                            val name = it.arguments?.getString("name") ?: ""
+                            InfoJurusanByFakultasScreen(
+                                navController = navController,
+                                fakultasName = name
+                            )
+                        }
                     }
                 }
             }

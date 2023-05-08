@@ -279,7 +279,7 @@ fun QuizQuestionItem(
             )
 
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                item.options.forEach { option ->
+                item.options?.forEach { option ->
                     Box(
                         modifier = Modifier
                             .padding(horizontal = 12.dp),

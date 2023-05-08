@@ -99,6 +99,9 @@ dependencies {
     implementation "com.google.accompanist:accompanist-pager:0.25.1"
     implementation "com.google.accompanist:accompanist-pager-indicators:0.25.1"
 
+    //Swipe refresh
+    implementation "com.google.accompanist:accompanist-swiperefresh:0.25.1"
+
     //Icon Extended
     implementation "androidx.compose.material:material-icons-extended:$compose_ui_version"
 }
