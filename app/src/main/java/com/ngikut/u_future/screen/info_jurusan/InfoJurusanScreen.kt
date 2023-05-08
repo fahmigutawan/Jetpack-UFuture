@@ -31,6 +31,8 @@ import com.ngikut.u_future.component.AppText
 import com.ngikut.u_future.component.AppTextButton
 import com.ngikut.u_future.component.AppTextInputNormal
 import com.ngikut.u_future.component.InfoJurusanRecommendationByAI
+import com.ngikut.u_future.model.dummy.DummyAiInfoJurusanRecommendation
+import com.ngikut.u_future.model.dummy.DummyFakultasInfoJurusan
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.ui.theme.AppType
 import com.ngikut.u_future.util.NavRoute
@@ -47,29 +49,29 @@ fun InfoJurusanScreen(
     val fakultasItemWidth = LocalConfiguration.current.screenWidthDp / 6
     val fakultasItemMinHeight = fakultasItemWidth * 3 / 2
     val listOfDummyRecom = listOf(
-        DummyAiInfoJurusanRecomendation(
+        DummyAiInfoJurusanRecommendation(
             prodiName = "Teknik Informatika",
             arah = "Saintek",
             tag = "Komputer, Jaringan",
             percent = 75.0
         ),
-        DummyAiInfoJurusanRecomendation(
+        DummyAiInfoJurusanRecommendation(
             prodiName = "Teknologi Informasi",
             arah = "Saintek",
             tag = "Komputer, Jaringan",
             percent = 39.0
         ),
-        DummyAiInfoJurusanRecomendation(
+        DummyAiInfoJurusanRecommendation(
             prodiName = "Sistem Informasi",
             arah = "Saintek",
             tag = "Komputer, Jaringan",
             percent = 66.0
-        ), DummyAiInfoJurusanRecomendation(
+        ), DummyAiInfoJurusanRecommendation(
             prodiName = "Pendidikan Teknologi Informasi",
             arah = "Saintek",
             tag = "Komputer, Jaringan",
             percent = 72.0
-        ), DummyAiInfoJurusanRecomendation(
+        ), DummyAiInfoJurusanRecommendation(
             prodiName = "Teknik Komputer",
             arah = "Saintek",
             tag = "Komputer, Jaringan",
@@ -329,15 +331,3 @@ fun InfoJurusanScreen(
         }
     }
 }
-
-data class DummyAiInfoJurusanRecomendation(
-    val prodiName: String,
-    val arah: String,
-    val tag: String,
-    val percent: Double
-)
-
-data class DummyFakultasInfoJurusan(
-    val icon: Int,
-    val text: String
-)

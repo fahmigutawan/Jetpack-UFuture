@@ -20,23 +20,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPagerIndicator
-import com.google.accompanist.pager.PagerState
+import com.ngikut.u_future.R
+import com.ngikut.u_future.model.dummy.DummyAiInfoJurusanRecommendation
+import com.ngikut.u_future.model.dummy.DummyAiInfoKampusRecommendation
 import com.ngikut.u_future.model.remote.response.base.SingleQuizResponse
-import com.ngikut.u_future.screen.info_jurusan.DummyAiInfoJurusanRecomendation
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.ui.theme.AppType
 import kotlin.math.roundToInt
 
 @Composable
 fun InfoJurusanRecommendationByAI(
-    item: DummyAiInfoJurusanRecomendation,
+    item: DummyAiInfoJurusanRecommendation,
     onClick: () -> Unit,
     recommendationItemWidth: Int
 ) {
@@ -135,10 +137,104 @@ fun InfoJurusanRecommendationByAI(
 }
 
 @Composable
+fun InfoKampusRecommendationByAI(
+    item: DummyAiInfoKampusRecommendation,
+    onClick: () -> Unit,
+    recommendationItemWidth: Int
+) {
+    Box(
+        modifier = Modifier
+            .width(recommendationItemWidth.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(AppColor.grey50)
+            .border(
+                width = 1.dp,
+                color = AppColor.grey600,
+                shape = RoundedCornerShape(16.dp)
+            )
+            .clickable(
+                interactionSource = MutableInteractionSource(),
+                indication = rememberRipple(
+                    bounded = true,
+                    color = AppColor.grey800
+                ),
+                onClick = onClick
+            )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(
+                modifier = Modifier.widthIn(max = (recommendationItemWidth - 60).dp)
+            ) {
+                AppText(
+                    text = item.prodiName,
+                    style = AppType.subheading2
+                )
+
+                AppText(
+                    text = item.univ,
+                    style = AppType.body2,
+                    color = AppColor.primary400
+                )
+
+                if (item.isNegeri) {
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(Int.MAX_VALUE.dp))
+                            .background(AppColor.primary50)
+                    ) {
+                        AppText(
+                            modifier = Modifier.padding(4.dp),
+                            text = "Negeri",
+                            style = AppType.subheading3,
+                            color = AppColor.primary400
+                        )
+                    }
+                }else{
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(Int.MAX_VALUE.dp))
+                            .background(AppColor.primary50)
+                    ) {
+                        AppText(
+                            modifier = Modifier.padding(4.dp),
+                            text = "Swasta",
+                            style = AppType.subheading3,
+                            color = AppColor.primary400
+                        )
+                    }
+                }
+            }
+
+            Box(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .size(32.dp)
+                    .background(AppColor.primary50),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(24.dp),
+                    painter = rememberAsyncImagePainter(model = R.drawable.dashboard_dummy_univindo_icon),
+                    contentDescription = "",
+                    tint = Color.Unspecified
+                )
+            }
+        }
+    }
+}
+
+@Composable
 fun JurusanItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    item: DummyAiInfoJurusanRecomendation
+    item: DummyAiInfoJurusanRecommendation
 ) {
     val itemWidth = remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
@@ -248,7 +344,7 @@ fun QuizQuestionItem(
     minHeigth: Dp,
     item: SingleQuizResponse,
     pickedAnswerId: String,
-    onAnswerClick: (answerId: String, data:String) -> Unit,
+    onAnswerClick: (answerId: String, data: String) -> Unit,
     onOtherQuestionClick: () -> Unit
 ) {
     val padding = 20.dp

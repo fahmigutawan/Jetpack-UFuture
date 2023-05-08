@@ -10,4 +10,5 @@ import javax.inject.Inject
 class InfoKampusViewmodel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
+    val searchValueState = mutableStateOf("")
 }

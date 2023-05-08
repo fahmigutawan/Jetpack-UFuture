@@ -46,6 +46,7 @@ import com.ngikut.u_future.UFutureActivity
 import com.ngikut.u_future.component.AppButton
 import com.ngikut.u_future.component.AppText
 import com.ngikut.u_future.component.AppTextButton
+import com.ngikut.u_future.data.remote.Resource
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.ui.theme.AppType
 import com.ngikut.u_future.util.NavRoute
@@ -74,36 +75,48 @@ fun HomeScreen(navController: NavController) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Row(
-                        modifier = Modifier,
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(42.dp)
-                                .clip(CircleShape)
-                                .background(AppColor.grey500),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                modifier = Modifier.size(32.dp),
-                                imageVector = Icons.Default.Person,
-                                contentDescription = "",
-                                tint = AppColor.grey50
-                            )
+                    when(getProfileState.value){
+                        is Resource.Error -> {
+                            /*TODO*/
                         }
-                        Column {
-                            AppText(
-                                text = "Hi, Fahmi",
-                                style = AppType.h4,
-                                color = AppColor.grey50
-                            )
-                            AppText(
-                                text = "Selamat datang",
-                                style = AppType.subheading3,
-                                color = AppColor.grey50
-                            )
+                        is Resource.Loading -> {
+                            /*TODO*/
+                        }
+                        is Resource.Success -> {
+                            getProfileState.value.data?.let {
+                                Row(
+                                    modifier = Modifier,
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(42.dp)
+                                            .clip(CircleShape)
+                                            .background(AppColor.grey500),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            modifier = Modifier.size(32.dp),
+                                            imageVector = Icons.Default.Person,
+                                            contentDescription = "",
+                                            tint = AppColor.grey50
+                                        )
+                                    }
+                                    Column {
+                                        AppText(
+                                            text = "Hi, ${it.data.name}",
+                                            style = AppType.h4,
+                                            color = AppColor.grey50
+                                        )
+                                        AppText(
+                                            text = "Selamat datang",
+                                            style = AppType.subheading3,
+                                            color = AppColor.grey50
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
 
@@ -303,21 +316,6 @@ fun HomeScreen(navController: NavController) {
                 }
             }
         }
-
-//        item {
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(horizontal = 20.dp),
-//                verticalAlignment = Alignment.CenterVertically,
-//                horizontalArrangement = Arrangement.SpaceBetween
-//            ) {
-//                AppText(text = "Info Terbaru", style = AppType.h3)
-//                AppTextButton(onClick = { /*TODO*/ }) {
-//                    AppText(text = "Lihat semua", style = AppType.body2, color = AppColor.grey500)
-//                }
-//            }
-//        }
 
         item {
             Row(

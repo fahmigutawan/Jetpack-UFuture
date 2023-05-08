@@ -40,6 +40,7 @@ import com.ngikut.u_future.screen.home.HomeScreen
 import com.ngikut.u_future.screen.info_jurusan.InfoJurusanByFakultasScreen
 import com.ngikut.u_future.screen.info_jurusan.InfoJurusanOnSearchScreen
 import com.ngikut.u_future.screen.info_jurusan.InfoJurusanScreen
+import com.ngikut.u_future.screen.info_kampus.InfoKampusScreen
 import com.ngikut.u_future.screen.komparasi_jurusan.KomparasiJurusanScreen
 import com.ngikut.u_future.screen.login.LoginScreen
 import com.ngikut.u_future.screen.onboarding.OnboardingScreen
@@ -289,7 +290,7 @@ class UFutureActivity : ComponentActivity() {
                         }
 
                         composable(NavRoute.InfoKampus.name) {
-
+                            InfoKampusScreen(navController = navController)
                         }
 
                         composable(NavRoute.InfoBeasiswa.name) {

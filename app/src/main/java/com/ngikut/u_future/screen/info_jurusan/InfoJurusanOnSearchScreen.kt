@@ -28,6 +28,7 @@ import com.ngikut.u_future.component.AppText
 import com.ngikut.u_future.component.AppTextInputNormal
 import com.ngikut.u_future.component.AppTopBar
 import com.ngikut.u_future.component.JurusanItem
+import com.ngikut.u_future.model.dummy.DummyAiInfoJurusanRecommendation
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.ui.theme.AppType
 import com.ngikut.u_future.viewmodel.info_jurusan.InfoJurusanOnSearchViewmodel
@@ -41,29 +42,29 @@ fun InfoJurusanOnSearchScreen(
     val viewModel = hiltViewModel<InfoJurusanOnSearchViewmodel>()
     val localFocus = LocalFocusManager.current
     val listOfDummyJurusan = listOf(
-        DummyAiInfoJurusanRecomendation(
+        DummyAiInfoJurusanRecommendation(
             prodiName = "Teknik Informatika",
             arah = "Saintek",
             tag = "Komputer, Jaringan",
             percent = 75.0
         ),
-        DummyAiInfoJurusanRecomendation(
+        DummyAiInfoJurusanRecommendation(
             prodiName = "Teknologi Informasi",
             arah = "Saintek",
             tag = "Komputer, Jaringan",
             percent = 39.0
         ),
-        DummyAiInfoJurusanRecomendation(
+        DummyAiInfoJurusanRecommendation(
             prodiName = "Sistem Informasi",
             arah = "Saintek",
             tag = "Komputer, Jaringan",
             percent = 66.0
-        ), DummyAiInfoJurusanRecomendation(
+        ), DummyAiInfoJurusanRecommendation(
             prodiName = "Pendidikan Teknologi Informasi",
             arah = "Saintek",
             tag = "Komputer, Jaringan",
             percent = 72.0
-        ), DummyAiInfoJurusanRecomendation(
+        ), DummyAiInfoJurusanRecommendation(
             prodiName = "Teknik Komputer",
             arah = "Saintek",
             tag = "Komputer, Jaringan",
