@@ -30,9 +30,9 @@ fun SplashScreen(
     val iconWidth = LocalConfiguration.current.screenWidthDp / 2
     val checkPenjurusanState = viewModel.checkPenjurusanState.collectAsState()
 
-    LaunchedEffect(key1 = checkPenjurusanState.value){
-        if(viewModel.startCheckingPenjurusanState.value){
-            when(checkPenjurusanState.value){
+    LaunchedEffect(key1 = checkPenjurusanState.value) {
+        if (viewModel.startCheckingPenjurusanState.value) {
+            when (checkPenjurusanState.value) {
                 is Resource.Error -> {
                     navController.navigate(NavRoute.Home.name) {
                         popUpTo(NavRoute.Splash.name) {
@@ -41,17 +41,18 @@ fun SplashScreen(
                     }
                     viewModel.startCheckingPenjurusanState.value = false
                 }
-                is Resource.Loading -> {/*TODO*/}
+                is Resource.Loading -> {/*TODO*/
+                }
                 is Resource.Success -> {
                     checkPenjurusanState.value.data?.let {
-                        if(it.data.already_taken){
+                        if (it.data.already_taken) {
                             navController.navigate(NavRoute.Home.name) {
                                 popUpTo(NavRoute.Splash.name) {
                                     inclusive = true
                                 }
                             }
-                        }else{
-                            navController.navigate(NavRoute.PenjurusanLanding.name){
+                        } else {
+                            navController.navigate(NavRoute.PenjurusanLanding.name) {
                                 popUpTo(NavRoute.Splash.name) {
                                     inclusive = true
                                 }
@@ -61,11 +62,6 @@ fun SplashScreen(
                     viewModel.startCheckingPenjurusanState.value = false
                 }
             }
-        }
-    }
-    LaunchedEffect(key1 = viewModel.startCheckingPenjurusanState.value){
-        if(viewModel.startCheckingPenjurusanState.value){
-            viewModel.checkPenjurusanState()
         }
     }
 
@@ -79,18 +75,24 @@ fun SplashScreen(
                 }
             } else {
                 viewModel.getToken { token ->
-                    if(token.isEmpty()){
+                    if (token.isEmpty()) {
                         navController.navigate(NavRoute.Login.name) {
                             popUpTo(NavRoute.Splash.name) {
                                 inclusive = true
                             }
                         }
-                    }else{
+                    } else {
                         viewModel.startCheckingPenjurusanState.value = true
                     }
                 }
 
             }
+        }
+    }
+
+    if (viewModel.startCheckingPenjurusanState.value) {
+        LaunchedEffect(key1 = true) {
+            viewModel.checkPenjurusanState()
         }
     }
 

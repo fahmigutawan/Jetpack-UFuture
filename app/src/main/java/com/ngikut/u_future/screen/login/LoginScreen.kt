@@ -57,7 +57,7 @@ fun LoginScreen(
             is Resource.Success -> {
                 loginState.value.data?.let {
                     viewModel.saveToken(it.data?.token ?: "")
-                    delay(1500)
+                    delay(2500)
                     viewModel.startCheckingPenjurusanState.value = true
                     viewModel.startLogin.value = false
                 }
@@ -97,10 +97,14 @@ fun LoginScreen(
     }
 
     if (viewModel.startLogin.value) {
-        viewModel.login()
+        LaunchedEffect(key1 = true){
+            viewModel.login()
+        }
     }
     if (viewModel.startCheckingPenjurusanState.value) {
-        viewModel.checkPenjurusanState()
+        LaunchedEffect(key1 = true){
+            viewModel.checkPenjurusanState()
+        }
     }
 
     Column(

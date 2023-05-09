@@ -299,7 +299,7 @@ fun PenjurusanScreen(
                                 ) {
                                     AppText(
                                         text = "Bagian ${
-                                            when(title){
+                                            when (title) {
                                                 "SectionOne" -> 1
                                                 "SectionTwo" -> 2
                                                 "SectionThree" -> 3
