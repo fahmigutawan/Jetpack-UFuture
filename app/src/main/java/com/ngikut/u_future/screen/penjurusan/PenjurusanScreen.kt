@@ -25,7 +25,7 @@ import com.ngikut.u_future.R
 import com.ngikut.u_future.component.*
 import com.ngikut.u_future.data.remote.Resource
 import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizSectionOneAnswerDataRequest
-import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizSectionTwoAnswerDataRequest
+import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizSectionTwoAndThreeAnswerDataRequest
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.ui.theme.AppType
 import com.ngikut.u_future.util.NavRoute
@@ -77,8 +77,8 @@ fun PenjurusanScreen(
                 is Resource.Success -> {
                     quizQuestion.value.data?.let {
                         changeLoadingState(true)
-                        when (title) {
-                            "SectionOne" -> {
+                        when {
+                            title == "SectionOne" -> {
                                 viewModel.sendSectionOneQuizAnswer(
                                     title,
                                     (rootViewmodel
@@ -93,14 +93,14 @@ fun PenjurusanScreen(
                                 )
                             }
 
-                            "SectionTwo" -> {
-                                viewModel.sendSectionTwoQuizAnswer(
+                            title == "SectionTwo" || title == "SectionThree"-> {
+                                viewModel.sendSectionTwoAndThreeQuizAnswer(
                                     title,
                                     (rootViewmodel
                                         .mapSectionIdToListOfAnswer[it.data.id]
                                         ?: mutableStateMapOf()
                                             ).map {
-                                            SingleSendQuizSectionTwoAnswerDataRequest(
+                                            SingleSendQuizSectionTwoAndThreeAnswerDataRequest(
                                                 question_id = it.key,
                                                 data = Integer.parseInt(it.value)
                                             )
@@ -135,10 +135,10 @@ fun PenjurusanScreen(
 //                            navController.navigate("${NavRoute.Penjurusan.name}/title=SectionThree")
                         }
                         "SectionThree" -> {
-                            navController.popBackStack()
+
+//                            navController.popBackStack()
                         }
-                        else -> {/*TODO*/
-                        }
+                        else -> {/*TODO*/ }
                     }
                 }
             }

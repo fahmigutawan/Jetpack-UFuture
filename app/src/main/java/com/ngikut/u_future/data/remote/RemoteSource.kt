@@ -1,7 +1,7 @@
 package com.ngikut.u_future.data.remote
 
 import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizSectionOneAnswerDataRequest
-import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizSectionTwoAnswerDataRequest
+import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizSectionTwoAndThreeAnswerDataRequest
 import com.ngikut.u_future.model.remote.request.student.LoginRequest
 import com.ngikut.u_future.model.remote.request.student.RegisterRequest
 import com.ngikut.u_future.model.remote.response.base.SingleQuizOptionResponse
@@ -88,8 +88,8 @@ class RemoteSource @Inject constructor(
             contentType(ContentType.Application.Json)
         }.body<GetQuizQuestionResponse>()
 
-        when(title){
-            "SectionOne" -> {
+        when{
+            title == "SectionOne" -> {
                 if(res.meta.success){
 
                     Resource.Success(res)
@@ -98,7 +98,7 @@ class RemoteSource @Inject constructor(
                 }
             }
 
-            "SectionTwo" -> {
+            title == "SectionTwo" || title == "SectionThree" -> {
                 if(res.meta.success){
                     Resource.Success(
                         res.copy(
@@ -174,7 +174,7 @@ class RemoteSource @Inject constructor(
         }
     }
 
-    fun sendSectionTwoQuizAnswer(title:String,request:List<SingleSendQuizSectionTwoAnswerDataRequest>) = getResponse {
+    fun sendSectionTwoAndThreeQuizAnswer(title:String, request:List<SingleSendQuizSectionTwoAndThreeAnswerDataRequest>) = getResponse {
         val res = client.post {
             url("${HttpEndpoint.SEND_QUIZ_ANSWER}?title=$title")
             contentType(ContentType.Application.Json)

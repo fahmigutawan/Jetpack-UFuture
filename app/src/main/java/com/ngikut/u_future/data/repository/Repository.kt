@@ -3,7 +3,7 @@ package com.ngikut.u_future.data.repository
 import com.ngikut.u_future.data.datastore.DatastoreSource
 import com.ngikut.u_future.data.remote.RemoteSource
 import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizSectionOneAnswerDataRequest
-import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizSectionTwoAnswerDataRequest
+import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizSectionTwoAndThreeAnswerDataRequest
 import com.ngikut.u_future.model.remote.request.student.LoginRequest
 import com.ngikut.u_future.model.remote.request.student.RegisterRequest
 import javax.inject.Inject
@@ -46,5 +46,5 @@ class Repository @Inject constructor(
 
     fun sendSectionOneQuizAnswer(title:String, request:List<SingleSendQuizSectionOneAnswerDataRequest>) = remoteSource.sendSectionOneQuizAnswer(title, request)
 
-    fun sendSectionTwoQuizAnswer(title:String, request:List<SingleSendQuizSectionTwoAnswerDataRequest>) = remoteSource.sendSectionTwoQuizAnswer(title, request)
+    fun sendSectionTwoAndThreeQuizAnswer(title:String, request:List<SingleSendQuizSectionTwoAndThreeAnswerDataRequest>) = remoteSource.sendSectionTwoAndThreeQuizAnswer(title, request)
 }

@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.ngikut.u_future.data.remote.Resource
 import com.ngikut.u_future.data.repository.Repository
 import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizSectionOneAnswerDataRequest
-import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizSectionTwoAnswerDataRequest
+import com.ngikut.u_future.model.remote.request.quiz.SingleSendQuizSectionTwoAndThreeAnswerDataRequest
 import com.ngikut.u_future.model.remote.response.quiz.GetQuizQuestionResponse
 import com.ngikut.u_future.model.remote.response.quiz.SendQuizAnswerResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,9 +44,9 @@ class PenjurusanViewmodel @Inject constructor(
         }
     }
 
-    fun sendSectionTwoQuizAnswer(title:String, data:List<SingleSendQuizSectionTwoAnswerDataRequest>){
+    fun sendSectionTwoAndThreeQuizAnswer(title:String, data:List<SingleSendQuizSectionTwoAndThreeAnswerDataRequest>){
         viewModelScope.launch {
-            repository.sendSectionTwoQuizAnswer(
+            repository.sendSectionTwoAndThreeQuizAnswer(
                 title,
                 data
             ).collect{
