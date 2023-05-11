@@ -1,16 +1,14 @@
 package com.ngikut.u_future.util
 
 import com.ngikut.u_future.data.remote.Resource
-import io.ktor.client.call.*
 import io.ktor.client.plugins.*
-import io.ktor.client.statement.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 inline fun <reified T> getResponse(
-    crossinline httpCall: suspend () -> Resource<T>
+    crossinline httpCall: suspend () -> Unit
 ): Flow<Resource<T>> = flow {
     emit(Resource.Loading<T>())
 

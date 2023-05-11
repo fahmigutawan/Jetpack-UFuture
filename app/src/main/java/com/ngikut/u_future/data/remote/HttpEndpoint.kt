@@ -10,4 +10,5 @@ object HttpEndpoint {
     const val CHECK_PENJURUSAN = "$BASE_URL/quiz/status-quiz"
     const val GET_QUIZ_QUESTION = "$BASE_URL/quiz/question"
     const val SEND_QUIZ_ANSWER = "$BASE_URL/quiz/attempt-quiz"
+    const val GET_QUIZ_ANALYSIS = "$BASE_URL/quiz/analisis"
 }

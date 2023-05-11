@@ -47,4 +47,6 @@ class Repository @Inject constructor(
     fun sendSectionOneQuizAnswer(title:String, request:List<SingleSendQuizSectionOneAnswerDataRequest>) = remoteSource.sendSectionOneQuizAnswer(title, request)
 
     fun sendSectionTwoAndThreeQuizAnswer(title:String, request:List<SingleSendQuizSectionTwoAndThreeAnswerDataRequest>) = remoteSource.sendSectionTwoAndThreeQuizAnswer(title, request)
+
+    fun getQuizAnalysis() = remoteSource.getQuizAnalysis()
 }

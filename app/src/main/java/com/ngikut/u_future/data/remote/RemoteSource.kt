@@ -7,6 +7,7 @@ import com.ngikut.u_future.model.remote.request.student.RegisterRequest
 import com.ngikut.u_future.model.remote.response.base.SingleQuizOptionResponse
 import com.ngikut.u_future.model.remote.response.base.SingleQuizResponse
 import com.ngikut.u_future.model.remote.response.quiz.CheckPenjurusanStateResponse
+import com.ngikut.u_future.model.remote.response.quiz.GetQuizAnalysisResponse
 import com.ngikut.u_future.model.remote.response.quiz.GetQuizQuestionResponse
 import com.ngikut.u_future.model.remote.response.quiz.SendQuizAnswerResponse
 import com.ngikut.u_future.model.remote.response.student.GetProfileResponse
@@ -56,7 +57,7 @@ class RemoteSource @Inject constructor(
         }
     }
 
-    fun checkPenjurusanState() = getResponse {
+    fun checkPenjurusanState():Flow<Resource<CheckPenjurusanStateResponse>> = getResponse {
         val res = client.get {
             url(HttpEndpoint.CHECK_PENJURUSAN)
             contentType(ContentType.Application.Json)
@@ -69,7 +70,7 @@ class RemoteSource @Inject constructor(
         }
     }
 
-    fun getProfile() = getResponse {
+    fun getProfile():Flow<Resource<GetProfileResponse>> = getResponse {
         val res = client.get {
             url(HttpEndpoint.GET_USER)
             contentType(ContentType.Application.Json)
@@ -82,24 +83,24 @@ class RemoteSource @Inject constructor(
         }
     }
 
-    fun getQuizQuestion(title:String) = getResponse{
+    fun getQuizQuestion(title: String):Flow<Resource<GetQuizQuestionResponse>> = getResponse {
         val res = client.get {
             url("${HttpEndpoint.GET_QUIZ_QUESTION}?title=$title")
             contentType(ContentType.Application.Json)
         }.body<GetQuizQuestionResponse>()
 
-        when{
+        when {
             title == "SectionOne" -> {
-                if(res.meta.success){
+                if (res.meta.success) {
 
                     Resource.Success(res)
-                }else{
+                } else {
                     Resource.Error(res.meta.message)
                 }
             }
 
             title == "SectionTwo" || title == "SectionThree" -> {
-                if(res.meta.success){
+                if (res.meta.success) {
                     Resource.Success(
                         res.copy(
                             data = res.data.copy(
@@ -149,7 +150,7 @@ class RemoteSource @Inject constructor(
                             )
                         )
                     )
-                }else{
+                } else {
                     Resource.Error(res.meta.message)
                 }
             }
@@ -160,30 +161,49 @@ class RemoteSource @Inject constructor(
         }
     }
 
-    fun sendSectionOneQuizAnswer(title:String,request:List<SingleSendQuizSectionOneAnswerDataRequest>) = getResponse {
+    fun sendSectionOneQuizAnswer(
+        title: String,
+        request: List<SingleSendQuizSectionOneAnswerDataRequest>
+    ):Flow<Resource<SendQuizAnswerResponse>> = getResponse {
         val res = client.post {
             url("${HttpEndpoint.SEND_QUIZ_ANSWER}?title=$title")
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body<SendQuizAnswerResponse>()
 
-        if(res.meta.success){
+        if (res.meta.success) {
             Resource.Success(res)
-        }else{
+        } else {
             Resource.Error(res.meta.message)
         }
     }
 
-    fun sendSectionTwoAndThreeQuizAnswer(title:String, request:List<SingleSendQuizSectionTwoAndThreeAnswerDataRequest>) = getResponse {
+    fun sendSectionTwoAndThreeQuizAnswer(
+        title: String,
+        request: List<SingleSendQuizSectionTwoAndThreeAnswerDataRequest>
+    ):Flow<Resource<SendQuizAnswerResponse>> = getResponse {
         val res = client.post {
             url("${HttpEndpoint.SEND_QUIZ_ANSWER}?title=$title")
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body<SendQuizAnswerResponse>()
 
-        if(res.meta.success){
+        if (res.meta.success) {
             Resource.Success(res)
-        }else{
+        } else {
+            Resource.Error(res.meta.message)
+        }
+    }
+
+    fun getQuizAnalysis(): Flow<Resource<GetQuizAnalysisResponse>> = getResponse {
+        val res = client.get {
+            url(HttpEndpoint.GET_QUIZ_ANALYSIS)
+            contentType(ContentType.Application.Json)
+        }.body<GetQuizAnalysisResponse>()
+
+        if (res.meta.success) {
+            Resource.Success(res)
+        } else {
             Resource.Error(res.meta.message)
         }
     }
