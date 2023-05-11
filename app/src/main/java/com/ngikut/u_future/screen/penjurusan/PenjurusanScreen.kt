@@ -132,11 +132,11 @@ fun PenjurusanScreen(
                         }
                         "SectionTwo" -> {
                             navController.popBackStack()
-//                            navController.navigate("${NavRoute.Penjurusan.name}/title=SectionThree")
+                            navController.navigate("${NavRoute.Penjurusan.name}/title=SectionThree")
                         }
                         "SectionThree" -> {
-
-//                            navController.popBackStack()
+                            navController.popBackStack()
+                            navController.navigate(NavRoute.PenjurusanSuccess.name)
                         }
                         else -> {/*TODO*/ }
                     }
