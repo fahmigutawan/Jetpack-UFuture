@@ -18,6 +18,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextAlign
@@ -31,7 +33,6 @@ import com.ngikut.u_future.model.dummy.DummyAiInfoKampusRecommendation
 import com.ngikut.u_future.model.dummy.DummyUnivInfoKampus
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.ui.theme.AppType
-import com.ngikut.u_future.util.NavRoute
 import com.ngikut.u_future.viewmodel.info_kampus.InfoKampusViewmodel
 
 @Composable
@@ -42,7 +43,7 @@ fun InfoKampusScreen(
     val localFocus = LocalFocusManager.current
     val recommendationItemWidth = LocalConfiguration.current.screenWidthDp * 7 / 10
     val univItemWidth = LocalConfiguration.current.screenWidthDp / 6
-    val univItemMinHeight = univItemWidth * 3 / 2
+    val univItemMinHeight = univItemWidth * 3 / 4
     val listOfDummyRecom = listOf(
         DummyAiInfoKampusRecommendation(
             prodiName = "Teknik Informatika",
@@ -65,31 +66,45 @@ fun InfoKampusScreen(
             isNegeri = true
         ),
     )
-    val listOfDummyUniv = listOf(
+    val listOfDummyUnivNegeri = listOf(
         DummyUnivInfoKampus(
-            icon = R.drawable.infojurusan_fak_komputer_icon,
-            text = "Komputer & Teknologi"
+            icon = R.drawable.logo_kampus_ui,
+            text = "UI"
         ),
         DummyUnivInfoKampus(
-            icon = R.drawable.infojurusan_fak_ekonomibisnis_icon,
-            text = "Ekonomi & Bisnis"
+            icon = R.drawable.logo_kampus_ub,
+            text = "UB"
         ),
         DummyUnivInfoKampus(
-            icon = R.drawable.infojurusan_fak_sosial_icon,
-            text = "Sosial & Humaniora"
+            icon = R.drawable.logo_kampus_ugm,
+            text = "UGM"
         ),
         DummyUnivInfoKampus(
-            icon = R.drawable.infojurusan_fak_mipa_icon,
-            text = "Matematika & IPA"
+            icon = R.drawable.logo_kampus_itb,
+            text = "ITB"
         ),
         DummyUnivInfoKampus(
-            icon = R.drawable.infojurusan_fak_kesehatan_icon,
-            text = "Kedokteran & Kesehatan"
+            icon = R.drawable.logo_kampus_undip,
+            text = "UNDIP"
         ),
         DummyUnivInfoKampus(
-            icon = R.drawable.infojurusan_fak_teknik_icon,
-            text = "Teknik"
+            icon = R.drawable.logo_kampus_its,
+            text = "ITS"
         )
+    )
+    val listOfDummyUnivSwasta = listOf(
+        DummyUnivInfoKampus(
+            icon = R.drawable.logo_kampus_binus,
+            text = "BINUS"
+        ),
+        DummyUnivInfoKampus(
+            icon = R.drawable.logo_kampus_binus,
+            text = "BINUS"
+        ),
+        DummyUnivInfoKampus(
+            icon = R.drawable.logo_kampus_binus,
+            text = "BINUS"
+        ),
     )
 
     LazyVerticalGrid(
@@ -147,7 +162,9 @@ fun InfoKampusScreen(
                                             ),
                                             onClick = {
                                                 localFocus.clearFocus(true)
-                                                if (viewModel.searchValueState.value
+                                                if (viewModel
+                                                        .searchValueState
+                                                        .value
                                                         .trim()
                                                         .isNotEmpty()
                                                 ) {
@@ -265,17 +282,30 @@ fun InfoKampusScreen(
             }
         }
 
-        items(listOfDummyUniv) { item ->
+        item(
+            span = { GridItemSpan(3) }
+        ) {
+            AppText(
+                modifier = Modifier.padding(
+                    top = 20.dp,
+                    start = 20.dp,
+                    end = 20.dp
+                ),
+                text = "Perguruan Tinggi Negeri",
+                style = AppType.h3
+            )
+        }
+
+        items(listOfDummyUnivNegeri) { item ->
             Box(
                 modifier = Modifier
+                    .clip(RoundedCornerShape(16.dp))
                     .width(univItemWidth.dp)
                     .heightIn(min = univItemMinHeight.dp)
                     .padding(12.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(AppColor.grey50)
                     .border(
-                        color = AppColor.grey400,
-                        width = 1.dp,
+                        color = AppColor.grey100,
+                        width = 2.dp,
                         shape = RoundedCornerShape(16.dp)
                     )
                     .clickable(
@@ -286,17 +316,87 @@ fun InfoKampusScreen(
             ) {
                 Column(
                     modifier = Modifier
+//                        .shadow(elevation = 4.dp, shape = RoundedCornerShape(16.dp))
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(AppColor.grey50)
                         .padding(12.dp)
                         .fillMaxWidth()
                         .heightIn(min = univItemMinHeight.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Box(
+
+                    Icon(
+                        painter = rememberAsyncImagePainter(model = item.icon),
                         modifier = Modifier
                             .size(42.dp)
                             .clip(CircleShape)
-                            .background(AppColor.grey500)
+                            .background(AppColor.grey500),
+                        contentDescription = "",
+                        tint = Color.Unspecified
+                    )
+
+                    AppText(
+                        text = item.text,
+                        style = AppType.subheading3,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        }
+
+        item(
+            span = { GridItemSpan(3) }
+        ) {
+            AppText(
+                modifier = Modifier.padding(
+                    top  = 20.dp,
+                    start = 20.dp,
+                    end = 20.dp
+                ),
+                text = "Perguruan Tinggi Swasta",
+                style = AppType.h3
+            )
+        }
+
+        items(listOfDummyUnivSwasta) { item ->
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .width(univItemWidth.dp)
+                    .heightIn(min = univItemMinHeight.dp)
+                    .padding(12.dp)
+                    .border(
+                        color = AppColor.grey100,
+                        width = 2.dp,
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                    .clickable(
+                        interactionSource = MutableInteractionSource(),
+                        indication = rememberRipple(color = AppColor.grey800, bounded = true),
+                        onClick = {/*TODO*/ }
+                    )
+            ) {
+                Column(
+                    modifier = Modifier
+//                        .shadow(elevation = 4.dp, shape = RoundedCornerShape(16.dp))
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(AppColor.grey50)
+                        .padding(12.dp)
+                        .fillMaxWidth()
+                        .heightIn(min = univItemMinHeight.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+
+                    Icon(
+                        painter = rememberAsyncImagePainter(model = item.icon),
+                        modifier = Modifier
+                            .size(42.dp)
+                            .clip(CircleShape)
+                            .background(AppColor.grey500),
+                        contentDescription = "",
+                        tint = Color.Unspecified
                     )
 
                     AppText(

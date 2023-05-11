@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalFocusManager
@@ -246,7 +247,11 @@ fun InfoJurusanScreen(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = 20.dp, start = 20.dp, end = 20.dp),
+                                .padding(
+                                    top = 20.dp,
+                                    start = 20.dp,
+                                    end = 20.dp
+                                ),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
@@ -266,7 +271,10 @@ fun InfoJurusanScreen(
                         ) {
                             Spacer(modifier = Modifier)
                             listOfDummyRecom.forEach {
-                                InfoJurusanRecommendationByAI(item = it, recommendationItemWidth = recommendationItemWidth, onClick = {/*TODO*/})
+                                InfoJurusanRecommendationByAI(
+                                    item = it,
+                                    recommendationItemWidth = recommendationItemWidth,
+                                    onClick = {/*TODO*/ })
                             }
                             Spacer(modifier = Modifier)
                         }
@@ -279,7 +287,10 @@ fun InfoJurusanScreen(
             span = { GridItemSpan(3) }
         ) {
             AppText(
-                modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp),
+                modifier = Modifier.padding(
+                    start = 20.dp,
+                    end = 20.dp
+                ),
                 text = "Fakultas",
                 style = AppType.h3
             )
@@ -291,11 +302,9 @@ fun InfoJurusanScreen(
                     .width(fakultasItemWidth.dp)
                     .heightIn(min = fakultasItemMinHeight.dp)
                     .padding(12.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(AppColor.grey50)
                     .border(
-                        color = AppColor.grey400,
-                        width = 1.dp,
+                        color = AppColor.grey100,
+                        width = 2.dp,
                         shape = RoundedCornerShape(16.dp)
                     )
                     .clickable(
@@ -308,6 +317,9 @@ fun InfoJurusanScreen(
             ) {
                 Column(
                     modifier = Modifier
+//                        .shadow(elevation = 4.dp, shape = RoundedCornerShape(16.dp))
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(AppColor.grey50)
                         .padding(12.dp)
                         .fillMaxWidth()
                         .heightIn(min = fakultasItemMinHeight.dp),

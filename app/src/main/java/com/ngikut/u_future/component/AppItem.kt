@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
@@ -48,8 +49,8 @@ fun InfoJurusanRecommendationByAI(
             .clip(RoundedCornerShape(16.dp))
             .background(AppColor.grey50)
             .border(
-                width = 1.dp,
-                color = AppColor.grey600,
+                width = 2.dp,
+                color = AppColor.grey100,
                 shape = RoundedCornerShape(16.dp)
             )
             .clickable(
@@ -148,8 +149,8 @@ fun InfoKampusRecommendationByAI(
             .clip(RoundedCornerShape(16.dp))
             .background(AppColor.grey50)
             .border(
-                width = 1.dp,
-                color = AppColor.grey600,
+                width = 2.dp,
+                color = AppColor.grey100,
                 shape = RoundedCornerShape(16.dp)
             )
             .clickable(
@@ -245,8 +246,8 @@ fun JurusanItem(
             .clip(RoundedCornerShape(16.dp))
             .background(AppColor.grey50)
             .border(
-                width = 1.dp,
-                color = AppColor.grey600,
+                width = 2.dp,
+                color = AppColor.grey100,
                 shape = RoundedCornerShape(16.dp)
             )
             .clickable(
