@@ -278,7 +278,7 @@ fun KomparasiJurusanScreen(
                                     ) {
                                         Row(
                                             modifier = Modifier
-                                                .fillMaxSize()
+                                                .fillMaxHeight()
                                                 .padding(12.dp),
                                             verticalAlignment = Alignment.CenterVertically,
                                             horizontalArrangement = Arrangement.spacedBy(8.dp)
