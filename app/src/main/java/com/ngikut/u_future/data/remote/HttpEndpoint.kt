@@ -14,4 +14,5 @@ object HttpEndpoint {
     const val PREDICT_JURUSAN = "$BASE_URL/jurusan/predict"
     const val GET_TOP_3_JURUSAN = "$BASE_URL/jurusan/recomendation"
     const val COMPARE_TWO_JURUSAN = "$BASE_URL/jurusan/compare"
+    const val SEND_CHAT_BOT = "$BASE_URL/bot/send"
 }

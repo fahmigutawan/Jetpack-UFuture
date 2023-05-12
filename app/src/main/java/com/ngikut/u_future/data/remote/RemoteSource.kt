@@ -6,6 +6,7 @@ import com.ngikut.u_future.model.remote.request.student.LoginRequest
 import com.ngikut.u_future.model.remote.request.student.RegisterRequest
 import com.ngikut.u_future.model.remote.response.base.SingleQuizOptionResponse
 import com.ngikut.u_future.model.remote.response.base.SingleQuizResponse
+import com.ngikut.u_future.model.remote.response.chatbot.SendChatBotResponse
 import com.ngikut.u_future.model.remote.response.jurusan.PredictJurusanResponse
 import com.ngikut.u_future.model.remote.response.komparasi_jurusan.CompareTwoJurusanResponse
 import com.ngikut.u_future.model.remote.response.quiz.CheckPenjurusanStateResponse
@@ -241,15 +242,28 @@ class RemoteSource @Inject constructor(
         }
     }
 
-    fun compareTwoJurusan(jurusan1:String, jurusan2:String) = getResponse {
+    fun compareTwoJurusan(jurusan1: String, jurusan2: String) = getResponse {
         val res = client.get {
             url("${HttpEndpoint.COMPARE_TWO_JURUSAN}?compareOne=$jurusan1&compareTwo=$jurusan2")
             contentType(ContentType.Application.Json)
         }.body<CompareTwoJurusanResponse>()
 
-        if(res.meta.success){
+        if (res.meta.success) {
             Resource.Success(res)
-        }else{
+        } else {
+            Resource.Error(res.meta.message)
+        }
+    }
+
+    fun sendChatBot(message: String) = getResponse {
+        val res = client.get {
+            url("${HttpEndpoint.SEND_CHAT_BOT}?message=$message")
+            contentType(ContentType.Application.Json)
+        }.body<SendChatBotResponse>()
+
+        if (res.meta.success) {
+            Resource.Success(res)
+        } else {
             Resource.Error(res.meta.message)
         }
     }

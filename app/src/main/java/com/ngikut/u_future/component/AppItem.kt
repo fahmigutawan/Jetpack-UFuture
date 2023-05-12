@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -569,6 +570,99 @@ fun PickedCompareItem(
             }
         }
     }
+}
+
+@Composable
+fun UbotBubble(
+    modifier: Modifier = Modifier,
+    isError: Boolean,
+    message: String,
+    chatType: UBotBubbleType
+) {
+    val screenWidth = LocalConfiguration.current.screenWidthDp
+
+    Box(modifier = modifier.fillMaxWidth()) {
+        when (chatType) {
+            UBotBubbleType.ME -> {
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .widthIn(max = (screenWidth/10 * 8).dp)
+                            .clip(
+                                RoundedCornerShape(
+                                    topStart = 16.dp,
+                                    topEnd = 16.dp,
+                                    bottomStart = 16.dp
+                                )
+                            )
+                            .background(AppColor.primary400)
+                    ) {
+                        AppText(
+                            modifier = Modifier.padding(16.dp),
+                            text = message,
+                            style = AppType.body1,
+                            color = AppColor.grey50
+                        )
+                    }
+                }
+            }
+
+            UBotBubbleType.UBOT -> {
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.TopStart
+                ) {
+                    Row(
+                        modifier = Modifier.widthIn(max = (screenWidth/10 * 8).dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(42.dp)
+                                .shadow(elevation = 2.dp, shape = CircleShape)
+                                .clip(CircleShape)
+                                .background(AppColor.primary50),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                modifier = Modifier.size(32.dp),
+                                painter = rememberAsyncImagePainter(model = R.drawable.bottombar_ubot),
+                                contentDescription = "",
+                                tint = AppColor.primary400
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .widthIn(max = (screenWidth/10*8 - 60).dp)
+                                .clip(
+                                    RoundedCornerShape(
+                                        topEnd = 16.dp,
+                                        bottomEnd = 16.dp,
+                                        bottomStart = 16.dp
+                                    )
+                                )
+                                .background(AppColor.primary50)
+                        ) {
+                            AppText(
+                                modifier = Modifier.padding(16.dp),
+                                text = message,
+                                style = AppType.body1
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+enum class UBotBubbleType {
+    ME,
+    UBOT
 }
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class)

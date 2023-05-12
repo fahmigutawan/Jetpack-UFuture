@@ -62,4 +62,6 @@ class Repository @Inject constructor(
 
     fun compareTwoJurusan(jurusan1: String, jurusan2: String) =
         remoteSource.compareTwoJurusan(jurusan1, jurusan2)
+
+    fun sendChatBot(message:String) = remoteSource.sendChatBot(message)
 }
