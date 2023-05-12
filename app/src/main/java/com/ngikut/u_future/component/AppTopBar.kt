@@ -56,10 +56,11 @@ fun AppTopBarMidTitle(
     title: String
 ) {
     TopAppBar(modifier = Modifier.fillMaxWidth(), backgroundColor = AppColor.grey50) {
-        Row(modifier = Modifier.padding(horizontal = 16.dp),verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.CenterStart){
             Box(
                 modifier = Modifier
                     .size(42.dp)
+                    .padding(horizontal = 16.dp)
                     .clip(CircleShape)
                     .background(AppColor.grey50)
                     .border(color = AppColor.grey500, width = 1.dp, shape = CircleShape)
@@ -77,7 +78,9 @@ fun AppTopBarMidTitle(
                 )
             }
 
-            AppText(text = title, style = AppType.subheading1)
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+                AppText(text = title, style = AppType.subheading1)
+            }
         }
     }
 }

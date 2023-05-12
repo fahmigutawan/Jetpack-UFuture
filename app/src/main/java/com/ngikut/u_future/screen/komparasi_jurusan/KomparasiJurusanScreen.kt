@@ -56,7 +56,7 @@ fun KomparasiJurusanScreen(
     LaunchedEffect(key1 = viewModel.jurusan1Picked.value) {
         if (isPickedFirst.value) {
             if (viewModel.jurusan1Picked.value != null && viewModel.jurusan2Picked.value != null) {
-                navController.navigate("${NavRoute.ComparationResult.name}/${viewModel.jurusan1Picked.value}/${viewModel.jurusan2Picked.value}")
+                navController.navigate("${NavRoute.ComparationResult.name}/${viewModel.jurusan1Picked.value?.nama_jurusan ?: ""}/${viewModel.jurusan2Picked.value?.nama_jurusan ?: ""}")
                 isPickedFirst.value = false
             }
         }
@@ -65,7 +65,7 @@ fun KomparasiJurusanScreen(
     LaunchedEffect(key1 = viewModel.jurusan2Picked.value) {
         if (isPickedFirst.value) {
             if (viewModel.jurusan1Picked.value != null && viewModel.jurusan2Picked.value != null) {
-                navController.navigate("${NavRoute.ComparationResult.name}/${viewModel.jurusan1Picked.value}/${viewModel.jurusan2Picked.value}")
+                navController.navigate("${NavRoute.ComparationResult.name}/${viewModel.jurusan1Picked.value?.nama_jurusan ?: ""}/${viewModel.jurusan2Picked.value?.nama_jurusan ?: ""}")
                 isPickedFirst.value = false
             }
         }
