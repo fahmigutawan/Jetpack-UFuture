@@ -27,7 +27,7 @@ class RemoteSource @Inject constructor(
 ) {
     fun login(
         request: LoginRequest
-    ): Flow<Resource<LoginResponse>> = getResponse {
+    ) = getResponse {
         val res = client.post {
             url(HttpEndpoint.LOGIN)
             contentType(ContentType.Application.Json)
@@ -43,7 +43,7 @@ class RemoteSource @Inject constructor(
 
     fun register(
         request: RegisterRequest
-    ): Flow<Resource<RegisterResponse>> = getResponse {
+    ) = getResponse {
         val res = client.post {
             url(HttpEndpoint.LOGIN)
             contentType(ContentType.Application.Json)
@@ -57,7 +57,7 @@ class RemoteSource @Inject constructor(
         }
     }
 
-    fun checkPenjurusanState():Flow<Resource<CheckPenjurusanStateResponse>> = getResponse {
+    fun checkPenjurusanState() = getResponse {
         val res = client.get {
             url(HttpEndpoint.CHECK_PENJURUSAN)
             contentType(ContentType.Application.Json)
@@ -70,7 +70,7 @@ class RemoteSource @Inject constructor(
         }
     }
 
-    fun getProfile():Flow<Resource<GetProfileResponse>> = getResponse {
+    fun getProfile() = getResponse {
         val res = client.get {
             url(HttpEndpoint.GET_USER)
             contentType(ContentType.Application.Json)
@@ -83,7 +83,7 @@ class RemoteSource @Inject constructor(
         }
     }
 
-    fun getQuizQuestion(title: String):Flow<Resource<GetQuizQuestionResponse>> = getResponse {
+    fun getQuizQuestion(title: String) = getResponse {
         val res = client.get {
             url("${HttpEndpoint.GET_QUIZ_QUESTION}?title=$title")
             contentType(ContentType.Application.Json)
@@ -164,7 +164,7 @@ class RemoteSource @Inject constructor(
     fun sendSectionOneQuizAnswer(
         title: String,
         request: List<SingleSendQuizSectionOneAnswerDataRequest>
-    ):Flow<Resource<SendQuizAnswerResponse>> = getResponse {
+    ) = getResponse {
         val res = client.post {
             url("${HttpEndpoint.SEND_QUIZ_ANSWER}?title=$title")
             contentType(ContentType.Application.Json)
@@ -181,7 +181,7 @@ class RemoteSource @Inject constructor(
     fun sendSectionTwoAndThreeQuizAnswer(
         title: String,
         request: List<SingleSendQuizSectionTwoAndThreeAnswerDataRequest>
-    ):Flow<Resource<SendQuizAnswerResponse>> = getResponse {
+    ) = getResponse {
         val res = client.post {
             url("${HttpEndpoint.SEND_QUIZ_ANSWER}?title=$title")
             contentType(ContentType.Application.Json)
@@ -195,7 +195,7 @@ class RemoteSource @Inject constructor(
         }
     }
 
-    fun getQuizAnalysis(): Flow<Resource<GetQuizAnalysisResponse>> = getResponse {
+    fun getQuizAnalysis() = getResponse {
         val res = client.get {
             url(HttpEndpoint.GET_QUIZ_ANALYSIS)
             contentType(ContentType.Application.Json)

@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 inline fun <reified T> getResponse(
-    crossinline httpCall: suspend () -> Unit
+    crossinline httpCall: suspend () -> Resource<T>
 ): Flow<Resource<T>> = flow {
-    emit(Resource.Loading<T>())
+    emit(Resource.Loading())
 
     try {
         emit(httpCall())

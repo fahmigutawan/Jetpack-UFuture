@@ -75,7 +75,7 @@ fun HomeScreen(navController: NavController) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    when(getProfileState.value){
+                    when (getProfileState.value) {
                         is Resource.Error -> {
                             /*TODO*/
                         }
@@ -121,7 +121,9 @@ fun HomeScreen(navController: NavController) {
                     }
 
                     AppButton(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            /*TODO*/
+                        },
                         backgroundColor = AppColor.grey50,
                         shape = RoundedCornerShape(Int.MAX_VALUE.dp)
                     ) {

@@ -50,3 +50,34 @@ fun AppTopBar(
         }
     }
 }
+@Composable
+fun AppTopBarMidTitle(
+    onBackClicked: () -> Unit,
+    title: String
+) {
+    TopAppBar(modifier = Modifier.fillMaxWidth(), backgroundColor = AppColor.grey50) {
+        Row(modifier = Modifier.padding(horizontal = 16.dp),verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Box(
+                modifier = Modifier
+                    .size(42.dp)
+                    .clip(CircleShape)
+                    .background(AppColor.grey50)
+                    .border(color = AppColor.grey500, width = 1.dp, shape = CircleShape)
+                    .clickable(
+                        interactionSource = MutableInteractionSource(),
+                        indication = rememberRipple(bounded = true, color = AppColor.grey800),
+                        onClick = onBackClicked
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "",
+                    tint = AppColor.grey500
+                )
+            }
+
+            AppText(text = title, style = AppType.subheading1)
+        }
+    }
+}

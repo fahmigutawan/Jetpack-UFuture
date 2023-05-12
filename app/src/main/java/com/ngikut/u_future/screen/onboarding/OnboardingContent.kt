@@ -40,7 +40,7 @@ fun OnboardingContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColor.grey200)
+            .background(AppColor.primary50)
     ) {
         if (!isLast) {
             Box(
