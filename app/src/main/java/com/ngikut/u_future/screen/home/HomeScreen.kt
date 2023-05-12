@@ -79,9 +79,11 @@ fun HomeScreen(navController: NavController) {
                         is Resource.Error -> {
                             /*TODO*/
                         }
+
                         is Resource.Loading -> {
                             /*TODO*/
                         }
+
                         is Resource.Success -> {
                             getProfileState.value.data?.let {
                                 Row(
@@ -123,6 +125,7 @@ fun HomeScreen(navController: NavController) {
                     AppButton(
                         onClick = {
                             /*TODO*/
+                            navController.navigate(NavRoute.PenjurusanSuccess.name)
                         },
                         backgroundColor = AppColor.grey50,
                         shape = RoundedCornerShape(Int.MAX_VALUE.dp)

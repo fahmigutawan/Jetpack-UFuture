@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ngikut.u_future.data.remote.Resource
 import com.ngikut.u_future.data.repository.Repository
+import com.ngikut.u_future.model.remote.response.jurusan.PredictJurusanResponse
 import com.ngikut.u_future.model.remote.response.quiz.GetQuizAnalysisResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -16,6 +17,7 @@ class PenjurusanSuccessViewmodel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
     val getQuizAnalysisState = MutableStateFlow<Resource<GetQuizAnalysisResponse>>(Resource.Loading())
+    val predictJurusanState = MutableStateFlow<Resource<PredictJurusanResponse>>(Resource.Loading())
 
     fun getQuizAnalysis() {
         viewModelScope.launch {
@@ -24,5 +26,18 @@ class PenjurusanSuccessViewmodel @Inject constructor(
                 getQuizAnalysisState.value = it
             }
         }
+    }
+
+    fun getPredictJurusan() {
+        viewModelScope.launch {
+            repository.getPredictJurusan().collect{
+                predictJurusanState.value = it
+            }
+        }
+    }
+
+    init {
+        getQuizAnalysis()
+        getPredictJurusan()
     }
 }

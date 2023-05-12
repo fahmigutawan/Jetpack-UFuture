@@ -11,4 +11,6 @@ object HttpEndpoint {
     const val GET_QUIZ_QUESTION = "$BASE_URL/quiz/question"
     const val SEND_QUIZ_ANSWER = "$BASE_URL/quiz/attempt-quiz"
     const val GET_QUIZ_ANALYSIS = "$BASE_URL/quiz/analisis"
+    const val PREDICT_JURUSAN = "$BASE_URL/jurusan/predict"
+    const val GET_TOP_3_JURUSAN = "$BASE_URL/jurusan/recomendation"
 }

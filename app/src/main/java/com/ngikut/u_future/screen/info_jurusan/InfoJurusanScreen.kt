@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +33,7 @@ import com.ngikut.u_future.component.AppText
 import com.ngikut.u_future.component.AppTextButton
 import com.ngikut.u_future.component.AppTextInputNormal
 import com.ngikut.u_future.component.InfoJurusanRecommendationByAI
+import com.ngikut.u_future.data.remote.Resource
 import com.ngikut.u_future.model.dummy.DummyAiInfoJurusanRecommendation
 import com.ngikut.u_future.model.dummy.DummyFakultasInfoJurusan
 import com.ngikut.u_future.ui.theme.AppColor
@@ -49,36 +51,7 @@ fun InfoJurusanScreen(
     val recommendationItemWidth = LocalConfiguration.current.screenWidthDp * 7 / 10
     val fakultasItemWidth = LocalConfiguration.current.screenWidthDp / 6
     val fakultasItemMinHeight = fakultasItemWidth * 3 / 2
-    val listOfDummyRecom = listOf(
-        DummyAiInfoJurusanRecommendation(
-            prodiName = "Teknik Informatika",
-            arah = "Saintek",
-            tag = "Komputer, Jaringan",
-            percent = 75.0
-        ),
-        DummyAiInfoJurusanRecommendation(
-            prodiName = "Teknologi Informasi",
-            arah = "Saintek",
-            tag = "Komputer, Jaringan",
-            percent = 39.0
-        ),
-        DummyAiInfoJurusanRecommendation(
-            prodiName = "Sistem Informasi",
-            arah = "Saintek",
-            tag = "Komputer, Jaringan",
-            percent = 66.0
-        ), DummyAiInfoJurusanRecommendation(
-            prodiName = "Pendidikan Teknologi Informasi",
-            arah = "Saintek",
-            tag = "Komputer, Jaringan",
-            percent = 72.0
-        ), DummyAiInfoJurusanRecommendation(
-            prodiName = "Teknik Komputer",
-            arah = "Saintek",
-            tag = "Komputer, Jaringan",
-            percent = 74.0
-        )
-    )
+    val top3JurusanState = viewModel.top3JurusanState.collectAsState()
     val listOfDummyFakultas = listOf(
         DummyFakultasInfoJurusan(
             icon = R.drawable.infojurusan_fak_komputer_icon,
@@ -270,11 +243,19 @@ fun InfoJurusanScreen(
                             horizontalArrangement = Arrangement.spacedBy(20.dp)
                         ) {
                             Spacer(modifier = Modifier)
-                            listOfDummyRecom.forEach {
-                                InfoJurusanRecommendationByAI(
-                                    item = it,
-                                    recommendationItemWidth = recommendationItemWidth,
-                                    onClick = {/*TODO*/ })
+                            when(top3JurusanState.value){
+                                is Resource.Error -> {/*TODO*/}
+                                is Resource.Loading -> {/*TODO*/}
+                                is Resource.Success -> {
+                                    top3JurusanState.value.data?.let {
+                                        it.data.forEach { item ->
+                                            InfoJurusanRecommendationByAI(
+                                                item = item,
+                                                recommendationItemWidth = recommendationItemWidth,
+                                                onClick = {/*TODO*/ })
+                                        }
+                                    }
+                                }
                             }
                             Spacer(modifier = Modifier)
                         }

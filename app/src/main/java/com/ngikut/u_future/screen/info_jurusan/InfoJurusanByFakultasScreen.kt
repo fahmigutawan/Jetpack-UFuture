@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import com.ngikut.u_future.component.AppTopBar
 import com.ngikut.u_future.component.JurusanItem
 import com.ngikut.u_future.model.dummy.DummyAiInfoJurusanRecommendation
+import com.ngikut.u_future.model.remote.response.base.SingleJurusanResponse
 import com.ngikut.u_future.viewmodel.info_jurusan.InfoJurusanByFakultasViewmodel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -59,7 +60,16 @@ fun InfoJurusanByFakultasScreen(
         }
     ) {
         LazyColumn {
-            items(listOfDummyJurusan) {
+            items(listOfDummyJurusan.map {
+                SingleJurusanResponse(
+                    "",
+                    "",
+                    it.percent.toFloat()/100,
+                    it.prodiName,
+                    it.tag,
+                    it.arah
+                )
+            }) {
                 JurusanItem(
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
                     item = it,

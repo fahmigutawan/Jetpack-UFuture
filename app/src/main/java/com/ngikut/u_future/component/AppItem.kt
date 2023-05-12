@@ -32,6 +32,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.ngikut.u_future.R
 import com.ngikut.u_future.model.dummy.DummyAiInfoJurusanRecommendation
 import com.ngikut.u_future.model.dummy.DummyAiInfoKampusRecommendation
+import com.ngikut.u_future.model.remote.response.base.SingleJurusanResponse
 import com.ngikut.u_future.model.remote.response.base.SingleQuizResponse
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.ui.theme.AppType
@@ -39,7 +40,7 @@ import kotlin.math.roundToInt
 
 @Composable
 fun InfoJurusanRecommendationByAI(
-    item: DummyAiInfoJurusanRecommendation,
+    item: SingleJurusanResponse,
     onClick: () -> Unit,
     recommendationItemWidth: Int
 ) {
@@ -72,7 +73,7 @@ fun InfoJurusanRecommendationByAI(
                 modifier = Modifier.widthIn(max = (recommendationItemWidth - 60).dp)
             ) {
                 AppText(
-                    text = item.prodiName,
+                    text = item.nama_jurusan,
                     style = AppType.subheading2
                 )
                 Box(
@@ -82,13 +83,13 @@ fun InfoJurusanRecommendationByAI(
                 ) {
                     AppText(
                         modifier = Modifier.padding(8.dp),
-                        text = item.arah,
+                        text = item.jurusan,
                         style = AppType.body2,
                         color = AppColor.primary400
                     )
                 }
                 AppText(
-                    text = item.tag,
+                    text = item.tag_jurusan,
                     style = AppType.subheading3,
                     color = AppColor.grey600
                 )
@@ -96,14 +97,22 @@ fun InfoJurusanRecommendationByAI(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    CircularProgressIndicator(
-                        progress = (item.percent / 100).toFloat(),
-                        color = AppColor.primary400,
-                        modifier = Modifier.size(24.dp),
-                        strokeWidth = 3.dp
-                    )
+                    Box{
+                        CircularProgressIndicator(
+                            progress = 1f,
+                            color = AppColor.grey500,
+                            modifier = Modifier.size(24.dp),
+                            strokeWidth = 3.dp
+                        )
+                        CircularProgressIndicator(
+                            progress = item.percentage,
+                            color = AppColor.primary400,
+                            modifier = Modifier.size(24.dp),
+                            strokeWidth = 3.dp
+                        )
+                    }
                     AppText(
-                        text = "${item.percent.roundToInt()}% Match",
+                        text = "${(item.percentage*100).roundToInt()}% Match",
                         style = AppType.subheading3
                     )
                 }
@@ -235,7 +244,7 @@ fun InfoKampusRecommendationByAI(
 fun JurusanItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    item: DummyAiInfoJurusanRecommendation
+    item: SingleJurusanResponse
 ) {
     val itemWidth = remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
@@ -274,7 +283,7 @@ fun JurusanItem(
                 modifier = Modifier.widthIn(max = (itemWidth.value.value - 60).dp)
             ) {
                 AppText(
-                    text = item.prodiName,
+                    text = item.nama_jurusan,
                     style = AppType.subheading2
                 )
                 Box(
@@ -284,13 +293,13 @@ fun JurusanItem(
                 ) {
                     AppText(
                         modifier = Modifier.padding(8.dp),
-                        text = item.arah,
+                        text = item.jurusan,
                         style = AppType.body2,
                         color = AppColor.primary400
                     )
                 }
                 AppText(
-                    text = item.tag,
+                    text = item.tag_jurusan,
                     style = AppType.subheading3,
                     color = AppColor.grey600
                 )
@@ -298,14 +307,22 @@ fun JurusanItem(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    CircularProgressIndicator(
-                        progress = (item.percent / 100).toFloat(),
-                        color = AppColor.primary400,
-                        modifier = Modifier.size(24.dp),
-                        strokeWidth = 3.dp
-                    )
+                    Box{
+                        CircularProgressIndicator(
+                            progress = 1f,
+                            color = AppColor.grey500,
+                            modifier = Modifier.size(24.dp),
+                            strokeWidth = 3.dp
+                        )
+                        CircularProgressIndicator(
+                            progress = item.percentage,
+                            color = AppColor.primary400,
+                            modifier = Modifier.size(24.dp),
+                            strokeWidth = 3.dp
+                        )
+                    }
                     AppText(
-                        text = "${item.percent.roundToInt()}% Match",
+                        text = "${(item.percentage*100).roundToInt()}% Match",
                         style = AppType.subheading3
                     )
                 }

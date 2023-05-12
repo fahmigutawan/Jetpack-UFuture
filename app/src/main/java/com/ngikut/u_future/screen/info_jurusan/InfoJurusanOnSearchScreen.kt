@@ -29,6 +29,7 @@ import com.ngikut.u_future.component.AppTextInputNormal
 import com.ngikut.u_future.component.AppTopBar
 import com.ngikut.u_future.component.JurusanItem
 import com.ngikut.u_future.model.dummy.DummyAiInfoJurusanRecommendation
+import com.ngikut.u_future.model.remote.response.base.SingleJurusanResponse
 import com.ngikut.u_future.ui.theme.AppColor
 import com.ngikut.u_future.ui.theme.AppType
 import com.ngikut.u_future.viewmodel.info_jurusan.InfoJurusanOnSearchViewmodel
@@ -134,11 +135,20 @@ fun InfoJurusanOnSearchScreen(
                 )
             }
 
-            items(listOfDummyJurusan) {
+            items(listOfDummyJurusan.map {
+                SingleJurusanResponse(
+                    "",
+                    "",
+                    it.percent.toFloat()/100,
+                    it.prodiName,
+                    it.tag,
+                    it.arah
+                )
+            }) {
                 JurusanItem(
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
                     item = it,
-                    onClick = {/*TODO*/}
+                    onClick = {/*TODO*/ }
                 )
             }
         }

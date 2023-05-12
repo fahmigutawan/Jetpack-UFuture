@@ -6,6 +6,7 @@ import com.ngikut.u_future.model.remote.request.student.LoginRequest
 import com.ngikut.u_future.model.remote.request.student.RegisterRequest
 import com.ngikut.u_future.model.remote.response.base.SingleQuizOptionResponse
 import com.ngikut.u_future.model.remote.response.base.SingleQuizResponse
+import com.ngikut.u_future.model.remote.response.jurusan.PredictJurusanResponse
 import com.ngikut.u_future.model.remote.response.quiz.CheckPenjurusanStateResponse
 import com.ngikut.u_future.model.remote.response.quiz.GetQuizAnalysisResponse
 import com.ngikut.u_future.model.remote.response.quiz.GetQuizQuestionResponse
@@ -19,7 +20,6 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class RemoteSource @Inject constructor(
@@ -204,6 +204,32 @@ class RemoteSource @Inject constructor(
         if (res.meta.success) {
             Resource.Success(res)
         } else {
+            Resource.Error(res.meta.message)
+        }
+    }
+
+    fun getPredictJurusan() = getResponse {
+        val res = client.get {
+            url(HttpEndpoint.PREDICT_JURUSAN)
+            contentType(ContentType.Application.Json)
+        }.body<PredictJurusanResponse>()
+
+        if(res.meta.success){
+            Resource.Success(res)
+        }else{
+            Resource.Error(res.meta.message)
+        }
+    }
+
+    fun getTop3Jurusan() = getResponse {
+        val res = client.get {
+            url(HttpEndpoint.GET_TOP_3_JURUSAN)
+            contentType(ContentType.Application.Json)
+        }.body<PredictJurusanResponse>()
+
+        if(res.meta.success){
+            Resource.Success(res)
+        }else{
             Resource.Error(res.meta.message)
         }
     }
