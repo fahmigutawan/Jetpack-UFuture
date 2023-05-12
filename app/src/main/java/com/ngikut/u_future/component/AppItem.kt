@@ -12,6 +12,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
@@ -97,7 +100,7 @@ fun InfoJurusanRecommendationByAI(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Box{
+                    Box {
                         CircularProgressIndicator(
                             progress = 1f,
                             color = AppColor.grey500,
@@ -112,7 +115,7 @@ fun InfoJurusanRecommendationByAI(
                         )
                     }
                     AppText(
-                        text = "${(item.percentage*100).roundToInt()}% Match",
+                        text = "${(item.percentage * 100).roundToInt()}% Match",
                         style = AppType.subheading3
                     )
                 }
@@ -204,7 +207,7 @@ fun InfoKampusRecommendationByAI(
                             color = AppColor.primary400
                         )
                     }
-                }else{
+                } else {
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(Int.MAX_VALUE.dp))
@@ -307,7 +310,7 @@ fun JurusanItem(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Box{
+                    Box {
                         CircularProgressIndicator(
                             progress = 1f,
                             color = AppColor.grey500,
@@ -322,7 +325,7 @@ fun JurusanItem(
                         )
                     }
                     AppText(
-                        text = "${(item.percentage*100).roundToInt()}% Match",
+                        text = "${(item.percentage * 100).roundToInt()}% Match",
                         style = AppType.subheading3
                     )
                 }
@@ -350,6 +353,218 @@ fun JurusanItem(
                     imageVector = Icons.Default.FavoriteBorder,
                     contentDescription = "",
                     tint = AppColor.grey500
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun CompareJurusanItem(
+    modifier: Modifier = Modifier,
+    onPlusClicked: (item: SingleJurusanResponse) -> Unit,
+    plusEnabled: Boolean,
+    picked: Boolean,
+    item: SingleJurusanResponse
+) {
+    val itemWidth = remember { mutableStateOf(0.dp) }
+    val density = LocalDensity.current
+
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .background(AppColor.grey50)
+            .border(
+                width = 2.dp,
+                color = AppColor.grey100,
+                shape = RoundedCornerShape(16.dp)
+            )
+            .onSizeChanged {
+                density.run {
+                    itemWidth.value = it.width.toDp()
+                }
+            }
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(
+                modifier = Modifier.widthIn(max = (itemWidth.value.value - 60).dp)
+            ) {
+                AppText(
+                    text = item.nama_jurusan,
+                    style = AppType.subheading2
+                )
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(Int.MAX_VALUE.dp))
+                        .background(AppColor.primary50)
+                ) {
+                    AppText(
+                        modifier = Modifier.padding(8.dp),
+                        text = item.jurusan,
+                        style = AppType.body2,
+                        color = AppColor.primary400
+                    )
+                }
+                AppText(
+                    text = item.tag_jurusan,
+                    style = AppType.subheading3,
+                    color = AppColor.grey600
+                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Box {
+                        CircularProgressIndicator(
+                            progress = 1f,
+                            color = AppColor.grey500,
+                            modifier = Modifier.size(24.dp),
+                            strokeWidth = 3.dp
+                        )
+                        CircularProgressIndicator(
+                            progress = item.percentage,
+                            color = AppColor.primary400,
+                            modifier = Modifier.size(24.dp),
+                            strokeWidth = 3.dp
+                        )
+                    }
+                    AppText(
+                        text = "${(item.percentage * 100).roundToInt()}% Match",
+                        style = AppType.subheading3
+                    )
+                }
+            }
+
+            if (picked) {
+                Box(
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .size(32.dp)
+                        .background(AppColor.grey50)
+                        .border(width = 2.dp, color = AppColor.success500, shape = CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .size(24.dp),
+                        imageVector = Icons.Default.Done,
+                        contentDescription = "",
+                        tint = AppColor.success500
+                    )
+                }
+            } else {
+                if (plusEnabled) {
+                    Box(
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(32.dp)
+                            .background(AppColor.primary400)
+                            .clickable(
+                                interactionSource = MutableInteractionSource(),
+                                indication = rememberRipple(
+                                    color = AppColor.grey500,
+                                    bounded = true
+                                ),
+                                onClick = {
+                                    onPlusClicked(item)
+                                }
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .size(24.dp),
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "",
+                            tint = AppColor.grey50
+                        )
+                    }
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(32.dp)
+                            .background(AppColor.grey500),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .size(24.dp),
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "",
+                            tint = AppColor.grey50
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun PickedCompareItem(
+    width: Dp,
+    item: SingleJurusanResponse?,
+    placeholder: String,
+    onCloseClicked: (item: SingleJurusanResponse) -> Unit
+) {
+    Box(modifier = Modifier.width(width)) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 150.dp)
+                .clip(RoundedCornerShape(14.dp))
+                .background(AppColor.primary600),
+            contentAlignment = Alignment.Center
+        ) {
+            AppText(
+                text = placeholder,
+                style = AppType.subheading2,
+                color = AppColor.grey50,
+                textAlign = TextAlign.Center
+            )
+        }
+
+        item?.let {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 150.dp)
+                    .clip(RoundedCornerShape(14.dp))
+                    .background(AppColor.primary50),
+                contentAlignment = Alignment.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .heightIn(min = 150.dp)
+                        .clip(RoundedCornerShape(14.dp)),
+                    contentAlignment = Alignment.TopEnd
+                ) {
+                    AppIconButton(
+                        imageVector = Icons.Default.Close,
+                        onClick = {
+                            onCloseClicked(item)
+                        },
+                        backgroundColor = AppColor.primary600,
+                        tint = AppColor.grey50
+                    )
+                }
+                AppText(
+                    text = it.nama_jurusan,
+                    style = AppType.subheading2,
+                    textAlign = TextAlign.Center
                 )
             }
         }

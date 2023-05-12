@@ -42,6 +42,7 @@ import com.ngikut.u_future.screen.info_jurusan.InfoJurusanOnSearchScreen
 import com.ngikut.u_future.screen.info_jurusan.InfoJurusanScreen
 import com.ngikut.u_future.screen.info_kampus.InfoKampusScreen
 import com.ngikut.u_future.screen.komparasi_jurusan.KomparasiJurusanScreen
+import com.ngikut.u_future.screen.komparasi_jurusan.KomparasiResultScreen
 import com.ngikut.u_future.screen.login.LoginScreen
 import com.ngikut.u_future.screen.onboarding.OnboardingScreen
 import com.ngikut.u_future.screen.penjurusan.PenjurusanLandingScreen
@@ -236,6 +237,26 @@ class UFutureActivity : ComponentActivity() {
                             KomparasiJurusanScreen(navController = navController)
                         }
 
+                        composable(
+                            "${NavRoute.ComparationResult.name}/{jurusan1}/{jurusan2}",
+                            arguments = listOf(
+                                navArgument("jurusan1"){
+                                    type = NavType.StringType
+                                },
+                                navArgument("jurusan2"){
+                                    type = NavType.StringType
+                                }
+                            )
+                        ) {
+                            val jurusan1 = it.arguments?.getString("jurusan1") ?: ""
+                            val jurusan2 = it.arguments?.getString("jurusan2") ?: ""
+                            KomparasiResultScreen(
+                                navController = navController,
+                                jurusan1 = jurusan1,
+                                jurusan2 = jurusan2
+                            )
+                        }
+
                         composable(NavRoute.UBot.name) {
                             UbotScreen(navController = navController)
                         }
@@ -284,7 +305,7 @@ class UFutureActivity : ComponentActivity() {
                             )
                         }
 
-                        composable(NavRoute.PenjurusanSuccess.name){
+                        composable(NavRoute.PenjurusanSuccess.name) {
                             PenjurusanSuccessScreen(navController = navController)
                         }
 
