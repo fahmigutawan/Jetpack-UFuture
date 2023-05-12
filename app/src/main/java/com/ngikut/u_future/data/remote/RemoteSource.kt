@@ -7,6 +7,7 @@ import com.ngikut.u_future.model.remote.request.student.RegisterRequest
 import com.ngikut.u_future.model.remote.response.base.SingleQuizOptionResponse
 import com.ngikut.u_future.model.remote.response.base.SingleQuizResponse
 import com.ngikut.u_future.model.remote.response.jurusan.PredictJurusanResponse
+import com.ngikut.u_future.model.remote.response.komparasi_jurusan.CompareTwoJurusanResponse
 import com.ngikut.u_future.model.remote.response.quiz.CheckPenjurusanStateResponse
 import com.ngikut.u_future.model.remote.response.quiz.GetQuizAnalysisResponse
 import com.ngikut.u_future.model.remote.response.quiz.GetQuizQuestionResponse
@@ -57,10 +58,16 @@ class RemoteSource @Inject constructor(
         }
     }
 
-    fun checkPenjurusanState() = getResponse {
+    fun checkPenjurusanState(
+        token: String?
+    ) = getResponse {
         val res = client.get {
             url(HttpEndpoint.CHECK_PENJURUSAN)
             contentType(ContentType.Application.Json)
+            accept(ContentType.Application.Json)
+            if (token != null) {
+                header("Authorization", "Bearer $token")
+            }
         }.body<CheckPenjurusanStateResponse>()
 
         if (res.meta.success) {
@@ -214,9 +221,9 @@ class RemoteSource @Inject constructor(
             contentType(ContentType.Application.Json)
         }.body<PredictJurusanResponse>()
 
-        if(res.meta.success){
+        if (res.meta.success) {
             Resource.Success(res)
-        }else{
+        } else {
             Resource.Error(res.meta.message)
         }
     }
@@ -226,6 +233,19 @@ class RemoteSource @Inject constructor(
             url(HttpEndpoint.GET_TOP_3_JURUSAN)
             contentType(ContentType.Application.Json)
         }.body<PredictJurusanResponse>()
+
+        if (res.meta.success) {
+            Resource.Success(res)
+        } else {
+            Resource.Error(res.meta.message)
+        }
+    }
+
+    fun compareTwoJurusan(jurusan1:String, jurusan2:String) = getResponse {
+        val res = client.get {
+            url("${HttpEndpoint.COMPARE_TWO_JURUSAN}?compareOne=$jurusan1&compareTwo=$jurusan2")
+            contentType(ContentType.Application.Json)
+        }.body<CompareTwoJurusanResponse>()
 
         if(res.meta.success){
             Resource.Success(res)

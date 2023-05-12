@@ -8,6 +8,7 @@ import com.ngikut.u_future.data.repository.Repository
 import com.ngikut.u_future.model.remote.response.quiz.CheckPenjurusanStateResponse
 import com.ngikut.u_future.model.remote.response.student.LoginResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -35,9 +36,11 @@ class LoginViewmodel @Inject constructor(
         }
     }
 
-    fun checkPenjurusanState(){
-        viewModelScope.launch {
-            repository.checkPenjurusanState().collect{
+    fun checkPenjurusanState(token:String){
+        viewModelScope.launch(
+            context = Dispatchers.Default
+        ) {
+            repository.checkPenjurusanState(token).collect{
                 checkPenjurusanState.value = it
             }
         }

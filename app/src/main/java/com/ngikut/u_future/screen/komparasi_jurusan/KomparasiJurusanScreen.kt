@@ -51,20 +51,20 @@ fun KomparasiJurusanScreen(
     val density = LocalDensity.current
     val compareSectionWidth = remember { mutableStateOf(0.dp) }
     val vsItemWidth = remember { mutableStateOf(0.dp) }
-    val isPickedFirst = remember{ mutableStateOf(false) }
+    val isPickedFirst = remember { mutableStateOf(false) }
 
-    LaunchedEffect(key1 = viewModel.jurusan1Picked.value){
-        if(isPickedFirst.value){
-            if(viewModel.jurusan1Picked.value != null && viewModel.jurusan2Picked.value != null){
+    LaunchedEffect(key1 = viewModel.jurusan1Picked.value) {
+        if (isPickedFirst.value) {
+            if (viewModel.jurusan1Picked.value != null && viewModel.jurusan2Picked.value != null) {
                 navController.navigate("${NavRoute.ComparationResult.name}/${viewModel.jurusan1Picked.value}/${viewModel.jurusan2Picked.value}")
                 isPickedFirst.value = false
             }
         }
     }
 
-    LaunchedEffect(key1 = viewModel.jurusan2Picked.value){
-        if(isPickedFirst.value){
-            if(viewModel.jurusan1Picked.value != null && viewModel.jurusan2Picked.value != null){
+    LaunchedEffect(key1 = viewModel.jurusan2Picked.value) {
+        if (isPickedFirst.value) {
+            if (viewModel.jurusan1Picked.value != null && viewModel.jurusan2Picked.value != null) {
                 navController.navigate("${NavRoute.ComparationResult.name}/${viewModel.jurusan1Picked.value}/${viewModel.jurusan2Picked.value}")
                 isPickedFirst.value = false
             }
@@ -341,12 +341,12 @@ enum class KomparasiJurusanSection(
     val word: String,
     val iconId: Int
 ) {
-    Favorite(
-        "Favorit",
-        R.drawable.bottombar_favorite_selected
-    ),
     Rekomendasi(
         "Rekomendasi",
         R.drawable.penjurusansuccess_rekomendasi_icon
+    ),
+    Favorite(
+        "Favorit",
+        R.drawable.bottombar_favorite_selected
     )
 }

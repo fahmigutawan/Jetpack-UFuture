@@ -38,19 +38,28 @@ class Repository @Inject constructor(
             )
         )
 
-    fun checkPenjurusanState() = remoteSource.checkPenjurusanState()
+    fun checkPenjurusanState(token: String? = null) = remoteSource.checkPenjurusanState(token)
 
     fun getProfile() = remoteSource.getProfile()
 
-    fun getQuizQuestion(title:String) = remoteSource.getQuizQuestion(title)
+    fun getQuizQuestion(title: String) = remoteSource.getQuizQuestion(title)
 
-    fun sendSectionOneQuizAnswer(title:String, request:List<SingleSendQuizSectionOneAnswerDataRequest>) = remoteSource.sendSectionOneQuizAnswer(title, request)
+    fun sendSectionOneQuizAnswer(
+        title: String,
+        request: List<SingleSendQuizSectionOneAnswerDataRequest>
+    ) = remoteSource.sendSectionOneQuizAnswer(title, request)
 
-    fun sendSectionTwoAndThreeQuizAnswer(title:String, request:List<SingleSendQuizSectionTwoAndThreeAnswerDataRequest>) = remoteSource.sendSectionTwoAndThreeQuizAnswer(title, request)
+    fun sendSectionTwoAndThreeQuizAnswer(
+        title: String,
+        request: List<SingleSendQuizSectionTwoAndThreeAnswerDataRequest>
+    ) = remoteSource.sendSectionTwoAndThreeQuizAnswer(title, request)
 
     fun getQuizAnalysis() = remoteSource.getQuizAnalysis()
 
     fun getPredictJurusan() = remoteSource.getPredictJurusan()
 
     fun getTop3Jurusan() = remoteSource.getTop3Jurusan()
+
+    fun compareTwoJurusan(jurusan1: String, jurusan2: String) =
+        remoteSource.compareTwoJurusan(jurusan1, jurusan2)
 }

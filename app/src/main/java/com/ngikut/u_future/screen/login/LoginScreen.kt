@@ -56,9 +56,9 @@ fun LoginScreen(
 
             is Resource.Success -> {
                 loginState.value.data?.let {
-                    viewModel.saveToken(it.data?.token ?: "")
-                    delay(2500)
-                    viewModel.startCheckingPenjurusanState.value = true
+                    viewModel.saveToken(it.data!!.token)
+                    viewModel.checkPenjurusanState(it.data!!.token)
+//                    viewModel.startCheckingPenjurusanState.value = true
                     viewModel.startLogin.value = false
                 }
             }
@@ -68,7 +68,7 @@ fun LoginScreen(
         when (checkPenjurusanState.value) {
             is Resource.Error -> {
                 showSnackbar(checkPenjurusanState.value.message.toString())
-                viewModel.startCheckingPenjurusanState.value = false
+//                viewModel.startCheckingPenjurusanState.value = false
             }
             is Resource.Loading -> {/*TODO*/
             }
@@ -90,7 +90,8 @@ fun LoginScreen(
                             }
                         }
                     }
-                    viewModel.startCheckingPenjurusanState.value = false
+
+//                    viewModel.startCheckingPenjurusanState.value = false
                 }
             }
         }
@@ -101,11 +102,11 @@ fun LoginScreen(
             viewModel.login()
         }
     }
-    if (viewModel.startCheckingPenjurusanState.value) {
-        LaunchedEffect(key1 = true){
-            viewModel.checkPenjurusanState()
-        }
-    }
+//    if (viewModel.startCheckingPenjurusanState.value) {
+//        LaunchedEffect(key1 = true){
+//            viewModel.checkPenjurusanState()
+//        }
+//    }
 
     Column(
         modifier = Modifier
