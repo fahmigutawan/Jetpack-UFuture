@@ -57,9 +57,12 @@ fun LoginScreen(
             is Resource.Success -> {
                 loginState.value.data?.let {
                     viewModel.saveToken(it.data!!.token)
-                    viewModel.checkPenjurusanState(it.data!!.token)
+                    delay(1500)
+                    navController.backQueue.clear()
+                    navController.navigate(NavRoute.LoginLoading.name)
+//                    viewModel.checkPenjurusanState(it.data!!.token)
 //                    viewModel.startCheckingPenjurusanState.value = true
-                    viewModel.startLogin.value = false
+//                    viewModel.startLogin.value = false
                 }
             }
         }

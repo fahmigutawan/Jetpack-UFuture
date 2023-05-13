@@ -36,11 +36,11 @@ class LoginViewmodel @Inject constructor(
         }
     }
 
-    fun checkPenjurusanState(token:String){
+    fun checkPenjurusanState(){
         viewModelScope.launch(
             context = Dispatchers.Default
         ) {
-            repository.checkPenjurusanState(token).collect{
+            repository.checkPenjurusanState().collect{
                 checkPenjurusanState.value = it
             }
         }

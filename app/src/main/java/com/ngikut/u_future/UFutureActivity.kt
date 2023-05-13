@@ -36,6 +36,7 @@ import com.ngikut.u_future.component.AppBottomBar
 import com.ngikut.u_future.component.AppButton
 import com.ngikut.u_future.component.AppSnackbar
 import com.ngikut.u_future.component.AppText
+import com.ngikut.u_future.screen.favorite.FavoriteScreen
 import com.ngikut.u_future.screen.home.HomeScreen
 import com.ngikut.u_future.screen.info_jurusan.InfoJurusanByFakultasScreen
 import com.ngikut.u_future.screen.info_jurusan.InfoJurusanOnSearchScreen
@@ -43,11 +44,13 @@ import com.ngikut.u_future.screen.info_jurusan.InfoJurusanScreen
 import com.ngikut.u_future.screen.info_kampus.InfoKampusScreen
 import com.ngikut.u_future.screen.komparasi_jurusan.KomparasiJurusanScreen
 import com.ngikut.u_future.screen.komparasi_jurusan.KomparasiResultScreen
+import com.ngikut.u_future.screen.login.LoginLoadingScreen
 import com.ngikut.u_future.screen.login.LoginScreen
 import com.ngikut.u_future.screen.onboarding.OnboardingScreen
 import com.ngikut.u_future.screen.penjurusan.PenjurusanLandingScreen
 import com.ngikut.u_future.screen.penjurusan.PenjurusanScreen
 import com.ngikut.u_future.screen.penjurusan.PenjurusanSuccessScreen
+import com.ngikut.u_future.screen.profile.ProfileScreen
 import com.ngikut.u_future.screen.splash.SplashScreen
 import com.ngikut.u_future.screen.ubot.UbotScreen
 import com.ngikut.u_future.ui.theme.AppColor
@@ -262,11 +265,11 @@ class UFutureActivity : ComponentActivity() {
                         }
 
                         composable(NavRoute.Favorite.name) {
-
+                            FavoriteScreen(navController = navController)
                         }
 
                         composable(NavRoute.Profile.name) {
-
+                            ProfileScreen(navController = navController)
                         }
 
                         composable(NavRoute.Onboard.name) {
@@ -275,6 +278,10 @@ class UFutureActivity : ComponentActivity() {
 
                         composable(NavRoute.Login.name) {
                             LoginScreen(navController = navController, showSnackbar = showSnackbar)
+                        }
+
+                        composable(NavRoute.LoginLoading.name){
+                            LoginLoadingScreen(navController = navController)
                         }
 
                         composable(NavRoute.Register.name) {

@@ -60,7 +60,7 @@ fun AppTopBarMidTitle(
             Box(
                 modifier = Modifier
                     .size(42.dp)
-                    .padding(horizontal = 16.dp)
+//                    .padding(horizontal = 16.dp)
                     .clip(CircleShape)
                     .background(AppColor.grey50)
                     .border(color = AppColor.grey500, width = 1.dp, shape = CircleShape)
@@ -72,6 +72,7 @@ fun AppTopBarMidTitle(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
+                    modifier = Modifier.size(32.dp),
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "",
                     tint = AppColor.grey500
