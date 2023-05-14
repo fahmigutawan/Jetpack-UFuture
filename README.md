@@ -11,4 +11,8 @@ Brief Explanation:
 U-Future adalah sebuah aplikasi yang dirancang untuk membantu siswa dalam memilih jurusan kuliah yang tepat berdasarkan metode Holland Code (RIASEC). Salah satu fitur utama dari U-Future adalah fitur Komparasi Jurusan yang memungkinkan siswa untuk membandingkan dan memperoleh informasi yang lebih rinci tentang jalur karir dari jurusan kuliah tertentu. Selain itu, aplikasi U-Future dilengkapi dengan fitur AI Student Assistant bernama U-Bot yang akan membantu siswa dalam melakukan konsultasi tentang persiapan kuliah dan rencana karir. Diharapkan dengan adanya aplikasi ini, siswa akan merasa lebih percaya diri dalam mempersiapkan diri untuk masuk ke perguruan tinggi dan memiliki performa akademik yang lebih baik di masa studi nantinya.
 
 Link APK: https://drive.google.com/file/d/1mGrdpegY_fxLiE0hKRMqwsRgzjHSEWGt/view?usp=sharing
-Link Demo App: https://youtu.be/Z95nwvbaKPM
+Link Demo App: https://drive.google.com/file/d/1rZwhyt6Pep1fCdWSx6iFsf1TcAzeXlRJ/view?usp=share_link
+
+
+Link Repositoy 1 (FrontEnd) (THIS): https://github.com/fahmirumagutawan/Jetpack-UFuture/
+Link Repositoy 2 (BackEnd): https://github.com/adityarizkyramadhan/u-future-api/
